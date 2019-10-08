@@ -52,3 +52,18 @@ docker secret create https_privkey_file hostkey.pem
 docker secret create shibboleth_sp_encrypt_cert sp-encrypt-cert.pem
 docker secret create shibboleth_sp_encrypt_privkey sp-encrypt-key.pem
 
+sudo mkdir -p /srv/docker/var/lib/mysql
+sudo mkdir -p /srv/docker/srv/comanage-registry/local
+sudo mkdir -p /srv/docker/etc/shibboleth
+
+sudo cp /etc/shibboleth/shibboleth2.xml /srv/docker/etc/shibboleth/
+sudo cp /etc/shibboleth/attribute-map.xml /srv/docker/etc/shibboleth/
+sudo cp /etc/shibboleth/saml-metadata.xml /src/docker/etc/shibboleth/
+
+export COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=Duncan
+export COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Brown
+export COMANAGE_REGISTRY_ADMIN_USERNAME=dabrown@syr.edu
+
+export COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN=sugwg-test1.phy.syr.edu
+
+
