@@ -1,0 +1,68 @@
+version: '3.1'
+
+services:
+
+    comanage-registry-database:
+        image: mariadb:10.2
+        volumes:
+            - /srv/docker/var/lib/mysql:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mariadb_root_password
+            - MYSQL_DATABASE=registry
+            - MYSQL_USER=registry_user
+            - MYSQL_PASSWORD_FILE=/run/secrets/mariadb_password
+        secrets:
+            - mariadb_root_password
+            - mariadb_password
+        networks:
+            - default
+        deploy:
+            replicas: 1
+
+    comanage-registry:
+        image: comanage-registry:${COMANAGE_REGISTRY_VERSION}-shibboleth-sp-${COMANAGE_REGISTRY_SHIBBOLETH_SP_IMAGE_VERSION}
+        volumes:
+            - /srv/docker/srv/comanage-registry/local:/srv/comanage-registry/local
+            - /srv/docker/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+            - /srv/docker/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+            - /srv/docker/etc/shibboleth/saml-metadata.xml:/etc/shibboleth/saml-metadata.xml
+        environment:
+            - COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=${COMANAGE_REGISTRY_ADMIN_GIVEN_NAME}
+            - COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=${COMANAGE_REGISTRY_ADMIN_FAMILY_NAME}
+            - COMANAGE_REGISTRY_ADMIN_USERNAME=${COMANAGE_REGISTRY_ADMIN_USERNAME}
+            - COMANAGE_REGISTRY_DATASOURCE=Database/Mysql
+            - COMANAGE_REGISTRY_DATABASE_USER_PASSWORD_FILE=/run/secrets/comanage_registry_database_user_password
+            - COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN=${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}
+            - HTTPS_CERT_FILE=/run/secrets/https_cert_file
+            - HTTPS_PRIVKEY_FILE=/run/secrets/https_privkey_file
+            - SHIBBOLETH_SP_ENCRYPT_CERT=/run/secrets/shibboleth_sp_encrypt_cert
+            - SHIBBOLETH_SP_ENCRYPT_PRIVKEY=/run/secrets/shibboleth_sp_encrypt_privkey
+        secrets:
+            - comanage_registry_database_user_password
+            - https_cert_file
+            - https_privkey_file
+            - shibboleth_sp_encrypt_cert
+            - shibboleth_sp_encrypt_privkey
+        networks:
+            - default
+        ports:
+            - "80:80"
+            - "443:443"
+        deploy:
+            replicas: 1
+
+secrets:
+    comanage_registry_database_user_password:
+        external: true
+    mariadb_root_password
+        external: true
+    mariadb_password
+        external: true
+    shibboleth_sp_encrypt_cert:
+        external: true
+    shibboleth_sp_encrypt_privkey:
+        external: true
+    https_cert_file:
+        external: true
+    https_privkey_file:
+        external: true
