@@ -1,6 +1,5 @@
 #!/bin/bash -vx
 
-git clone https://github.com/Internet2/comanage-registry-docker.git
 pushd comanage-registry-docker
 
 export COMANAGE_REGISTRY_VERSION=3.2.2
