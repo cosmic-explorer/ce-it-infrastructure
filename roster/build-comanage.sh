@@ -96,4 +96,4 @@ sudo mkdir -p /srv/docker/etc/slapd.d
 export OLC_SUFFIX=dc=cosmicexplorer,dc=org
 export OLC_ROOT_DN=cn=admin,dc=cosmicexplorer,dc=org
 
-
+popd
