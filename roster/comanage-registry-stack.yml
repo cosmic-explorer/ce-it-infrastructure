@@ -51,12 +51,35 @@ services:
         deploy:
             replicas: 1
 
+    comanage-registry-ldap:
+        image: comanage-registry-slapd:${COMANAGE_REGISTRY_SLAPD_IMAGE_VERSION}
+        command: ["slapd", "-d", "256", "-h", "ldapi:/// ldap:/// ldaps:///", "-u", "openldap", "-g", "openldap"]
+        volumes:
+            - /srv/docker/var/lib/ldap:/var/lib/ldap
+            - /srv/docker/etc/slapd.d:/etc/ldap/slapd.d
+        environment:
+            - OLC_ROOT_PW_FILE=/run/secrets/olc_root_pw
+            - OLC_SUFFIX=${OLC_SUFFIX}
+            - OLC_ROOT_DN=${OLD_ROOT_DN}
+            - SLAPD_CERT_FILE=/run/secrets/slapd_cert_file
+            - SLAPD_CHAIN_FILE=/run/secrets/slapd_chain_file
+            - SLAPD_PRIVKEY_FILE=/run/secrets/slapd_privkey_file
+        secrets:
+            - olc_root_pw
+            - slapd_chain_file
+            - slapd_cert_file
+            - slapd_privkey_file
+        networks:
+            - default
+        deploy:
+            replicas: 1
+
 secrets:
     comanage_registry_database_user_password:
         external: true
-    mariadb_root_password
+    mariadb_root_password:
         external: true
-    mariadb_password
+    mariadb_password:
         external: true
     shibboleth_sp_encrypt_cert:
         external: true
@@ -65,4 +88,12 @@ secrets:
     https_cert_file:
         external: true
     https_privkey_file:
+        external: true
+    olc_root_pw:
+        external: true
+    slapd_chain_file:
+        external: true
+    slapd_cert_file:
+        external: true
+    slapd_privkey_file:
         external: true

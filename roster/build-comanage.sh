@@ -38,7 +38,8 @@ echo "badgers" | docker secret create mariadb_root_password -
 echo "badgers" | docker secret create mariadb_password - 
 echo "badgers" | docker secret create comanage_registry_database_user_password - 
 
-cat /etc/grid-security/igtf-ca-bundle.crt /etc/grid-security/hostcert.pem > fullchain.cert.pem
+cp /etc/grid-security/igtf-ca-bundle.crt /etc/grid-security/hostcert.pem .
+cat igtf-ca-bundle.crt hostcert.pem > fullchain.cert.pem
 CERT_DIR=$(mktemp -d)
 sudo cp -a /etc/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
 sudo cp -a /etc/grid-security/hostkey.pem ${CERT_DIR}
@@ -65,5 +66,34 @@ export COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Brown
 export COMANAGE_REGISTRY_ADMIN_USERNAME=dabrown@syr.edu
 
 export COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN=sugwg-test1.phy.syr.edu
+
+export COMANAGE_REGISTRY_SLAPD_BASE_IMAGE_VERSION=1
+
+pushd comanage-registry-slapd-base
+TAG="${COMANAGE_REGISTRY_SLAPD_BASE_IMAGE_VERSION}"
+docker build \
+  -t comanage-registry-slapd-base:${TAG} .
+popd
+
+export COMANAGE_REGISTRY_SLAPD_IMAGE_VERSION=1
+
+pushd comanage-registry-slapd
+TAG="${COMANAGE_REGISTRY_SLAPD_IMAGE_VERSION}"
+docker build \
+    --build-arg COMANAGE_REGISTRY_SLAPD_BASE_IMAGE_VERSION=${COMANAGE_REGISTRY_SLAPD_BASE_IMAGE_VERSION} \
+    -t comanage-registry-slapd:$TAG . 
+popd
+
+docker secret create slapd_chain_file igtf-ca-bundle.crt
+docker secret create slapd_cert_file hostcert.pem
+docker secret create slapd_privkey_file hostkey.pem
+
+echo "{SSHA}bnjbUkuyt0MKJnDXbtwE2VjtoTeKjqFw" | docker secret create olc_root_pw
+
+sudo mkdir -p /srv/docker/var/lib/ldap
+sudo mkdir -p /srv/docker/etc/slapd.d
+
+export OLC_SUFFIX=dc=cosmicexplorer,dc=org
+export OLC_ROOT_DN=cn=admin,dc=cosmicexplorer,dc=org
 
 
