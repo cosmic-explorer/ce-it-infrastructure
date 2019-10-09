@@ -1,5 +1,3 @@
-#!/bin/bash -v
-
 set -e
 
 pushd comanage-registry-docker
@@ -90,7 +88,7 @@ docker secret create slapd_chain_file igtf-ca-bundle.crt
 docker secret create slapd_cert_file hostcert.pem
 docker secret create slapd_privkey_file hostkey.pem
 
-echo "{SSHA}bnjbUkuyt0MKJnDXbtwE2VjtoTeKjqFw" | docker secret create olc_root_pw
+echo "{SSHA}bnjbUkuyt0MKJnDXbtwE2VjtoTeKjqFw" | docker secret create olc_root_pw -
 
 sudo mkdir -p /srv/docker/var/lib/ldap
 sudo mkdir -p /srv/docker/etc/slapd.d
