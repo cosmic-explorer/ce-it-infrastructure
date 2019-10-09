@@ -65,6 +65,7 @@ sudo mkdir -p /srv/docker/etc/shibboleth
 
 sudo cp /etc/shibboleth/shibboleth2.xml /srv/docker/etc/shibboleth/
 sudo cp /etc/shibboleth/attribute-map.xml /srv/docker/etc/shibboleth/
+sudo /usr/bin/curl -s https://ds.incommon.org/certs/inc-md-cert.pem > /srv/docker/etc/shibboleth/inc-md-cert.pem
 sudo chmod 644 /srv/docker/etc/shibboleth/*.xml
 
 export COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=Duncan

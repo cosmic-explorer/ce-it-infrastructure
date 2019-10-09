@@ -25,6 +25,7 @@ services:
             - /srv/docker/srv/comanage-registry/local:/srv/comanage-registry/local
             - /srv/docker/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
             - /srv/docker/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+            - /srv/docker/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
         environment:
             - COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=${COMANAGE_REGISTRY_ADMIN_GIVEN_NAME}
             - COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=${COMANAGE_REGISTRY_ADMIN_FAMILY_NAME}
