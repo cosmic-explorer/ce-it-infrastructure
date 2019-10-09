@@ -5,7 +5,7 @@ services:
     comanage-registry-database:
         image: mariadb:10.2
         volumes:
-            - /srv/docker/var/lib/mysql:/var/lib/mysql
+            - /srv/docker/comanage/var/lib/mysql:/var/lib/mysql
         environment:
             - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mariadb_root_password
             - MYSQL_DATABASE=registry
@@ -22,10 +22,10 @@ services:
     comanage-registry:
         image: comanage-registry:${COMANAGE_REGISTRY_VERSION}-shibboleth-sp-${COMANAGE_REGISTRY_SHIBBOLETH_SP_IMAGE_VERSION}
         volumes:
-            - /srv/docker/srv/comanage-registry/local:/srv/comanage-registry/local
-            - /srv/docker/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
-            - /srv/docker/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
-            - /srv/docker/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
+            - /srv/docker/comanage/srv/comanage-registry/local:/srv/comanage-registry/local
+            - /srv/docker/comanage/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+            - /srv/docker/comanage/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+            - /srv/docker/comanage/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
         environment:
             - COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=${COMANAGE_REGISTRY_ADMIN_GIVEN_NAME}
             - COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=${COMANAGE_REGISTRY_ADMIN_FAMILY_NAME}
@@ -55,8 +55,8 @@ services:
         image: comanage-registry-slapd:${COMANAGE_REGISTRY_SLAPD_IMAGE_VERSION}
         command: ["slapd", "-d", "256", "-h", "ldapi:/// ldap:/// ldaps:///", "-u", "openldap", "-g", "openldap"]
         volumes:
-            - /srv/docker/var/lib/ldap:/var/lib/ldap
-            - /srv/docker/etc/slapd.d:/etc/ldap/slapd.d
+            - /srv/docker/comanage/var/lib/ldap:/var/lib/ldap
+            - /srv/docker/comanage/etc/slapd.d:/etc/ldap/slapd.d
         environment:
             - OLC_ROOT_PW_FILE=/run/secrets/olc_root_pw
             - OLC_SUFFIX=${OLC_SUFFIX}

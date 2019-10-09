@@ -1,6 +1,7 @@
 set -e
 
 docker swarm leave --force || true
+rm -rf /srv/docker/comanage
 
 pushd comanage-registry-docker
 
@@ -59,14 +60,18 @@ docker secret create https_privkey_file hostkey.pem
 docker secret create shibboleth_sp_encrypt_cert sp-encrypt-cert.pem
 docker secret create shibboleth_sp_encrypt_privkey sp-encrypt-key.pem
 
-sudo mkdir -p /srv/docker/var/lib/mysql
-sudo mkdir -p /srv/docker/srv/comanage-registry/local
-sudo mkdir -p /srv/docker/etc/shibboleth
+sudo rm -rf  /srv/docker/comanage
+sudo mkdir -p /srv/docker/comanage/var/lib/mysql
+sudo mkdir -p /srv/docker/comanage/srv/comanage-registry/local
+sudo mkdir -p /srv/docker/comanage/etc/shibboleth
 
-sudo cp /etc/shibboleth/shibboleth2.xml /srv/docker/etc/shibboleth/
-sudo cp /etc/shibboleth/attribute-map.xml /srv/docker/etc/shibboleth/
-sudo /usr/bin/curl -s https://ds.incommon.org/certs/inc-md-cert.pem > /srv/docker/etc/shibboleth/inc-md-cert.pem
-sudo chmod 644 /srv/docker/etc/shibboleth/*.xml
+sudo cp /etc/shibboleth/shibboleth2.xml /srv/docker/comanage/etc/shibboleth/
+sudo cp /etc/shibboleth/attribute-map.xml /srv/docker/comanage/etc/shibboleth/
+/usr/bin/curl -O -s https://ds.incommon.org/certs/inc-md-cert.pem
+chmod 644 inc-md-cert.pem
+sudo cp inc-md-cert.pem /srv/docker/comanage/etc/shibboleth/inc-md-cert.pem
+rm -f inc-md-cert.pem
+sudo chmod 644 -R -v /srv/docker/comanage/etc/shibboleth
 
 export COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=Duncan
 export COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Brown
@@ -97,8 +102,8 @@ docker secret create slapd_privkey_file hostkey.pem
 
 echo "{SSHA}bnjbUkuyt0MKJnDXbtwE2VjtoTeKjqFw" | docker secret create olc_root_pw -
 
-sudo mkdir -p /srv/docker/var/lib/ldap
-sudo mkdir -p /srv/docker/etc/slapd.d
+sudo mkdir -p /srv/docker/comanage/var/lib/ldap
+sudo mkdir -p /srv/docker/comanage/etc/slapd.d
 
 export OLC_SUFFIX=dc=cosmicexplorer,dc=org
 export OLC_ROOT_DN=cn=admin,dc=cosmicexplorer,dc=org
