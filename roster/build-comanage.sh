@@ -62,7 +62,6 @@ sudo mkdir -p /srv/docker/etc/shibboleth
 
 sudo cp /etc/shibboleth/shibboleth2.xml /srv/docker/etc/shibboleth/
 sudo cp /etc/shibboleth/attribute-map.xml /srv/docker/etc/shibboleth/
-sudo cp /etc/shibboleth/saml-metadata.xml /src/docker/etc/shibboleth/
 
 export COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=Duncan
 export COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Brown
