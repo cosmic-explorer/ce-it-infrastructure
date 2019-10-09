@@ -1,7 +1,7 @@
 set -e
 
 docker swarm leave --force || true
-rm -rf /srv/docker/comanage
+sudo rm -rf /srv/docker/comanage
 
 pushd comanage-registry-docker
 
