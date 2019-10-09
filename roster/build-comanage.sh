@@ -39,8 +39,10 @@ echo "badgers" | docker secret create mariadb_root_password -
 echo "badgers" | docker secret create mariadb_password - 
 echo "badgers" | docker secret create comanage_registry_database_user_password - 
 
-cp /etc/grid-security/igtf-ca-bundle.crt /etc/grid-security/hostcert.pem .
-cat hostcert.pem igtf-ca-bundle.crt > fullchain.cert.pem
+sed -e 's///' /etc/grid-security/igtf-ca-bundle.crt > igtf-ca-bundle.crt
+
+cp /etc/grid-security/hostcert.pem .
+cat hostcert.pem igtf-ca-bundle.crt >> fullchain.cert.pem
 CERT_DIR=$(mktemp -d)
 sudo cp -a /etc/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
 sudo cp -a /etc/grid-security/hostkey.pem ${CERT_DIR}
