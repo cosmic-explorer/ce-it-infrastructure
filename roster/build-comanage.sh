@@ -31,7 +31,7 @@ docker build \
     -t comanage-registry:$TAG .
 popd
 
-docker swarm init --advertize-addr $(hostname --ip-address)
+docker swarm init --advertise-addr $(hostname --ip-address)
 
 echo "badgers" | docker secret create mariadb_root_password - 
 echo "badgers" | docker secret create mariadb_password - 
