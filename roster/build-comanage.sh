@@ -1,4 +1,6 @@
-#!/bin/bash -vx
+#!/bin/bash -v
+
+set -e
 
 pushd comanage-registry-docker
 
