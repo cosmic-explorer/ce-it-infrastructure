@@ -108,14 +108,14 @@ services:
             - /srv/docker/mailman/shib/etc/attribute-map.xml:/etc/shibboleth/attribute-map.xml
         environment:
             - HTTPS_CERT_FILE=/run/secrets/https_cert_file
-            - HTTPS_KEY_FILE=/run/secrets/https_key_file
+            - HTTPS_KEY_FILE=/run/secrets/https_privkey_file
             - MAILMAN_ADMIN_EMAIL=
             - SHIBBOLETH_SP_ENCRYPT_CERT=/run/secrets/shibboleth_sp_encrypt_cert
             - SHIBBOLETH_SP_ENCRYPT_PRIVKEY=/run/secrets/shibboleth_sp_encrypt_privkey
             - VIRTUAL_HOST_FQDN=
         secrets:
             - https_cert_file
-            - https_key_file
+            - https_privkey_file
             - shibboleth_sp_encrypt_cert
             - shibboleth_sp_encrypt_privkey
         networks:
@@ -142,7 +142,7 @@ services:
 secrets:
     https_cert_file:
         external: true
-    https_key_file:
+    https_privkey_file:
         external: true
     hyperkitty_api_key:
         external: true
