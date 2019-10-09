@@ -1,7 +1,6 @@
 set -e
 
-docker swarm leave --force || true
-sudo rm -rf /srv/docker/comanage
+sudo rm -rf /srv/docker/mailman
 
 pushd comanage-registry-docker
 
@@ -14,38 +13,35 @@ docker build -t cosmicexplorer/mailman-web:0.2.1 .
 popd
 
 pushd comanage-registry-mailman/apache-shib
-docker build -t cosmicexplorer/mailman-core-apache-shib .
+docker build \
+--build-arg COMANAGE_REGISTRY_VERSION=3.2.2 \
+--build-arg COMANAGE_REGISTRY_BASE_IMAGE_VERSION=1 \
+-t cosmicexplorer/mailman-core-apache-shib .
 popd
 
 pushd comanage-registry-mailman/postfix
 docker build -t cosmicexplorer/mailman-postfix .
 popd
 
-mkdir -p /srv/docker/mailman/core
-mkdir -p /srv/docker/mailman/web
-mkdir -p /srv/docker/mailman/database
-mkdir -p /srv/docker/mailman/shib
-
-sed -e 's/^M//g' /etc/grid-security/igtf-ca-bundle.crt > igtf-ca-bundle.crt
-cp /etc/grid-security/hostcert.pem .
-cp hostcert.pem fullchain.cert.pem
-echo >> fullchain.cert.pem
-cat igtf-ca-bundle.crt >> fullchain.cert.pem
-CERT_DIR=$(mktemp -d)
-sudo cp -a /etc/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
-sudo cp -a /etc/grid-security/hostkey.pem ${CERT_DIR}
-sudo cp -a /etc/shibboleth/sp-encrypt-key.pem ${CERT_DIR}
-sudo chown ${USER} ${CERT_DIR}/*.pem
-mv ${CERT_DIR}/*.pem .
-sudo rmdir ${CERT_DIR}
-
-docker swarm init --advertise-addr $(hostname --ip-address)
-
-docker secret create https_cert_file fullchain.cert.pem
-docker secret create https_privkey_file hostkey.pem
+sudo mkdir -p /srv/docker/mailman/core
+sudo mkdir -p /srv/docker/mailman/web
+sudo mkdir -p /srv/docker/mailman/database
+sudo mkdir -p /srv/docker/mailman/shib
 
 echo "postgres://mailman:badgers@database/mailmandb" | docker secret create mailman_database_url -
 echo "badgers" | docker secret create hyperkitty_api_key -
 echo "badgers" | docker secret create mailman_rest_password -
 echo "badgers" | docker secret create mailman_web_secret_key -
 echo "badgers" | docker secret create postgres_password -
+
+sudo mkdir -p /srv/docker/mailman/etc/shibboleth
+
+sudo cp /etc/shibboleth/shibboleth2.xml /srv/docker/mailman/etc/shibboleth/
+sudo cp /etc/shibboleth/attribute-map.xml /srv/docker/mailman/etc/shibboleth/
+/usr/bin/curl -O -s https://ds.incommon.org/certs/inc-md-cert.pem
+chmod 644 inc-md-cert.pem
+sudo cp inc-md-cert.pem /srv/docker/mailman/etc/shibboleth/inc-md-cert.pem
+rm -f inc-md-cert.pem
+sudo chmod 644 -R -v /srv/docker/mailman/etc/shibboleth
+
+popd

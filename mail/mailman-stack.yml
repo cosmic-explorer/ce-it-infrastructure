@@ -37,6 +37,9 @@ services:
         volumes:
             - /srv/docker/mailman/web:/opt/mailman-web-data
             - /srv/docker/mailman/settings.py:/opt/mailman-web/settings.py
+            - /srv/docker/mailman/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+            - /srv/docker/mailman/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+            - /srv/docker/mailman/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
         environment:
             - MAILMAN_DATABASE_URL_FILE=/run/secrets/mailman_database_url
             - MAILMAN_DATABASE_TYPE=postgres
