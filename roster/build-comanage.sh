@@ -1,5 +1,7 @@
 set -e
 
+docker swarm leave --force || true
+
 pushd comanage-registry-docker
 
 export COMANAGE_REGISTRY_VERSION=3.2.2
@@ -39,10 +41,11 @@ echo "badgers" | docker secret create mariadb_root_password -
 echo "badgers" | docker secret create mariadb_password - 
 echo "badgers" | docker secret create comanage_registry_database_user_password - 
 
-sed -e 's///' /etc/grid-security/igtf-ca-bundle.crt > igtf-ca-bundle.crt
-
+sed -e 's///g' /etc/grid-security/igtf-ca-bundle.crt > igtf-ca-bundle.crt
 cp /etc/grid-security/hostcert.pem .
-cat hostcert.pem igtf-ca-bundle.crt >> fullchain.cert.pem
+cp hostcert.pem fullchain.cert.pem
+echo >> fullchain.cert.pem
+cat igtf-ca-bundle.crt >> fullchain.cert.pem
 CERT_DIR=$(mktemp -d)
 sudo cp -a /etc/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
 sudo cp -a /etc/grid-security/hostkey.pem ${CERT_DIR}
@@ -62,6 +65,7 @@ sudo mkdir -p /srv/docker/etc/shibboleth
 
 sudo cp /etc/shibboleth/shibboleth2.xml /srv/docker/etc/shibboleth/
 sudo cp /etc/shibboleth/attribute-map.xml /srv/docker/etc/shibboleth/
+sudo chmod 644 /srv/docker/etc/shibboleth/*.xml
 
 export COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=Duncan
 export COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Brown
