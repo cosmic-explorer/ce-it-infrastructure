@@ -71,6 +71,9 @@ services:
             - slapd_privkey_file
         networks:
             - default
+        ports:
+            - "389:389"
+            - "636:636"
         deploy:
             replicas: 1
 
