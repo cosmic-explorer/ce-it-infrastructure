@@ -36,7 +36,6 @@ services:
         image: cosmicexplorer/mailman-web:0.2.1
         volumes:
             - /srv/docker/mailman/web:/opt/mailman-web-data
-            - /srv/docker/mailman/settings.py:/opt/mailman-web/settings.py
             - /srv/docker/mailman/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
             - /srv/docker/mailman/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
             - /srv/docker/mailman/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
@@ -78,7 +77,7 @@ services:
             endpoint_mode: dnsrr
 
     postfix:
-        image: cosmicexplorer/mailman-postfix:2
+        image: cosmicexplorer/mailman-postfix:latest
         volumes:
             - /srv/docker/mailman:/opt/mailman
         environment:
@@ -104,8 +103,8 @@ services:
         image: cosmicexplorer/mailman-core-apache-shib:1
         volumes:
             - /srv/docker/mailman/web:/opt/mailman-web-data
-            - /srv/docker/mailman/shib/etc/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
-            - /srv/docker/mailman/shib/etc/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+            - /srv/docker/mailman/shib/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+            - /srv/docker/mailman/shib/attribute-map.xml:/etc/shibboleth/attribute-map.xml
         environment:
             - HTTPS_CERT_FILE=/run/secrets/https_cert_file
             - HTTPS_KEY_FILE=/run/secrets/https_privkey_file
