@@ -6,7 +6,7 @@ networks:
         ipam:
             driver: default
             config:
-                - subnet: 10.1.0.0/24
+                - subnet: 192.168.1.0/24
 
 services:
     mailman-core:
@@ -84,7 +84,7 @@ services:
         environment:
             - POSTFIX_MAILNAME=seaview.phy.syr.edu
             - POSTFIX_MYHOSTNAME=sugwg-scitokens.phy.syr.edu
-            - POSTFIX_MYNETWORKS=!10.255.0.0/16 10.1.0.0/24
+            - POSTFIX_MYNETWORKS=192.168.1.0/24
         ports:
             - target: 25
               published: 25
@@ -109,10 +109,10 @@ services:
         environment:
             - HTTPS_CERT_FILE=/run/secrets/https_cert_file
             - HTTPS_KEY_FILE=/run/secrets/https_privkey_file
-            - MAILMAN_ADMIN_EMAIL=
+            - MAILMAN_ADMIN_EMAIL=dabrown@syr.edu
             - SHIBBOLETH_SP_ENCRYPT_CERT=/run/secrets/shibboleth_sp_encrypt_cert
             - SHIBBOLETH_SP_ENCRYPT_PRIVKEY=/run/secrets/shibboleth_sp_encrypt_privkey
-            - VIRTUAL_HOST_FQDN=
+            - VIRTUAL_HOST_FQDN=sugwg-scitokens.phy.syr.edu
         secrets:
             - https_cert_file
             - https_privkey_file
