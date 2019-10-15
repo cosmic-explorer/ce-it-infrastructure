@@ -82,7 +82,7 @@ services:
         volumes:
             - /srv/docker/mailman:/opt/mailman
         environment:
-            - POSTFIX_MAILNAME=phy.syr.edu
+            - POSTFIX_MAILNAME=seaview.phy.syr.edu
             - POSTFIX_MYHOSTNAME=sugwg-scitokens.phy.syr.edu
             - POSTFIX_MYNETWORKS=!10.255.0.0/16 10.1.0.0/24
         ports:
