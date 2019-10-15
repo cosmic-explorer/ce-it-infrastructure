@@ -44,7 +44,7 @@ services:
             - MAILMAN_DATABASE_URL_FILE=/run/secrets/mailman_database_url
             - MAILMAN_DATABASE_TYPE=postgres
             - HYPERKITTY_API_KEY_FILE=/run/secrets/hyperkitty_api_key
-            - SERVE_FROM_DOMAIN=phy.syr.edu
+            - SERVE_FROM_DOMAIN=sugwg-scitokens.phy.syr.edu
             - MAILMAN_ADMIN_USER=dbrown
             - MAILMAN_ADMIN_EMAIL=dabrown@syr.edu
             - MAILMAN_WEB_SECRET_KEY_FILE=/run/secrets/mailman_web_secret_key
