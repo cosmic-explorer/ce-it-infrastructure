@@ -1,6 +1,7 @@
 set -e
 
 sudo rm -rf /srv/docker/mailman
+docker secret rm hyperkitty_api_key mailman_rest_password mailman_web_secret_key postgres_password mailman_database_url || true
 
 pushd comanage-registry-docker
 
