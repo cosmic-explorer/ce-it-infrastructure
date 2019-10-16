@@ -36,7 +36,10 @@ docker build \
     -t comanage-registry:$TAG .
 popd
 
-docker swarm init --advertise-addr $(hostname --ip-address)
+FQDN=$(hostname -f)
+IP_ADDR=$(dig +short ${FQDN})
+
+docker swarm init --advertise-addr ${IP_ADDR}
 
 echo "badgers" | docker secret create mariadb_root_password - 
 echo "badgers" | docker secret create mariadb_password - 
@@ -68,10 +71,10 @@ sudo mkdir -p /srv/docker/comanage/etc/shibboleth
 sudo cp /etc/shibboleth/shibboleth2.xml /srv/docker/comanage/etc/shibboleth/
 sudo cp /etc/shibboleth/attribute-map.xml /srv/docker/comanage/etc/shibboleth/
 /usr/bin/curl -O -s https://ds.incommon.org/certs/inc-md-cert.pem
-chmod 644 inc-md-cert.pem
+/bin/chmod 644 inc-md-cert.pem
 sudo cp inc-md-cert.pem /srv/docker/comanage/etc/shibboleth/inc-md-cert.pem
 rm -f inc-md-cert.pem
-sudo chmod 644 -R -v /srv/docker/comanage/etc/shibboleth
+sudo /bin/chmod -R 644 /srv/docker/comanage/etc/shibboleth
 
 export COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=Duncan
 export COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Brown
@@ -109,3 +112,4 @@ export OLC_SUFFIX=dc=cosmicexplorer,dc=org
 export OLC_ROOT_DN=cn=admin,dc=cosmicexplorer,dc=org
 
 popd
+set +e
