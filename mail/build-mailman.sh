@@ -46,3 +46,4 @@ rm -f inc-md-cert.pem
 sudo chmod 644 -R -v /srv/docker/mailman/etc/shibboleth
 
 popd
+set +e
