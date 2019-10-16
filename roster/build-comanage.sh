@@ -74,7 +74,7 @@ sudo cp /etc/shibboleth/attribute-map.xml /srv/docker/comanage/etc/shibboleth/
 /bin/chmod 644 inc-md-cert.pem
 sudo cp inc-md-cert.pem /srv/docker/comanage/etc/shibboleth/inc-md-cert.pem
 rm -f inc-md-cert.pem
-sudo /bin/chmod -R 644 /srv/docker/comanage/etc/shibboleth
+sudo /bin/chmod 644 /srv/docker/comanage/etc/shibboleth/*
 
 export COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=Duncan
 export COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Brown
