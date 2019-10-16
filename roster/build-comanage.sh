@@ -111,5 +111,9 @@ sudo mkdir -p /srv/docker/comanage/etc/slapd.d
 export OLC_SUFFIX=dc=cosmicexplorer,dc=org
 export OLC_ROOT_DN=cn=admin,dc=cosmicexplorer,dc=org
 
+if [ $(uname) == "Darwin" ] ; then
+  sudo chown -R ${USER} /srv/docker/comanage
+fi
+
 popd
 set +e
