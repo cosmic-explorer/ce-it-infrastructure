@@ -100,11 +100,11 @@ services:
             endpoint_mode: dnsrr
 
     apache:
-        image: cosmicexplorer/mailman-core-apache-shib:1
+        image: cosmicexplorer/mailman-core-apache-shib:latest
         volumes:
             - /srv/docker/mailman/web:/opt/mailman-web-data
-            - /srv/docker/mailman/etc/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
-            - /srv/docker/mailman/etc/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+            - /srv/docker/mailman/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+            - /srv/docker/mailman/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
         environment:
             - HTTPS_CERT_FILE=/run/secrets/https_cert_file
             - HTTPS_KEY_FILE=/run/secrets/https_privkey_file
