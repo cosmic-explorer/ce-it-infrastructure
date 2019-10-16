@@ -45,5 +45,9 @@ sudo cp inc-md-cert.pem /srv/docker/mailman/etc/shibboleth/inc-md-cert.pem
 rm -f inc-md-cert.pem
 sudo chmod 644 -R -v /srv/docker/mailman/etc/shibboleth
 
+if [ $(uname) == "Darwin" ] ; then
+  sudo chown -R ${USER} /srv/docker/mailman
+fi
+
 popd
 set +e
