@@ -27,7 +27,6 @@ popd
 sudo mkdir -p /srv/docker/mailman/core
 sudo mkdir -p /srv/docker/mailman/web
 sudo mkdir -p /srv/docker/mailman/database
-sudo mkdir -p /srv/docker/mailman/shib
 
 echo "postgres://mailman:badgers@database/mailmandb" | docker secret create mailman_database_url -
 echo "badgers" | docker secret create hyperkitty_api_key -
