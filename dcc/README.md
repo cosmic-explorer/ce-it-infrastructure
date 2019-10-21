@@ -1,15 +1,12 @@
-First convery the image from Phillipe to a Docker image
+# CE DCC Image
 
+This systems requres an image of the DCC VM `dcc-syr-disk0.qcow2`
+
+Build using 
 ```sh
-virt-tar-out -a dcc-syr-disk0.qcow2 / - | docker import - sugwg/dcc-base:latest
+. build-dcc.sh
 ```
-
-Next build the image
+and deploy with
 ```sh
-docker build --rm -t sugwg/dcc:latest .
-```
-
-Customize `docker-compose.yml` and start the image with
-```sh
-docker-compose up --detach
+docker stack deploy --compose-file dcc-stack.yml dcc
 ```
