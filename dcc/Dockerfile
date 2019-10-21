@@ -16,6 +16,8 @@ ARG DCC_INSTANCE=seaview.phy.syr.edu
 RUN passwd -l root && \
     rm -f /etc/sysconfig/network-scripts/ifcfg-eth1 && \
     sed -e s+dcc-dev.ligo.org+"${DCC_INSTANCE}"+ /etc/httpd/conf/httpd.conf > /etc/httpd/conf/httpd.conf.tmp && \
-    mv /etc/httpd/conf/httpd.conf.tmp /etc/httpd/conf/httpd.conf
+    mv /etc/httpd/conf/httpd.conf.tmp /etc/httpd/conf/httpd.conf && \
+    sed -e '/ligo/d;/LIGO/d;/}$/d;' /etc/krb5.conf > /etc/krb5.conf.tmp && \
+    mv /etc/krb5.conf.tmp  /etc/krb5.conf
 
 CMD ["/usr/sbin/init"]
