@@ -18,6 +18,10 @@ RUN passwd -l root && \
     sed -e s+dcc-dev.ligo.org+"${DCC_INSTANCE}"+ /etc/httpd/conf/httpd.conf > /etc/httpd/conf/httpd.conf.tmp && \
     mv /etc/httpd/conf/httpd.conf.tmp /etc/httpd/conf/httpd.conf && \
     sed -e '/ligo/d;/LIGO/d;/}$/d;' /etc/krb5.conf > /etc/krb5.conf.tmp && \
-    mv /etc/krb5.conf.tmp  /etc/krb5.conf
+    mv /etc/krb5.conf.tmp /etc/krb5.conf && \
+    sed -e '/ligo/,+5d;/Rhosts/d;' /etc/ssh/sshd_config > /etc/ssh/sshd_config.tmp && \
+    mv /etc/ssh/sshd_config.tmp /etc/ssh/sshd_config && \
+    rm -f /root/.ssh/*
+
 
 CMD ["/usr/sbin/init"]
