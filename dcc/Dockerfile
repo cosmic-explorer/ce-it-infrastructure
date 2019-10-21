@@ -10,4 +10,12 @@ rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
 rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
 VOLUME [ "/sys/fs/cgroup" ]
+
+ARG DCC_INSTANCE=seaview.phy.syr.edu
+
+RUN passwd -l root && \
+    rm -f /etc/sysconfig/network-scripts/ifcfg-eth1 && \
+    sed -e s+dcc-dev.ligo.org+"${DCC_INSTANCE}"+ /etc/httpd/conf/httpd.conf > /etc/httpd/conf/httpd.conf.tmp && \
+    mv /etc/httpd/conf/httpd.conf.tmp /etc/httpd/conf/httpd.conf
+
 CMD ["/usr/sbin/init"]
