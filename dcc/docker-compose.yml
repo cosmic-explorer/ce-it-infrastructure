@@ -17,6 +17,12 @@ services:
       - /srv/docker/comanage/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
     ports:
       - "443:443"
+    secrets:
+      - shibboleth_sp_encrypt_cert
+      - shibboleth_sp_encrypt_privkey
+      - https_cert_file
+      - https_privkey_file
+      - https_chain_file
     hostname: seaview.phy.syr.edu
     domainname: phy.syr.edu
 
