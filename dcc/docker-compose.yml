@@ -1,1 +1,33 @@
-dcc-stack.yml
+version: '3.1'
+services:
+  ce-dcc-server:
+    image: sugwg/dcc:latest
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined
+    tmpfs:
+      - /run
+      - /run/lock
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /srv/docker/comanage/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+      - /srv/docker/comanage/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+      - /srv/docker/comanage/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
+    ports:
+      - "443:443"
+    hostname: sugwg-scitokens.phy.syr.edu
+    domainname: phy.syr.edu
+
+secrets:
+    shibboleth_sp_encrypt_cert:
+        external: true
+    shibboleth_sp_encrypt_privkey:
+        external: true
+    https_cert_file:
+        external: true
+    https_privkey_file:
+        external: true
+    https_chain_file:
+        external: true
