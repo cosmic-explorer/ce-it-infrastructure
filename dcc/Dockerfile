@@ -19,16 +19,16 @@ COPY certificates.service /lib/systemd/system/certificates.service
 RUN rm -f /etc/fstab && \
     passwd -d root && passwd -l root && \
     rm -f /etc/sysconfig/network-scripts/ifcfg-eth1 && \
-    sed -e s+dcc-dev.ligo.org+"${DCC_INSTANCE}"+ /etc/httpd/conf/httpd.conf > /etc/httpd/conf/httpd.conf.tmp && \
-    mv /etc/httpd/conf/httpd.conf.tmp /etc/httpd/conf/httpd.conf && \
-    sed -e '/ligo/d;/LIGO/d;/}$/d;' /etc/krb5.conf > /etc/krb5.conf.tmp && \
-    mv /etc/krb5.conf.tmp /etc/krb5.conf && \
-    sed -e '/ligo/,+5d;/Rhosts/d;' /etc/ssh/sshd_config > /etc/ssh/sshd_config.tmp && \
-    mv /etc/ssh/sshd_config.tmp /etc/ssh/sshd_config && \
+    sed -i -e '/ligo/d;/LIGO/d;/}$/d;' /etc/krb5.conf && \
+    sed -i -e '/ligo/,+5d;/Rhosts/d;' /etc/ssh/sshd_config && \
     rm -f /root/.ssh/* && \
-    rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
     systemctl enable certificates.service && \
+    rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
     systemctl enable shibd.service && \
+    sed -i -e s+dcc-dev.ligo.org+"${DCC_INSTANCE}"+ /etc/httpd/conf/httpd.conf && \
+    sed -i -e '/VirtualHost/d;/ServerName/d;/logger/d;/SSLEngine/d;/SSLCertificate/d;/Files/d;/SSLOptions/d;/Directory/d;' /etc/httpd/conf.d/ssl.conf && \
+    sed -i -e s+dcc-backup.ligo.org+"${DCC_INSTANCE}"+ /usr1/www/html/index.html && \
+    sed -i -e 's+${DCC_INSTANCE}:443+_default_:443+' /etc/httpd/conf.d/dcc-dev.conf && \
     systemctl enable httpd.service
 
 CMD ["/usr/sbin/init"]
