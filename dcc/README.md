@@ -8,5 +8,5 @@ Build using
 ```
 and deploy with
 ```sh
-docker stack deploy --compose-file dcc-stack.yml dcc
+docker-compose up --detach
 ```
