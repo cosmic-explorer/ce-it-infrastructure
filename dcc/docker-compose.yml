@@ -17,7 +17,7 @@ services:
       - /srv/docker/comanage/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
     ports:
       - "443:443"
-    hostname: sugwg-scitokens.phy.syr.edu
+    hostname: seaview.phy.syr.edu
     domainname: phy.syr.edu
 
 secrets:
