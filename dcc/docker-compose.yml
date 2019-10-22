@@ -18,22 +18,47 @@ services:
     ports:
       - "443:443"
     secrets:
-      - shibboleth_sp_encrypt_cert
-      - shibboleth_sp_encrypt_privkey
-      - https_cert_file
-      - https_privkey_file
-      - https_chain_file
+      - source: shibboleth_sp_encrypt_cert
+        target: shibboleth_sp_encrypt_cert
+        #uid: "992"
+        #gid: "992"
+        #mode: 0444
+      - source: shibboleth_sp_encrypt_privkey
+        target: shibboleth_sp_encrypt_privkey
+        #uid: "992"
+        #gid: "992"
+        #mode: 0400
+      - source: https_cert_file
+        target: https_cert_file
+        #uid: "48"
+        #gid: "48"
+        #mode: 0444
+      - source: https_privkey_file
+        target: https_privkey_file
+        #uid: "48"
+        #gid: "48"
+        #mode: 0400
+      - source: https_chain_file
+        target: https_chain_file
+        #uid: "48"
+        #gid: "48"
+        #mode: 0444
     hostname: seaview.phy.syr.edu
     domainname: phy.syr.edu
 
 secrets:
     shibboleth_sp_encrypt_cert:
-        external: true
+#        external: true
+         file: ${CERT_DIR}/sp-encrypt-cert.pem
     shibboleth_sp_encrypt_privkey:
-        external: true
+#        external: true
+         file: ${CERT_DIR}/sp-encrypt-key.pem
     https_cert_file:
-        external: true
+#        external: true
+         file: ${CERT_DIR}/hostcert.pem
     https_privkey_file:
-        external: true
+#        external: true
+         file: ${CERT_DIR}/hostkey.pem
     https_chain_file:
-        external: true
+#        external: true
+         file: ${CERT_DIR}/igtf-ca-bundle.crt
