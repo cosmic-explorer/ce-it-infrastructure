@@ -43,8 +43,11 @@ services:
         #uid: "48"
         #gid: "48"
         #mode: 0444
-    hostname: seaview.phy.syr.edu
-    domainname: phy.syr.edu
+    hostname: ${DCC_INSTANCE}
+    domainname: ${DCC_DOMAIN}
+    environment:
+      - DCC_INSTANCE=${DCC_INSTANCE}
+      - DCC_DOMAIN=${DCC_DOMAIN}
 
 secrets:
     shibboleth_sp_encrypt_cert:
