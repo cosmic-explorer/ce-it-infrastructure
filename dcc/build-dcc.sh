@@ -44,7 +44,7 @@ sudo cp inc-md-cert.pem /srv/docker/dcc/etc/shibboleth/inc-md-cert.pem
 rm -f inc-md-cert.pem
 sudo /bin/chmod 644 /srv/docker/dcc/etc/shibboleth/*
 
-docker build --build-arg=${DCC_INSTANCE} -t sugwg/dcc:latest .
+docker build --build-arg=DCC_INSTANCE=${DCC_INSTANCE} -t sugwg/dcc:latest .
 
 if [ $(uname) == "Darwin" ] ; then
   sudo chown -R ${USER} /srv/docker/dcc

@@ -11,12 +11,13 @@ rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
 VOLUME [ "/sys/fs/cgroup" ]
 
-ARG DCC_INSTANCE=${DCC_INSTANCE}
+ARG DCC_INSTANCE=dcc.cosmicexplorer.org
 
 COPY certificates.sh /usr/local/sbin/certificates.sh
 COPY certificates.service /lib/systemd/system/certificates.service
 
-RUN passwd -d root && passwd -l root && \
+RUN rm -f /etc/fstab && \
+    passwd -d root && passwd -l root && \
     rm -f /etc/sysconfig/network-scripts/ifcfg-eth1 && \
     sed -e s+dcc-dev.ligo.org+"${DCC_INSTANCE}"+ /etc/httpd/conf/httpd.conf > /etc/httpd/conf/httpd.conf.tmp && \
     mv /etc/httpd/conf/httpd.conf.tmp /etc/httpd/conf/httpd.conf && \
