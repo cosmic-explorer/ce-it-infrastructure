@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/bash -v
+
+set -e
 
 # temporary script to copy certificates into place until we can use swarm
 
@@ -15,3 +17,5 @@ cp /run/secrets/https_privkey_file /etc/httpd/x509-certs/${DCC_INSTANCE}.key
 cp /run/secrets/https_chain_file /etc/httpd/x509-certs/${DCC_INSTANCE}.cert
 chown 0444 /etc/httpd/x509-certs/${DCC_INSTANCE}.pem /etc/httpd/x509-certs/${DCC_INSTANCE}.cert
 chown 0400 /etc/httpd/x509-certs/${DCC_INSTANCE}.key
+
+exit 0
