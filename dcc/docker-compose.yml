@@ -45,6 +45,9 @@ services:
         #mode: 0444
     hostname: ${DCC_INSTANCE}
     domainname: ${DCC_DOMAIN}
+    dns:
+      - 208.67.222.222
+      - 208.67.220.220
     environment:
       - DCC_INSTANCE=${DCC_INSTANCE}
       - DCC_DOMAIN=${DCC_DOMAIN}
