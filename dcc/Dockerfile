@@ -11,7 +11,10 @@ rm -f /lib/systemd/system/basic.target.wants/*;\
 rm -f /lib/systemd/system/anaconda.target.wants/*;
 VOLUME [ "/sys/fs/cgroup" ]
 
-ARG DCC_INSTANCE=seaview.phy.syr.edu
+ARG DCC_INSTANCE=${DCC_INSTANCE}
+
+COPY certificates.sh /usr/local/sbin/certificates.sh
+COPY certificates.service /lib/systemd/system/certificates.service
 
 RUN passwd -d root && passwd -l root && \
     rm -f /etc/sysconfig/network-scripts/ifcfg-eth1 && \
@@ -21,7 +24,10 @@ RUN passwd -d root && passwd -l root && \
     mv /etc/krb5.conf.tmp /etc/krb5.conf && \
     sed -e '/ligo/,+5d;/Rhosts/d;' /etc/ssh/sshd_config > /etc/ssh/sshd_config.tmp && \
     mv /etc/ssh/sshd_config.tmp /etc/ssh/sshd_config && \
-    rm -f /root/.ssh/*
-
+    rm -f /root/.ssh/* && \
+    rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
+    systemctl enable certificates.service && \
+    systemctl enable shibd.service && \
+    systemctl enable httpd.service
 
 CMD ["/usr/sbin/init"]

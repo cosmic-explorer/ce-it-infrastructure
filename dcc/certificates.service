@@ -1,0 +1,13 @@
+[Unit]
+Description=Set up apache and shibd certificates from secrets
+Before=shibd.service
+Before=httpd.service
+
+[Service]
+User=root
+Type=oneshot
+ExecStart=/usr/local/sbin/certificates.sh
+
+[Install]
+WantedBy=multi-user.target
+
