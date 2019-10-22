@@ -36,6 +36,7 @@ services:
             - COMANAGE_REGISTRY_EMAIL_FROM=array('comanage-do-not-reply@cosmic-explorer.org' => 'Cosmic Explorer COManage Registry')
             - COMANAGE_REGISTRY_EMAIL_TRANSPORT=Smtp
             - COMANAGE_REGISTRY_EMAIL_HOST=smtp-relay.syr.edu
+            - COMANAGE_REGISTRY_EMAIL_PORT=25
             - HTTPS_CERT_FILE=/run/secrets/https_cert_file
             - HTTPS_PRIVKEY_FILE=/run/secrets/https_privkey_file
             - SHIBBOLETH_SP_ENCRYPT_CERT=/run/secrets/shibboleth_sp_encrypt_cert
