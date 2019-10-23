@@ -54,7 +54,7 @@ services:
       - source: mysql_docdbro_passwd
         target: mysql_docdbro_passwd
     hostname: ${DCC_INSTANCE}
-    domainname: ${DCC_DOMAIN}
+    domainname: ${DCC_DOMAINNAME}
     dns:
       - 208.67.222.222
       - 208.67.220.220
