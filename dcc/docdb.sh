@@ -2,6 +2,12 @@
 
 set -e
 
+if [ ! -d /var/lib/mysql/dcc_docdb ] ; then
+  chown mysql:mysql /var/lib/mysql
+  mv /var/lib/mysql.orig/* /var/lib/mysql
+fi
+rm -rf /var/lib/mysql.orig
+
 MYSQL_ROOT_PASSWD=$(cat /run/secrets/mysql_root_passwd)
 MYSQL_DOCDBRW_PASSWD=$(cat /run/secrets/mysql_docdbrw_passwd)
 MYSQL_DOCDBRO_PASSWD=$(cat /run/secrets/mysql_docdbro_passwd)

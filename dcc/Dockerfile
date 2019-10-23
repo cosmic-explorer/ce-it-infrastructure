@@ -42,7 +42,10 @@ RUN systemctl enable certificates.service && \
 COPY docdb.service /lib/systemd/system/docdb.service
 COPY docdb.sh /usr/local/sbin/docdb.sh
 
-RUN systemctl enable mariadb.service && \
+RUN mv /var/lib/mysql /var/lib/mysql.orig && \
+    mkdir /var/lib/mysql && \
+    chown mysql:mysql /var/lib/mysql && \
+    systemctl enable mariadb.service && \
     systemctl enable docdb.service && \
     sed -i 79,104d /usr1/www/cgi-bin/DocDB/DocumentDatabase && \
     ln -s /usr1/www/html/DocDB/Static/css/LIGODocDB.css.dcc-dev-private /usr1/www/html/DocDB/Static/css/CEDocDB.css && \
