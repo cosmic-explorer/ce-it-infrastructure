@@ -1,3 +1,28 @@
+STORAGE_PATH=/srv/docker/dcc
+
+if [ -d ${STORAGE_PATH} ] ; then
+  echo "${STORAGE_PATH} already exists"
+  echo "Do you want to remove this directory or keep it? Type remove or keep"
+  read RESPONSE
+  if test x$RESPONSE == xremove ; then
+    echo "Are you sure you want to remove ${STORAGE_PATH}?"
+    echo "Type remove to delete ${STORAGE_PATH} or anything else to exit"
+    read REMOVE
+    if test x$REMOVE == xremove ; then
+      sudo rm -rf ${STORAGE_PATH}
+      sudo mkdir -p ${STORAGE_PATH}
+    else
+      echo "You did not type remove. Exiting"
+      kill -INT $$
+    fi
+  elif test x$RESPONSE == xkeep ; then
+    echo "Using files from ${STORAGE_PATH}"
+  else
+    echo "Error: unknown response $RESPONSE"
+    kill -INT $$
+  fi
+fi
+
 export DCC_INSTANCE=seaview.phy.syr.edu
 export DCC_DOMAIN=phy.syr.edu
 
@@ -33,21 +58,20 @@ sudo chown ${USER} ${CERT_DIR}/*.pem
 #docker secret create shibboleth_sp_encrypt_privkey ${CERT_DIR}/sp-encrypt-key.pem
 #sudo rm -rf ${CERT_DIR}
 
-sudo rm -rf  /srv/docker/dcc
-sudo mkdir -p /srv/docker/dcc/etc/shibboleth
+sudo mkdir -p ${STORAGE_PATH}/etc/shibboleth
 
-sudo cp /etc/shibboleth/shibboleth2.xml /srv/docker/dcc/etc/shibboleth/
-sudo cp /etc/shibboleth/attribute-map.xml /srv/docker/dcc/etc/shibboleth/
+sudo cp /etc/shibboleth/shibboleth2.xml ${STORAGE_PATH}/etc/shibboleth/
+sudo cp /etc/shibboleth/attribute-map.xml ${STORAGE_PATH}/etc/shibboleth/
 /usr/bin/curl -O -s https://ds.incommon.org/certs/inc-md-cert.pem
 /bin/chmod 644 inc-md-cert.pem
-sudo cp inc-md-cert.pem /srv/docker/dcc/etc/shibboleth/inc-md-cert.pem
+sudo cp inc-md-cert.pem ${STORAGE_PATH}/etc/shibboleth/inc-md-cert.pem
 rm -f inc-md-cert.pem
-sudo /bin/chmod 644 /srv/docker/dcc/etc/shibboleth/*
+sudo /bin/chmod 644 ${STORAGE_PATH}/etc/shibboleth/*
 
 docker build --build-arg=DCC_INSTANCE=${DCC_INSTANCE} -t sugwg/dcc:latest .
 
 if [ $(uname) == "Darwin" ] ; then
-  sudo chown -R ${USER} /srv/docker/dcc
+  sudo chown -R ${USER} ${STORAGE_PATH}
 fi
 
 set +e
