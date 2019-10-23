@@ -8,6 +8,13 @@ if [ ! -d /var/lib/mysql/dcc_docdb ] ; then
 fi
 rm -rf /var/lib/mysql.orig
 
+if [ ! -d /usr2/GLIMPSE ] ; then
+  chown apache:apache /usr2/GLIMPSE
+  chmod 1755 /usr2/GLIMPSE
+  mv /usr2/GLIMPSE.orig/* /usr2/GLIMPSE
+fi
+rm -rf /usr2/GLIMPSE.orig
+
 MYSQL_ROOT_PASSWD=$(cat /run/secrets/mysql_root_passwd)
 MYSQL_DOCDBRW_PASSWD=$(cat /run/secrets/mysql_docdbrw_passwd)
 MYSQL_DOCDBRO_PASSWD=$(cat /run/secrets/mysql_docdbro_passwd)

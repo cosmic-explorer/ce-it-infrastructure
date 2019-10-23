@@ -18,6 +18,7 @@ services:
       - ${STORAGE_PATH}/usr1/www/html/DocDB:/usr1/www/html/DocDB
       - ${STORAGE_PATH}/usr1/www/html/public:/usr1/www/html/public
       - ${STORAGE_PATH}/var/lib/mysql:/var/lib/mysql
+      - ${STORAGE_PATH}/usr2/GLIMPSE:/usr2/GLIMPSE
     ports:
       - "443:443"
     secrets:

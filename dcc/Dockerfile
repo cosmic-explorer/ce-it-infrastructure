@@ -52,6 +52,10 @@ RUN mv /var/lib/mysql /var/lib/mysql.orig && \
     ln -s /usr1/www/html/public/Static/css/LIGODocDB.css.dcc-dev-private /usr1/www/html/public/Static/css/CEDocDB.css && \
     sed -i -e '/WikiInstructions/d; /Using the DCC/d; /Other DCC Projects/,+6d;' /usr1/www/cgi-bin/private/DocDB/DocumentDatabase && \
     mv /usr1/www/html/DocDB/Static /usr1/www/html/DocDB__Static && \
-    mv /usr1/www/html/public/Static /usr1/www/html/public__Static
+    mv /usr1/www/html/public/Static /usr1/www/html/public__Static && \
+    mv /usr2/GLIMPSE /usr2/GLIMPSE.orig && \
+    mkdir /usr2/GLIMPSE && \
+    chown apache:apache /usr2/GLIMPSE && \
+    chmod 1755 /usr2/GLIMPSE
 
 CMD ["/usr/sbin/init"]

@@ -83,6 +83,7 @@ docker build --build-arg=DCC_INSTANCE=${DCC_INSTANCE} -t sugwg/dcc:latest .
 sudo mkdir -p ${STORAGE_PATH}/usr1/www/html/DocDB
 sudo mkdir -p ${STORAGE_PATH}/usr1/www/html/public
 sudo mkdir -p ${STORAGE_PATH}/var/lib/mysql
+sudo mkdir -p ${STORAGE_PATH}/usr2/GLIMPSE
 
 if [ $(uname) == "Darwin" ] ; then
   sudo chown -R ${USER} ${STORAGE_PATH}
