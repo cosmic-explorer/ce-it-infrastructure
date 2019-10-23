@@ -22,7 +22,9 @@ RUN rm -f /etc/fstab && \
     sed -i -e '/ligo/d;/LIGO/d;/}$/d;' /etc/krb5.conf && \
     sed -i -e '/ligo/,+5d;/Rhosts/d;' /etc/ssh/sshd_config && \
     rm -f /root/.ssh/* && \
-    rm -f /etc/cron.hourly/maintain_glusterfs_mounts
+    rm -f /etc/cron.hourly/maintain_glusterfs_mounts && \
+    rpm -e puppet && \
+    rpm -e ganglia ganglia-gmond
 
 RUN systemctl enable certificates.service && \
     rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
@@ -33,6 +35,8 @@ RUN systemctl enable certificates.service && \
     sed -i -e 's+${DCC_INSTANCE}:443+_default_:443+' /etc/httpd/conf.d/dcc-dev.conf && \
     mv /etc/httpd/conf.d/dcc.public.conf.bak /etc/httpd/conf.d/dcc.public.conf && \
     rm -f  /etc/httpd/conf.d/mediawiki.conf && \
+    rm -f /etc/httpd/conf.d/awstats.conf.rpmnew && \
+    rm -rf /etc/awstats /usr1/www/cgi-bin/awstats /usr1/www/html/icon/other/awstats* /var/lib/awstats && \
     systemctl enable httpd.service
 
 COPY docdb.service /lib/systemd/system/docdb.service
