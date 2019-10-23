@@ -41,12 +41,16 @@ RUN systemctl enable certificates.service && \
 
 COPY docdb.service /lib/systemd/system/docdb.service
 COPY docdb.sh /usr/local/sbin/docdb.sh
+COPY docdb-storage.service /lib/systemd/system/docdb-storage.service
+COPY docdb-storage.sh /usr/local/sbin/docdb-storage.sh
 
 RUN mv /var/lib/mysql /var/lib/mysql.orig && \
     mkdir /var/lib/mysql && \
     chown mysql:mysql /var/lib/mysql && \
     systemctl enable mariadb.service && \
     systemctl enable docdb.service && \
+    systemctl enable docdb-storage.service && \
+    systemctl enable crond.service && \
     sed -i 79,104d /usr1/www/cgi-bin/DocDB/DocumentDatabase && \
     ln -s /usr1/www/html/DocDB/Static/css/LIGODocDB.css.dcc-dev-private /usr1/www/html/DocDB/Static/css/CEDocDB.css && \
     ln -s /usr1/www/html/public/Static/css/LIGODocDB.css.dcc-dev-private /usr1/www/html/public/Static/css/CEDocDB.css && \
