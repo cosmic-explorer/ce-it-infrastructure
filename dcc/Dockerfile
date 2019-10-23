@@ -21,7 +21,8 @@ RUN rm -f /etc/fstab && \
     rm -f /etc/sysconfig/network-scripts/ifcfg-eth1 && \
     sed -i -e '/ligo/d;/LIGO/d;/}$/d;' /etc/krb5.conf && \
     sed -i -e '/ligo/,+5d;/Rhosts/d;' /etc/ssh/sshd_config && \
-    rm -f /root/.ssh/*
+    rm -f /root/.ssh/* && \
+    rm -f /etc/cron.hourly/maintain_glusterfs_mounts
 
 RUN systemctl enable certificates.service && \
     rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
@@ -31,6 +32,7 @@ RUN systemctl enable certificates.service && \
     sed -i -e s+dcc-backup.ligo.org+"${DCC_INSTANCE}"+ /usr1/www/html/index.html && \
     sed -i -e 's+${DCC_INSTANCE}:443+_default_:443+' /etc/httpd/conf.d/dcc-dev.conf && \
     mv /etc/httpd/conf.d/dcc.public.conf.bak /etc/httpd/conf.d/dcc.public.conf && \
+    rm -f  /etc/httpd/conf.d/mediawiki.conf && \
     systemctl enable httpd.service
 
 COPY docdb.service /lib/systemd/system/docdb.service
