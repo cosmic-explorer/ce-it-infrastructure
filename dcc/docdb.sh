@@ -21,3 +21,9 @@ sed -i -e "/db_ropass/ s/Change.Me.too\!/${MYSQL_DOCDBRO_PASSWD}/;" /usr1/www/cg
 DCC_INSTANCE=$(awk '/DCC_INSTANCE/ {print $3}' /etc/httpd/conf/httpd.conf)
 sed -i -e "s+'.hostname.'.ligo.org+${DCC_INSTANCE}+" /usr1/www/cgi-bin/private/DocDB/SiteConfig.pm
 sed -i -e "s+'.hostname.'.ligo.org+${DCC_INSTANCE}+" /usr1/www/cgi-bin/DocDB/SiteConfig.pm
+
+for config_file in /usr1/www/cgi-bin/DocDB/ProjectGlobals.pm /usr1/www/cgi-bin/private/DocDB/ProjectGlobals.pm ; do
+  sed -i -e "/\$Project/ s/LIGO/Cosmic Explorer/;" \
+         -e "/\$ShortProject/ s/LIGO/CE/;" \
+         -e "/DBWebMasterEmail/ s/ligo.org/cosmicexplorer.org/;" ${config_file}
+done
