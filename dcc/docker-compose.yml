@@ -43,6 +43,12 @@ services:
         #uid: "48"
         #gid: "48"
         #mode: 0444
+      - source: mysql_root_passwd
+        target: mysql_root_passwd
+      - source: mysql_docdbrw_passwd
+        target: mysql_docdbrw_passwd
+      - source: mysql_docdbro_passwd
+        target: mysql_docdbro_passwd
     hostname: ${DCC_INSTANCE}
     domainname: ${DCC_DOMAIN}
     dns:
@@ -68,3 +74,12 @@ secrets:
     https_chain_file:
 #        external: true
          file: ${CERT_DIR}/igtf-ca-bundle.crt
+    mysql_root_passwd:
+#        external: true
+         file: ${CERT_DIR}/mysql_root_passwd.txt
+    mysql_docdbrw_passwd:
+#        external: true
+         file: ${CERT_DIR}/mysql_docdbrw_passwd.txt
+    mysql_docdbro_passwd:
+#        external: true
+         file: ${CERT_DIR}/mysql_docdbro_passwd.txt

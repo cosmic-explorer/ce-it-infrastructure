@@ -21,14 +21,22 @@ RUN rm -f /etc/fstab && \
     rm -f /etc/sysconfig/network-scripts/ifcfg-eth1 && \
     sed -i -e '/ligo/d;/LIGO/d;/}$/d;' /etc/krb5.conf && \
     sed -i -e '/ligo/,+5d;/Rhosts/d;' /etc/ssh/sshd_config && \
-    rm -f /root/.ssh/* && \
-    systemctl enable certificates.service && \
+    rm -f /root/.ssh/*
+
+RUN systemctl enable certificates.service && \
     rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
     systemctl enable shibd.service && \
     sed -i -e s+dcc-dev.ligo.org+"${DCC_INSTANCE}"+ /etc/httpd/conf/httpd.conf && \
     sed -i -e '/VirtualHost/d;/ServerName/d;/logger/d;/SSLEngine/d;/SSLCertificate/d;/Files/d;/SSLOptions/d;/Directory/d;' /etc/httpd/conf.d/ssl.conf && \
     sed -i -e s+dcc-backup.ligo.org+"${DCC_INSTANCE}"+ /usr1/www/html/index.html && \
     sed -i -e 's+${DCC_INSTANCE}:443+_default_:443+' /etc/httpd/conf.d/dcc-dev.conf && \
+    mv /etc/httpd/conf.d/dcc.public.conf.bak /etc/httpd/conf.d/dcc.public.conf && \
     systemctl enable httpd.service
+
+COPY docdb.service /lib/systemd/system/docdb.service
+COPY docdb.sh /usr/local/sbin/docdb.sh
+
+RUN systemctl enable mariadb.service && \
+    systemctl enable docdb.service
 
 CMD ["/usr/sbin/init"]

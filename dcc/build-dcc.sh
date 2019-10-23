@@ -1,5 +1,11 @@
 STORAGE_PATH=/srv/docker/dcc
 
+export DCC_INSTANCE=seaview.phy.syr.edu
+export DCC_DOMAIN=phy.syr.edu
+export MYSQL_ROOT_PASSWD=badgers
+export MYSQL_DOCDBRW_PASSWD=herecomethebadgers
+export MYSQL_DOCDBRO_PASSWD=badgersbadgersbadgers
+
 if [ -d ${STORAGE_PATH} ] ; then
   echo "${STORAGE_PATH} already exists"
   echo "Do you want to remove this directory or keep it? Type remove or keep"
@@ -23,8 +29,6 @@ if [ -d ${STORAGE_PATH} ] ; then
   fi
 fi
 
-export DCC_INSTANCE=seaview.phy.syr.edu
-export DCC_DOMAIN=phy.syr.edu
 
 #docker swarm leave --force || true
 
@@ -56,6 +60,12 @@ sudo chown ${USER} ${CERT_DIR}/*.pem
 #docker secret create https_privkey_file ${CERT_DIR}/hostkey.pem
 #docker secret create shibboleth_sp_encrypt_cert ${CERT_DIR}/sp-encrypt-cert.pem
 #docker secret create shibboleth_sp_encrypt_privkey ${CERT_DIR}/sp-encrypt-key.pem
+#echo ${MYSQL_ROOT_PASSWD} | docker secret create mysql_root_passwd -
+#echo ${MYSQL_DOCDBRW_PASSWD} | docker secret create mysql_docdbrw_passwd -
+#echo ${MYSQL_DOCDBRO_PASSWD} | docker secret create mysql_docdbro_passwd -
+echo ${MYSQL_ROOT_PASSWD} > ${CERT_DIR}/mysql_root_passwd.txt
+echo ${MYSQL_DOCDBRW_PASSWD} > ${CERT_DIR}/mysql_docdbrw_passwd.txt
+echo ${MYSQL_DOCDBRO_PASSWD} > ${CERT_DIR}/mysql_docdbro_passwd.txt
 #sudo rm -rf ${CERT_DIR}
 
 sudo mkdir -p ${STORAGE_PATH}/etc/shibboleth

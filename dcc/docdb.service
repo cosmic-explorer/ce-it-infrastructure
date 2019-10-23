@@ -1,0 +1,12 @@
+[Unit]
+Description=Set up DocDB database on startup
+Before=httpd.service
+After=mariadb.service
+
+[Service]
+User=root
+Type=oneshot
+ExecStart=/usr/local/sbin/docdb.sh
+
+[Install]
+WantedBy=multi-user.target
