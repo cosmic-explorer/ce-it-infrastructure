@@ -15,4 +15,13 @@ if [ ! -d /usr2/GLIMPSE ] ; then
 fi
 rm -rf /usr2/GLIMPSE.orig
 
+chown apache:apache /usr1/www/html/DocDB /usr1/www/html/public
+if [ ! -d /usr1/www/html/DocDB/Static ] ; then
+  mv /usr1/www/html/DocDB__Static /usr1/www/html/DocDB/Static
+fi
+if [ ! -d /usr1/www/html/public/Static ] ; then
+  mv /usr1/www/html/public__Static /usr1/www/html/public/Static
+fi 
+rm -rf /usr1/www/html/DocDB__Static /usr1/www/html/public__Static
+
 exit 0
