@@ -43,6 +43,9 @@ COPY docdb.service /lib/systemd/system/docdb.service
 COPY docdb.sh /usr/local/sbin/docdb.sh
 
 RUN systemctl enable mariadb.service && \
-    systemctl enable docdb.service
+    systemctl enable docdb.service && \
+    sed -i 79,104d /usr1/www/cgi-bin/DocDB/DocumentDatabase && \
+    ln -s /usr1/www/html/DocDB/Static/css/LIGODocDB.css.dcc-dev-private /usr1/www/html/DocDB/Static/css/CEDocDB.css && \
+    ln -s /usr1/www/html/public/Static/css/LIGODocDB.css.dcc-dev-private /usr1/www/html/public/Static/css/CEDocDB.css
 
 CMD ["/usr/sbin/init"]
