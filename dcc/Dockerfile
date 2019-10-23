@@ -34,6 +34,14 @@ RUN systemctl enable certificates.service && \
     sed -i -e s+dcc-backup.ligo.org+"${DCC_INSTANCE}"+ /usr1/www/html/index.html && \
     sed -i -e 's+${DCC_INSTANCE}:443+_default_:443+' /etc/httpd/conf.d/dcc-dev.conf && \
     mv /etc/httpd/conf.d/dcc.public.conf.bak /etc/httpd/conf.d/dcc.public.conf && \
+    mv /etc/httpd/conf.d/short_urls.public.conf.bak /etc/httpd/conf.d/short_urls.public.conf && \
+    sed -i -e "s/LIGO/CE/g" /etc/httpd/conf.d/short_urls.private.conf && \
+    sed -i -e "s/LIGO/CE/g" /etc/httpd/conf.d/short_urls.public.conf && \
+    sed -i -e "s+'.hostname.'.ligo.org+${DCC_INSTANCE}+" /usr1/www/cgi-bin/private/DocDB/SiteConfig.pm && \
+    sed -i -e "s+'.hostname.'.ligo.org+${DCC_INSTANCE}+" /usr1/www/cgi-bin/DocDB/SiteConfig.pm && \
+    sed -i -e "/\$Project/ s/LIGO/Cosmic Explorer/;" \
+           -e "/\$ShortProject/ s/LIGO/CE/;" \
+           -e "/DBWebMasterEmail/ s/ligo.org/cosmicexplorer.org/;" /usr1/www/cgi-bin/DocDB/ProjectGlobals.pm /usr1/www/cgi-bin/private/DocDB/ProjectGlobals.pm && \
     rm -f  /etc/httpd/conf.d/mediawiki.conf && \
     rm -f /etc/httpd/conf.d/awstats.conf.rpmnew && \
     rm -rf /etc/awstats /usr1/www/cgi-bin/awstats /usr1/www/html/icon/other/awstats* /var/lib/awstats && \
