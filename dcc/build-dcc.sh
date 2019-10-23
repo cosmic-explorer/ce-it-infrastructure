@@ -1,4 +1,4 @@
-STORAGE_PATH=/srv/docker/dcc
+export STORAGE_PATH=/srv/docker/dcc
 
 export DCC_INSTANCE=seaview.phy.syr.edu
 export DCC_HOSTNAME=seaview.phy.syr.edu
@@ -29,7 +29,6 @@ if [ -d ${STORAGE_PATH} ] ; then
     kill -INT $$
   fi
 fi
-
 
 #docker swarm leave --force || true
 
@@ -80,6 +79,9 @@ rm -f inc-md-cert.pem
 sudo /bin/chmod 644 ${STORAGE_PATH}/etc/shibboleth/*
 
 docker build --build-arg=DCC_INSTANCE=${DCC_INSTANCE} -t sugwg/dcc:latest .
+
+sudo mkdir -p ${STORAGE_PATH}/usr1/www/html/DocDB
+sudo mkdir -p ${STORAGE_PATH}/usr1/www/html/public
 
 if [ $(uname) == "Darwin" ] ; then
   sudo chown -R ${USER} ${STORAGE_PATH}

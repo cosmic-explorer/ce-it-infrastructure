@@ -37,3 +37,7 @@ for config_file in /usr1/www/cgi-bin/DocDB/ProjectGlobals.pm /usr1/www/cgi-bin/p
          -e "/\$ShortProject/ s/LIGO/CE/;" \
          -e "/DBWebMasterEmail/ s/ligo.org/cosmicexplorer.org/;" ${config_file}
 done
+
+chown apache:apache /usr1/www/html/DocDB /usr1/www/html/public
+mv /usr1/www/html/DocDB__Static /usr1/www/html/DocDB/Static
+mv /usr1/www/html/public__Static /usr1/www/html/public/Static
