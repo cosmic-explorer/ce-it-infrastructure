@@ -1,6 +1,6 @@
 /* jshint indent: 2 */
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   return sequelize.define('SecurityGroup', {
     GroupID: {
       type: DataTypes.INTEGER(11),
@@ -42,11 +42,11 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: '0'
     },
     DisplayInList: {
-      type: DataTypes.ENUM('0','1','2','3'),
+      type: DataTypes.ENUM('0', '1', '2', '3'),
       allowNull: false,
       defaultValue: '1'
     }
   }, {
     tableName: 'SecurityGroup'
-  });
-};
+  })
+}
