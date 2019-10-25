@@ -8,7 +8,7 @@ This package implements a simple RESTful API to the DCC DocDB database using
 
 To get all authors:
 ```
-[root@seaview /]# curl localhost:3000/Author -s0 | jq
+[root@seaview /]# curl localhost:8443/Author -s0 | jq
 [
   {
     "AuthorID": 1,
@@ -26,7 +26,7 @@ To get all authors:
 
 To create an author:
 ```
-[root@seaview /]# curl localhost:3000/Author -X POST -d '{"FirstName" : "Josh", "LastName" : "Smith", "Active" : "1" }' -H 'content-type: application/json' -s0 | jq
+[root@seaview /]# curl localhost:8443/Author -X POST -d '{"FirstName" : "Josh", "LastName" : "Smith", "Active" : "1" }' -H 'content-type: application/json' -s0 | jq
 {
   "InstitutionID": 0,
   "TimeStamp": "2019-10-25T17:05:28.000Z",
