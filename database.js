@@ -18,7 +18,7 @@ const initializeDatabase = async (app) => {
     endpoints: ['/Author', '/Author/:AuthorID']
   })
 
-  await database.sync()
+  await database.authenticate()
 }
 
 module.exports = initializeDatabase
