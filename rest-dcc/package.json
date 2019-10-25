@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/duncan-brown/rest-dcc/issues"
   },
-  "homepage": "https://github.com/duncan-brown/rest-dcc#readme"
+  "homepage": "https://github.com/duncan-brown/rest-dcc#readme",
+  "devDependencies": {
+    "standard": "^11.0.1"
+  }
 }
