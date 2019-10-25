@@ -9,7 +9,7 @@ npm install -g sequelize-auto mysql
 ```
 and run
 ```sh
-sequelize-auto -h localhost -d dcc_docdb -u root -x xxxxxxx -o ./dcc_docdb -e mysql
+sequelize-auto -h localhost -d dcc_docdb -u docdbrw -x herecomethebadgers -o ./dcc_docdb -e mariadb
 ```
 The resultin tables can then be imported with
 ```

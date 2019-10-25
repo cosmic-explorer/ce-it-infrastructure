@@ -3,7 +3,7 @@ const epilogue = require('epilogue')
 const path = require('path')
 
 const database = new Sequelize('dcc_docdb', 'docdbrw', 'herecomethebadgers', {
-  dialect: 'mysql',
+  dialect: 'mariadb',
   host: 'localhost',
   operatorsAliases: false
 })
