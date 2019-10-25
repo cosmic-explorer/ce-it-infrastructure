@@ -1,6 +1,6 @@
 /* jshint indent: 2 */
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   return sequelize.define('Signoff', {
     SignoffID: {
       type: DataTypes.INTEGER(11),
@@ -23,5 +23,5 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     tableName: 'Signoff'
-  });
-};
+  })
+}
