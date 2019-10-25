@@ -15,7 +15,7 @@ const initializeDatabase = async (app) => {
 
   finale.resource({
     model: Docdb,
-    endpoints: ['/Author', '/Author/:AuthorID']
+    endpoints: ['/Author', '/Author/:id']
   })
 
   await database.authenticate()
