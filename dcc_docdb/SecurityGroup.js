@@ -47,6 +47,7 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: '1'
     }
   }, {
+    timestamps: false,
     tableName: 'SecurityGroup'
   })
 }
