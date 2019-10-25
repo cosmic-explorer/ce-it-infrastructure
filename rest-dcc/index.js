@@ -10,7 +10,7 @@ app.use(bodyParser.json())
 const startServer = async () => {
   await initializeDatabase(app)
 
-  const port = process.env.SERVER_PORT || 3000
+  const port = process.env.SERVER_PORT || 8443
   await promisify(app.listen).bind(app)(port)
   console.log(`Listening on port ${port}`)
 }
