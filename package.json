@@ -25,7 +25,7 @@
   "dependencies": {
     "epilogue": "^0.7.1",
     "express": "^4.16.3",
-    "mysql": "^2.17.1",
+    "mysql2": "^1.7.0",
     "sequelize": "^4.38.0",
     "util": "^0.11.0"
   }
