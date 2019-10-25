@@ -1,0 +1,22 @@
+{
+  "name": "rest-dcc",
+  "version": "1.0.0",
+  "description": "RESTful interface to the DCC database",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duncan-brown/rest-dcc.git"
+  },
+  "keywords": [
+    "DCC"
+  ],
+  "author": "Duncan Brown <dabrown@syr.edu>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/duncan-brown/rest-dcc/issues"
+  },
+  "homepage": "https://github.com/duncan-brown/rest-dcc#readme"
+}
