@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const epilogue = require('epilogue')
+const finale = require('finale-rest')
 const path = require('path')
 
 const database = new Sequelize('dcc_docdb', 'docdbrw', 'herecomethebadgers', {
@@ -11,9 +11,9 @@ const database = new Sequelize('dcc_docdb', 'docdbrw', 'herecomethebadgers', {
 const Docdb = database.import(path.join(__dirname, 'dcc_docdb/Author'))
 
 const initializeDatabase = async (app) => {
-  epilogue.initialize({ app, sequelize: database })
+  finale.initialize({ app, sequelize: database })
 
-  epilogue.resource({
+  finale.resource({
     model: Docdb,
     endpoints: ['/Author', '/Author/:AuthorID']
   })
