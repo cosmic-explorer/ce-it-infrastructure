@@ -13,5 +13,8 @@ sequelize-auto -h localhost -d dcc_docdb -u root -x xxxxxxx -o ./dcc_docdb -e my
 ```
 The resultin tables can then be imported with
 ```
-const Project = sequelize.import(__dirname + "/dcc_docdb")
+const Project = database.import(__dirname + "/dcc_docdb")
 ```
+
+The files produced by `sequelize-auto` fail [JavaScript Standard Style](https://standardjs.com/)
+but this can be fixed by running `standard --fix`.
