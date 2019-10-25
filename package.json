@@ -23,8 +23,8 @@
     "standard": "^11.0.1"
   },
   "dependencies": {
-    "epilogue": "^0.7.1",
     "express": "^4.16.3",
+    "finale-rest": "^1.1.0",
     "mariadb": "^2.1.2",
     "sequelize": "^5.21.1",
     "util": "^0.11.0"
