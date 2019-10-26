@@ -1,11 +1,18 @@
 const Sequelize = require('sequelize')
 const finale = require('finale-rest')
 const path = require('path')
+const fs = require('fs');
 
-const database = new Sequelize('dcc_docdb', 'docdbrw', 'herecomethebadgers', {
+try {
+    var docdbpasswd = fs.readFileSync('/run/secrets/mysql_docdbrw_passwd', 'ascii');
+    docdbpasswd = docdbpasswd.replace(/\n$/, '')
+} catch(e) {
+    console.log('Error:', e.stack);
+}
+
+const database = new Sequelize('dcc_docdb', 'docdbrw', docdbpasswd, {
   dialect: 'mariadb',
-  host: 'localhost',
-  operatorsAliases: false
+  host: 'docdb-database'
 })
 
 const Author = database.import(path.join(__dirname, 'dcc_docdb/Author'))

@@ -2,9 +2,10 @@
   "name": "rest-dcc",
   "version": "1.0.0",
   "description": "RESTful interface to the DCC database",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "standard"
+    "test": "standard",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
