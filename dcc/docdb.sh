@@ -15,10 +15,16 @@ INSERT INTO \`EmailUser\` VALUES (1,'dabrown','','Duncan Brown','dabrown@syr.edu
 INSERT INTO \`UsersGroup\` VALUES (1,1,45,'2019-01-30');
 EOF
 mysql -u root << EOF
+GRANT USAGE ON *.* TO 'docdbrw'@'%';
+GRANT USAGE ON *.* TO 'docdbro'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON dcc_docdb.* TO 'docdbrw'@'%';
+GRANT SELECT ON dcc_docdb.* TO 'docdbro'@'%';
 SET PASSWORD FOR 'root'@'localhost' = PASSWORD('${MYSQL_ROOT_PASSWD}');
 SET PASSWORD FOR 'root'@'127.0.0.1' = PASSWORD('${MYSQL_ROOT_PASSWD}');
 SET PASSWORD FOR 'docdbrw'@'localhost' = PASSWORD('${MYSQL_DOCDBRW_PASSWD}');
 SET PASSWORD FOR 'docdbro'@'localhost' = PASSWORD('${MYSQL_DOCDBRO_PASSWD}');
+SET PASSWORD FOR 'docdbrw'@'%' = PASSWORD('${MYSQL_DOCDBRW_PASSWD}');
+SET PASSWORD FOR 'docdbro'@'%' = PASSWORD('${MYSQL_DOCDBRO_PASSWD}');
 SET PASSWORD FOR 'wikiuser'@'localhost' = PASSWORD('${MYSQL_DOCDBRO_PASSWD}');
 SET PASSWORD FOR 'wikidb_restore'@'localhost' = PASSWORD('${MYSQL_DOCDBRO_PASSWD}');
 FLUSH PRIVILEGES;
