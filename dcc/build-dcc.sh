@@ -78,7 +78,7 @@ sudo cp inc-md-cert.pem ${STORAGE_PATH}/etc/shibboleth/inc-md-cert.pem
 rm -f inc-md-cert.pem
 sudo /bin/chmod 644 ${STORAGE_PATH}/etc/shibboleth/*
 
-docker build --build-arg=DCC_INSTANCE=${DCC_INSTANCE} --rm -t sugwg/dcc:latest .
+docker build -f Dockerfile.init --build-arg=DCC_INSTANCE=${DCC_INSTANCE} --rm -t sugwg/dcc:latest .
 
 sudo mkdir -p ${STORAGE_PATH}/usr1/www/html/DocDB
 sudo mkdir -p ${STORAGE_PATH}/usr1/www/html/public
