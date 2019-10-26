@@ -27,9 +27,53 @@ services:
         deploy:
             replicas: 1
 
+    dcc:
+        image: cosmicexplorer/dcc:latest
+        volumes:
+            - ${STORAGE_PATH}/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+            - ${STORAGE_PATH}/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+            - ${STORAGE_PATH}/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
+            - ${STORAGE_PATH}/usr1/www/html/DocDB:/usr1/www/html/DocDB
+            - ${STORAGE_PATH}/usr1/www/html/public:/usr1/www/html/public
+            - ${STORAGE_PATH}/var/lib/mysql:/var/lib/mysql
+            - ${STORAGE_PATH}/usr2/GLIMPSE:/usr2/GLIMPSE
+        secrets:
+            - shibboleth_sp_encrypt_cert
+            - shibboleth_sp_encrypt_privkey
+            - https_cert_file
+            - https_privkey_file
+            - https_chain_file
+            - mysql_root_passwd
+            - mysql_docdbrw_passwd
+            - mysql_docdbro_passwd
+        networks:
+            - default
+        ports:
+            - "443:443"
+        hostname: ${DCC_INSTANCE}
+        dns:
+            - 208.67.222.222
+            - 208.67.220.220
+        environment:
+            - DCC_HOSTNAME=${DCC_HOSTNAME}
+
 secrets:
     mariadb_root_password:
         external: true
+    shibboleth_sp_encrypt_cert:
+        external: true
+    shibboleth_sp_encrypt_privkey:
+        external: true
+    https_cert_file:
+        external: true
+    https_privkey_file:
+        external: true
+    https_chain_file:
+        external: true
+    mysql_root_passwd:
+        external: true
     mysql_docdbrw_passwd:
+        external: true
+    mysql_docdbro_passwd:
         external: true
 

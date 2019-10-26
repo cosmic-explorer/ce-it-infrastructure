@@ -1,20 +1,6 @@
 FROM sugwg/dcc-base:latest
-ENV container docker
-RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == \
-systemd-tmpfiles-setup.service ] || rm -f $i; done); \
-rm -f /lib/systemd/system/multi-user.target.wants/*;\
-rm -f /etc/systemd/system/*.wants/*;\
-rm -f /lib/systemd/system/local-fs.target.wants/*; \
-rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
-rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
-rm -f /lib/systemd/system/basic.target.wants/*;\
-rm -f /lib/systemd/system/anaconda.target.wants/*;
-VOLUME [ "/sys/fs/cgroup" ]
 
 ARG DCC_INSTANCE=dcc.cosmicexplorer.org
-
-COPY certificates.sh /usr/local/sbin/certificates.sh
-COPY certificates.service /lib/systemd/system/certificates.service
 
 RUN rm -f /etc/fstab && \
     passwd -d root && passwd -l root && \
@@ -23,12 +9,10 @@ RUN rm -f /etc/fstab && \
     sed -i -e '/ligo/,+5d;/Rhosts/d;' /etc/ssh/sshd_config && \
     rm -f /root/.ssh/* && \
     rm -f /etc/cron.hourly/maintain_glusterfs_mounts && \
-    rpm -e puppet && \
-    rpm -e ganglia ganglia-gmond
+    yum -y remove puppet && \
+    yum -y remove ganglia ganglia-gmond
 
-RUN systemctl enable certificates.service && \
-    rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
-    systemctl enable shibd.service && \
+RUN rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
     sed -i -e s+dcc-dev.ligo.org+"${DCC_INSTANCE}"+ /etc/httpd/conf/httpd.conf && \
     sed -i -e '/VirtualHost/d;/ServerName/d;/logger/d;/SSLEngine/d;/SSLCertificate/d;/Files/d;/SSLOptions/d;/Directory/d;' /etc/httpd/conf.d/ssl.conf && \
     sed -i -e s+dcc-backup.ligo.org+"${DCC_INSTANCE}"+ /usr1/www/html/index.html && \
@@ -44,21 +28,11 @@ RUN systemctl enable certificates.service && \
            -e "/DBWebMasterEmail/ s/ligo.org/cosmicexplorer.org/;" /usr1/www/cgi-bin/DocDB/ProjectGlobals.pm /usr1/www/cgi-bin/private/DocDB/ProjectGlobals.pm && \
     rm -f  /etc/httpd/conf.d/mediawiki.conf && \
     rm -f /etc/httpd/conf.d/awstats.conf.rpmnew && \
-    rm -rf /etc/awstats /usr1/www/cgi-bin/awstats /usr1/www/html/icon/other/awstats* /var/lib/awstats && \
-    systemctl enable httpd.service
-
-COPY docdb.service /lib/systemd/system/docdb.service
-COPY docdb.sh /usr/local/sbin/docdb.sh
-COPY docdb-storage.service /lib/systemd/system/docdb-storage.service
-COPY docdb-storage.sh /usr/local/sbin/docdb-storage.sh
+    rm -rf /etc/awstats /usr1/www/cgi-bin/awstats /usr1/www/html/icon/other/awstats* /var/lib/awstats
 
 RUN mv /var/lib/mysql /var/lib/mysql.orig && \
     mkdir /var/lib/mysql && \
     chown mysql:mysql /var/lib/mysql && \
-    systemctl enable mariadb.service && \
-    systemctl enable docdb.service && \
-    systemctl enable docdb-storage.service && \
-    systemctl enable crond.service && \
     sed -i 79,104d /usr1/www/cgi-bin/DocDB/DocumentDatabase && \
     ln -s /usr1/www/html/DocDB/Static/css/LIGODocDB.css.dcc-dev-private /usr1/www/html/DocDB/Static/css/CEDocDB.css && \
     ln -s /usr1/www/html/public/Static/css/LIGODocDB.css.dcc-dev-private /usr1/www/html/public/Static/css/CEDocDB.css && \
@@ -70,4 +44,13 @@ RUN mv /var/lib/mysql /var/lib/mysql.orig && \
     chown apache:apache /usr2/GLIMPSE && \
     chmod 1755 /usr2/GLIMPSE
 
-CMD ["/usr/sbin/init"]
+RUN yum -y install yum-plugin-ovl supervisor
+
+RUN sed -i -e "/\$db_host/ s/localhost/docdb-database/;" /usr1/www/cgi-bin/private/DocDB/SiteConfig.pm /usr1/www/cgi-bin/DocDB/SiteConfig.pm && \
+    sed -i -e 's/localhost/smtp-host.syr.edu/' /usr1/www/cgi-bin/private/DocDB/Utilities.pm /usr1/www/cgi-bin/DocDB/Utilities.pm
+
+COPY supervisord.conf /usr/local/etc/supervisord.conf
+COPY start-shibd.sh /usr/local/sbin/start-shibd.sh
+COPY start-apache.sh /usr/local/sbin/start-apache.sh
+
+ENTRYPOINT ["/usr/bin/supervisord", "-c", "/usr/local/etc/supervisord.conf"]
