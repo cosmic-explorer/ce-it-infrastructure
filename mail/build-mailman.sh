@@ -66,7 +66,7 @@ sudo cp /etc/shibboleth/attribute-map.xml ${STORAGE_PATH}/etc/shibboleth/
 chmod 644 inc-md-cert.pem
 sudo cp inc-md-cert.pem ${STORAGE_PATH}/etc/shibboleth/inc-md-cert.pem
 rm -f inc-md-cert.pem
-sudo chmod 644 -R -v ${STORAGE_PATH}/etc/shibboleth
+sudo chmod -R 644 ${STORAGE_PATH}/etc/shibboleth
 
 if [ $(uname) == "Darwin" ] ; then
   sudo chown -R ${USER} ${STORAGE_PATH}
