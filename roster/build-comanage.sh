@@ -60,10 +60,7 @@ docker build \
     -t comanage-registry:$TAG .
 popd
 
-FQDN=$(hostname -f)
-IP_ADDR=$(dig +short ${FQDN})
-
-docker swarm init --advertise-addr ${IP_ADDR}
+docker swarm init --advertise-addr 127.0.0.1
 
 echo "badgers" | docker secret create mariadb_root_password - 
 echo "badgers" | docker secret create mariadb_password - 
