@@ -2,10 +2,16 @@
 
 Docker stack for running the Cosmic Explorer DCC.
 
-## Bootstrapping from an existing image
+## Setup
+
+### Bootstrapping from a DCC image
 
 Since the LIGO DCC source code is not yet on GitHub, we start from an image of
 the DCC VM `dcc-syr-disk0.qcow2`. 
+
+The bootstrap script migrates the database from the image to the path
+specified by `STORAGE_PATH` and creates a database for use by the OAuth2
+server.
 
 First, customize the script `bootstrap-dcc.sh` by setting the environment
 variables at the top of the script to the appropriate vales for your
@@ -24,6 +30,9 @@ running
 ```sh
 . bootstrap-dcc.sh
 ```
+You will need to make a note of the `SECRETS_SYSTEM` and the `DCC_REST_SECRET`
+strings as they is needed to start the OAuth2 server in production.
+
 The boostrap container can then be started with
 ```sh
 docker-compose up --detach
@@ -40,23 +49,24 @@ Once in the container run
 watch -n 5 systemctl status
 ```
 until the system state changes from `starting` to `running`. Once the system
-is running, gracefully shut down the MariaDB database engine with
+is running, gracefully shut down the MariaDB database engine
+with
 ```sh
 systemctl stop mariadb.service
 ```
 Then log out of the bootstrap container and stop it with
-```
+```sh
 docker-compose down
 ```
-You can remove the bootstrap image at this point with
-```sh
-docker image rm cosmicexplorer/dcc-bootstrap
-```
+
 ## Running the DCC in production
 
 The production stack depends on the [DCC REST
 API](https://github.com/cosmic-explorer/rest-dcc) so before deploying the
 stack, make sure that the image `cosmicexplorer/rest-dcc` is available.
+
+Set the environment variable `SECRETS_SYSTEM` to the value of the OAuth2
+server secret created above.
 
 To run the DCC as a Docker stack in production, run the script
 ```sh
@@ -66,14 +76,14 @@ It takes some time for the images to boot (primarily the time for shibd to
 validate the InCommon service provider metadata). You can check the status
 of the machines with
 ```sh
-docker stack ps dcc
+docker stack ps --no-trunc dcc
 ```
 
 ## Monitoring status
 
-### Database container
+### DCC database container
 
-The log of the database container can be checked with
+The log of the DCC database container can be checked with
 ```sh
 docker service logs dcc_docdb-database
 ```
@@ -85,6 +95,28 @@ Version: '10.2.27-MariaDB-1:10.2.27+maria~bionic'  socket: '/var/run/mysqld/mysq
 The error messages about `Could not find target log during relay log
 initialization` and `Failed to initialize the master info structure` can be
 ignored as we are not using database replication.
+
+### OAuth2 database container
+The log of the OAuth2 database container can be checked with
+```sh
+docker service logs dcc_oauth-database
+```
+If the database started successfully, the log will contain the messages
+```
+LOG:  database system is ready to accept connections
+```
+
+### OAuth server container
+
+The log of the OAuth2 database container can be checked with
+```sh
+docker service logs dcc_oauth-server
+```
+If the OAuth2 server started successfully, the log will contain the messages
+```
+Setting up http server on :4445
+Setting up http server on :4444
+```
 
 ### REST API container
 

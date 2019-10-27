@@ -1,4 +1,4 @@
-set -e
+trap 'kill -INT $$' ERR
 
 export STORAGE_PATH=/srv/docker/dcc
 
@@ -14,7 +14,7 @@ export MYSQL_ROOT_PASSWD=badgers
 export MYSQL_DOCDBRW_PASSWD=herecomethebadgers
 export MYSQL_DOCDBRO_PASSWD=badgersbadgersbadgers
 
-docker swarm leave --force || true
+docker swarm leave --force &>/dev/null || true
 docker swarm init --advertise-addr 127.0.0.1
 
 export CERT_DIR=$(mktemp -d)
@@ -35,8 +35,10 @@ echo ${MYSQL_ROOT_PASSWD}  | docker secret create mariadb_root_password -
 echo ${MYSQL_DOCDBRW_PASSWD} | docker secret create mysql_docdbrw_passwd -
 echo ${MYSQL_DOCDBRO_PASSWD} | docker secret create mysql_docdbro_passwd -
 
+echo ${DCC_REST_SECRET} | docker secret create dcc_rest_secret -
+
 docker build --build-arg=DCC_INSTANCE=${DCC_INSTANCE} --rm -t cosmicexplorer/dcc .
 
 docker stack deploy --compose-file dcc.yml dcc
 
-set +e
+trap - ERR

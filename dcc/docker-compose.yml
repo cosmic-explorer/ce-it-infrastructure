@@ -30,6 +30,7 @@ services:
       - mysql_root_passwd
       - mysql_docdbrw_passwd
       - mysql_docdbro_passwd
+      - mysql_hydra_passwd
     hostname: ${DCC_INSTANCE}
     domainname: ${DCC_DOMAINNAME}
     dns:
@@ -56,3 +57,5 @@ secrets:
          file: ${CERT_DIR}/mysql_docdbrw_passwd.txt
     mysql_docdbro_passwd:
          file: ${CERT_DIR}/mysql_docdbro_passwd.txt
+    mysql_hydra_passwd:
+         file: ${CERT_DIR}/mysql_hydra_passwd.txt

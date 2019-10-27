@@ -3,9 +3,9 @@ version: '3.7'
 services:
 
     docdb-database:
-        image: mariadb:10.2
+        image: mariadb:10.4.8
         volumes:
-            - /srv/docker/dcc/var/lib/mysql:/var/lib/mysql
+            - ${STORAGE_PATH}/var/lib/mysql:/var/lib/mysql
         environment:
             - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mariadb_root_password
         secrets:
@@ -20,10 +20,40 @@ services:
         init: true
         secrets:
             - mysql_docdbrw_passwd
+            - dcc_rest_secret
         networks:
             - default
         ports:
             - "8443:8443"
+        deploy:
+            replicas: 1
+
+    oauth-database:
+        image: postgres:9.6
+        volumes:
+            - ${STORAGE_PATH}/var/lib/postgresql/data:/var/lib/postgresql/data
+        networks:
+            - default
+        deploy:
+            replicas: 1
+
+    oauth-server:
+        image: oryd/hydra:v1.0.8
+        environment:
+            - SECRETS_SYSTEM=${SECRETS_SYSTEM}
+            - DSN=postgres://hydra:${HYDRA_PASSWD}@oauth-database:5432/hydra?sslmode=disable
+            - URLS_SELF_ISSUER=http://127.0.0.1:9000/
+            - URLS_CONSENT=http://127.0.0.1:9020/consent
+            - URLS_LOGIN=http://127.0.0.1:9020/login
+#            - URLS_SELF_ISSUER=http://${DCC_INSTANCE}:9000/
+#            - URLS_CONSENT=http://${DCC_INSTANCE}:9020/consent
+#            - URLS_LOGIN=http://${DCC_INSTANCE}:9020/login
+        networks:
+            - default
+        ports:
+            - "9000:4444"
+            - "9001:4445"
+        command: "serve all --dangerous-force-http"
         deploy:
             replicas: 1
 
@@ -57,6 +87,10 @@ services:
         environment:
             - DCC_HOSTNAME=${DCC_HOSTNAME}
 
+networks:
+    default:
+        attachable: true
+
 secrets:
     mariadb_root_password:
         external: true
@@ -76,4 +110,5 @@ secrets:
         external: true
     mysql_docdbro_passwd:
         external: true
-
+    dcc_rest_secret:
+        external: true
