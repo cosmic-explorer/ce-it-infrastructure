@@ -22,9 +22,15 @@ export DCC_INSTANCE=seaview.phy.syr.edu
 export DCC_HOSTNAME=seaview.phy.syr.edu
 export DCC_DOMAINNAME=phy.syr.edu
 export MYSQL_ROOT_PASSWD=badgers
-export MYSQL_DOCDBRW_PASSWD=herecomethebadgers
+export MYSQL_DOCDBRW_PASSWD=mushroommushroom
 export MYSQL_DOCDBRO_PASSWD=badgersbadgersbadgers
+export HYDRA_PASSWD=aghitsasnake
 ```
+The various `PASSWD` variables should be set to real passwords. 
+You may find this [password generator](https://www.youtube.com/watch?v=EIyixC9NsLI)
+helpful to create secure passwords.
+
+
 To bootstrap the DCC, build the main container and the bootstrap continer by
 running
 ```sh
