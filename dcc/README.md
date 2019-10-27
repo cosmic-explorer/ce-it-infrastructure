@@ -123,6 +123,47 @@ If the OAuth2 server started successfully, the log will contain the messages
 Setting up http server on :4445
 Setting up http server on :4444
 ```
+You can also test to see if tokens can be issued and validated. To issue a
+token, run
+```sh
+docker run --rm -it \
+   --network dcc_default \
+   oryd/hydra:v1.0.8 \
+   token client \
+     --client-id dcc-rest-api \
+     --client-secret ${DCC_REST_SECRET} \
+     --endpoint http://dcc_oauth-server:4444
+```
+This should return an OAuth token that looks like
+```
+5_avf_XmTQC5YbHKmv5j_PvFmCfwfeiQvs6t9Zs5W0M.EJB_SmXm28XLkNIyMQOij-F2AsCnDtv6jWdP_afL2ho
+```
+Validate this token by running
+```sh
+docker run --rm -it \
+  --network dcc_default \
+  oryd/hydra:v1.0.8 \
+  token introspect \
+    --client-id dcc-rest-api \
+    --client-secret ${DCC_REST_SECRET} \
+    --endpoint http://dcc_oauth-server:4445 \
+    >INSERT-TOKEN-HERE<
+```
+This should return JSON that looks like
+```json
+{
+	"active": true,
+	"aud": null,
+	"client_id": "dcc-rest-api",
+	"exp": 1572210609,
+	"iat": 1572207009,
+	"iss": "http://127.0.0.1:9000/",
+	"sub": "dcc-rest-api",
+	"token_type": "access_token"
+}
+```
+If this contains `"active": true` and `"token_type": "access_token"` then the
+token is valid.
 
 ### REST API container
 
