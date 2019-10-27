@@ -39,7 +39,8 @@ docker swarm leave --force &>/dev/null || true
 docker image inspect cosmicexplorer/dcc-base:3.3.0 &>/dev/null
 RET=${?}
 
-trap 'kill -INT $$' ERR
+trap 'trap - ERR; kill -INT $$' ERR
+
 
 if [ ${RET} -eq 0 ] ; then
   echo "Using existing dcc-base docker image"

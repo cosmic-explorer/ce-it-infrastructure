@@ -1,4 +1,4 @@
-trap 'kill -INT $$' ERR
+trap 'trap - ERR; kill -INT $$' ERR
 
 export STORAGE_PATH=/srv/docker/dcc
 
