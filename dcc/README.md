@@ -27,7 +27,7 @@ export MYSQL_DOCDBRO_PASSWD=badgersbadgersbadgers
 export HYDRA_PASSWD=aghitsasnake
 ```
 The various `PASSWD` variables should be set to real passwords. 
-You may find this [password generator](https://www.youtube.com/watch?v=EIyixC9NsLI)
+You may find this [password generator](https://www.youtube.com/embed/EIyixC9NsLI?autoplay=1)
 helpful to create secure passwords.
 
 
