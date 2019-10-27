@@ -67,3 +67,4 @@ To create an author:
  - [How to build a secure REST API with node.](https://developer.okta.com/blog/2018/08/21/build-secure-rest-api-with-node) This uses epilogue which is not compatible with Sequelize version 5. The solution is to switch from epilogue to [finale.](https://github.com/tommybananas/finale)
  - [Instructions on running an OAuth2 server](https://www.ory.sh/run-oauth2-server-open-source-api-security/) and [validating tokens](https://www.ory.sh/docs/hydra/integration) from a node.js application.
  - [Running a node.js application in a Docker container.](https://nodejs.org/de/docs/guides/nodejs-docker-webapp/)
+ - [node.js Shibboleth authentication](http://www.passportjs.org/packages/passport-uwshib/)
