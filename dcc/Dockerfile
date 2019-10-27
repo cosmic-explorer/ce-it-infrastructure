@@ -1,4 +1,4 @@
-FROM sugwg/dcc-base:3.3.0
+FROM cosmicexplorer/dcc-base:3.3.0
 
 ARG DCC_INSTANCE=dcc.cosmicexplorer.org
 
