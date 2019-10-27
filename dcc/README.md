@@ -54,6 +54,10 @@ docker image rm cosmicexplorer/dcc-bootstrap
 ```
 ## Running the DCC in production
 
+The production stack depends on the [DCC REST
+API](https://github.com/cosmic-explorer/rest-dcc) so before deploying the
+stack, make sure that the image `cosmicexplorer/rest-dcc` is available.
+
 To run the DCC as a Docker stack in production, run the script
 ```sh
 . run-dcc.sh
@@ -64,7 +68,51 @@ of the machines with
 ```sh
 docker stack ps dcc
 ```
-The logs can be checked with `docker service logs <container>`.
+
+## Monitoring status
+
+### Database container
+
+The log of the database container can be checked with
+```sh
+docker service logs dcc_docdb-database
+```
+If the database started successfully, the log will contain the messages
+```
+[Note] mysqld: ready for connections.
+Version: '10.2.27-MariaDB-1:10.2.27+maria~bionic'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  mariadb.org binary distribution
+```
+The error messages about `Could not find target log during relay log
+initialization` and `Failed to initialize the master info structure` can be
+ignored as we are not using database replication.
+
+### REST API container
+
+The log of the REST API container can be checked with
+```sh
+docker service logs dcc_rest-api
+```
+If the REST API started successfully, the log will contain the messages
+```
+Executing (default): SELECT 1+1 AS result
+Listening on port 8443
+```
+
+### DCC web server container
+
+The log of the main DCC web server container can be checked with
+```sh
+docker service logs dcc_dcc
+```
+If the DCC started successfully, the log will contain the messages
+```
+INFO success: cron entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+INFO success: shibd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+INFO success: apache2 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+```
+It can take several minutes for shibd to validate the InCommon service
+certifiates. When this is complete, the DCC will be available to accept
+connections.
 
 ## Shutting down the DCC
 
