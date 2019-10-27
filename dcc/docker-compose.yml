@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   dcc-bootstrap:
-    image: cosmicexplorer/dcc-bootstrap:latest
+    image: cosmicexplorer/dcc-bootstrap:3.3.0
     privileged: true
     cap_add:
       - SYS_ADMIN
