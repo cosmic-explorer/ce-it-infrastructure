@@ -1,5 +1,3 @@
-trap 'kill -INT $$' ERR
-
 export STORAGE_PATH=/srv/docker/dcc
 export DCC_INSTANCE=seaview.phy.syr.edu
 export DCC_HOSTNAME=seaview.phy.syr.edu
@@ -8,6 +6,8 @@ export MYSQL_ROOT_PASSWD=badgers
 export MYSQL_DOCDBRW_PASSWD=herecomethebadgers
 export MYSQL_DOCDBRO_PASSWD=badgersbadgersbadgers
 export HYDRA_PASSWD=aghitsasnake
+
+echo "Checking for ${STORAGE_PATH}"
 
 if [ -d ${STORAGE_PATH} ] ; then
   echo "${STORAGE_PATH} already exists"
@@ -30,12 +30,16 @@ if [ -d ${STORAGE_PATH} ] ; then
     echo "Error: unknown response $RESPONSE"
     kill -INT $$
   fi
+else
+  echo "${STORAGE_PATH} not found, creating"
 fi
 
 docker swarm leave --force &>/dev/null || true
 
 docker image inspect cosmicexplorer/dcc-base:3.3.0 &>/dev/null
 RET=${?}
+
+trap 'kill -INT $$' ERR
 
 if [ ${RET} -eq 0 ] ; then
   echo "Using existing dcc-base docker image"
