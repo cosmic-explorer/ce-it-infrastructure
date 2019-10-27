@@ -1,7 +1,7 @@
 version: '3.1'
 services:
-  ce-dcc-server:
-    image: sugwg/dcc:latest
+  dcc-bootstrap:
+    image: cosmicexplorer/dcc-bootstrap:latest
     privileged: true
     cap_add:
       - SYS_ADMIN
@@ -22,37 +22,14 @@ services:
     ports:
       - "443:443"
     secrets:
-      - source: shibboleth_sp_encrypt_cert
-        target: shibboleth_sp_encrypt_cert
-        #uid: "992"
-        #gid: "992"
-        #mode: 0444
-      - source: shibboleth_sp_encrypt_privkey
-        target: shibboleth_sp_encrypt_privkey
-        #uid: "992"
-        #gid: "992"
-        #mode: 0400
-      - source: https_cert_file
-        target: https_cert_file
-        #uid: "48"
-        #gid: "48"
-        #mode: 0444
-      - source: https_privkey_file
-        target: https_privkey_file
-        #uid: "48"
-        #gid: "48"
-        #mode: 0400
-      - source: https_chain_file
-        target: https_chain_file
-        #uid: "48"
-        #gid: "48"
-        #mode: 0444
-      - source: mysql_root_passwd
-        target: mysql_root_passwd
-      - source: mysql_docdbrw_passwd
-        target: mysql_docdbrw_passwd
-      - source: mysql_docdbro_passwd
-        target: mysql_docdbro_passwd
+      - shibboleth_sp_encrypt_cert
+      - shibboleth_sp_encrypt_privkey
+      - https_cert_file
+      - https_privkey_file
+      - https_chain_file
+      - mysql_root_passwd
+      - mysql_docdbrw_passwd
+      - mysql_docdbro_passwd
     hostname: ${DCC_INSTANCE}
     domainname: ${DCC_DOMAINNAME}
     dns:
@@ -64,26 +41,18 @@ services:
 
 secrets:
     shibboleth_sp_encrypt_cert:
-#        external: true
          file: ${CERT_DIR}/sp-encrypt-cert.pem
     shibboleth_sp_encrypt_privkey:
-#        external: true
          file: ${CERT_DIR}/sp-encrypt-key.pem
     https_cert_file:
-#        external: true
          file: ${CERT_DIR}/hostcert.pem
     https_privkey_file:
-#        external: true
          file: ${CERT_DIR}/hostkey.pem
     https_chain_file:
-#        external: true
          file: ${CERT_DIR}/igtf-ca-bundle.crt
     mysql_root_passwd:
-#        external: true
          file: ${CERT_DIR}/mysql_root_passwd.txt
     mysql_docdbrw_passwd:
-#        external: true
          file: ${CERT_DIR}/mysql_docdbrw_passwd.txt
     mysql_docdbro_passwd:
-#        external: true
          file: ${CERT_DIR}/mysql_docdbro_passwd.txt

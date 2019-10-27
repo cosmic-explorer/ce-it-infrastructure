@@ -1,5 +1,4 @@
 export STORAGE_PATH=/srv/docker/dcc
-
 export DCC_INSTANCE=seaview.phy.syr.edu
 export DCC_HOSTNAME=seaview.phy.syr.edu
 export DCC_DOMAINNAME=phy.syr.edu
@@ -30,12 +29,6 @@ if [ -d ${STORAGE_PATH} ] ; then
   fi
 fi
 
-#docker swarm leave --force || true
-
-#FQDN=$(hostname -f)
-#IP_ADDR=$(dig +short ${FQDN})
-#docker swarm init --advertise-addr ${IP_ADDR}
-
 docker image inspect sugwg/dcc-base &>/dev/null
 RET=${?}
 set -e
@@ -55,18 +48,9 @@ sudo cp -a /etc/grid-security/hostcert.pem ${CERT_DIR}
 sudo cp -a /etc/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
 sudo cp -a /etc/shibboleth/sp-encrypt-key.pem ${CERT_DIR}
 sudo chown ${USER} ${CERT_DIR}/*.pem
-#docker secret create https_chain_file ${CERT_DIR}/igtf-ca-bundle.crt
-#docker secret create https_cert_file ${CERT_DIR}/hostcert.pem
-#docker secret create https_privkey_file ${CERT_DIR}/hostkey.pem
-#docker secret create shibboleth_sp_encrypt_cert ${CERT_DIR}/sp-encrypt-cert.pem
-#docker secret create shibboleth_sp_encrypt_privkey ${CERT_DIR}/sp-encrypt-key.pem
-#echo ${MYSQL_ROOT_PASSWD} | docker secret create mysql_root_passwd -
-#echo ${MYSQL_DOCDBRW_PASSWD} | docker secret create mysql_docdbrw_passwd -
-#echo ${MYSQL_DOCDBRO_PASSWD} | docker secret create mysql_docdbro_passwd -
 echo ${MYSQL_ROOT_PASSWD} > ${CERT_DIR}/mysql_root_passwd.txt
 echo ${MYSQL_DOCDBRW_PASSWD} > ${CERT_DIR}/mysql_docdbrw_passwd.txt
 echo ${MYSQL_DOCDBRO_PASSWD} > ${CERT_DIR}/mysql_docdbro_passwd.txt
-#sudo rm -rf ${CERT_DIR}
 
 sudo mkdir -p ${STORAGE_PATH}/etc/shibboleth
 
@@ -78,7 +62,8 @@ sudo cp inc-md-cert.pem ${STORAGE_PATH}/etc/shibboleth/inc-md-cert.pem
 rm -f inc-md-cert.pem
 sudo /bin/chmod 644 ${STORAGE_PATH}/etc/shibboleth/*
 
-docker build -f Dockerfile.init --build-arg=DCC_INSTANCE=${DCC_INSTANCE} --rm -t sugwg/dcc:latest .
+docker build --build-arg=DCC_INSTANCE=${DCC_INSTANCE} --rm -t cosmicexplorer/dcc:latest .
+docker build -f Dockerfile.bootstrap --rm -t cosmicexplorer/dcc-bootstrap:latest .
 
 sudo mkdir -p ${STORAGE_PATH}/usr1/www/html/DocDB
 sudo mkdir -p ${STORAGE_PATH}/usr1/www/html/public

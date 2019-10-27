@@ -1,30 +1,74 @@
-# CE DCC Image
+# Cosmic Explorer Document Control Center
 
-This systems requres an image of the DCC VM `dcc-syr-disk0.qcow2`
+Docker stack for running the Cosmic Explorer DCC.
 
-Build using 
+## Bootstrapping from an existing image
+
+Since the LIGO DCC source code is not yet on GitHub, we start from an image of
+the DCC VM `dcc-syr-disk0.qcow2`. 
+
+First, customize the script `bootstrap-dcc.sh` by setting the environment
+variables at the top of the script to the appropriate vales for your
+installation:
 ```sh
-. build-dcc.sh
+export STORAGE_PATH=/srv/docker/dcc
+export DCC_INSTANCE=seaview.phy.syr.edu
+export DCC_HOSTNAME=seaview.phy.syr.edu
+export DCC_DOMAINNAME=phy.syr.edu
+export MYSQL_ROOT_PASSWD=badgers
+export MYSQL_DOCDBRW_PASSWD=herecomethebadgers
+export MYSQL_DOCDBRO_PASSWD=badgersbadgersbadgers
 ```
-and deploy with
+To bootstrap the DCC, build the main container and the bootstrap continer by
+running
+```sh
+. bootstrap-dcc.sh
+```
+The boostrap container can then be started with
 ```sh
 docker-compose up --detach
 ```
-
-## Swarm Mode
-
-To create the DCC swarm from an already populated database, run 
+Although the bootstrap container is a functional DCC instance, is not intended
+for production use as it runs in a priveleged container and services are
+started using systemd. Once the bootstrap container is running, log into it as
+root by running
 ```sh
-docker swarm init --advertise-addr 127.0.0.1
-echo badgers | docker secret create mariadb_root_password -
-echo herecomethebadgers | docker secret create mysql_docdbrw_passwd -
-docker stack deploy --compose-file dcc.yml dcc
+docker exec -it dcc_dcc-bootstrap_1 /bin/bash -l
 ```
-
-To access the database from other nodes in the swarm, run the commands:
-```sql
-GRANT USAGE ON *.* TO 'docdbrw'@'%' IDENTIFIED BY 'herecomethebadgers';
-GRANT SELECT, INSERT, UPDATE, DELETE ON dcc_docdb.* TO 'docdbrw'@'%';
-FLUSH PRIVILEGES;
+Once in the container run
 ```
+watch -n 5 systemctl status
+```
+until the system state changes from `starting` to `running`. Once the system
+is running, gracefully shut down the MariaDB database engine with
+```sh
+systemctl stop mariadb.service
+```
+Then log out of the bootstrap container and stop it with
+```
+docker-compose down
+```
+You can remove the bootstrap image at this point with
+```sh
+docker image rm cosmicexplorer/dcc-bootstrap
+```
+## Running the DCC in production
 
+To run the DCC as a Docker stack in production, run the script
+```sh
+. run-dcc.sh
+```
+It takes some time for the images to boot (primarily the time for shibd to
+validate the InCommon service provider metadata). You can check the status
+of the machines with
+```sh
+docker stack ps dcc
+```
+The logs can be checked with `docker service logs <container>`.
+
+## Shutting down the DCC
+
+The system can be stopped with
+```sh
+docker stack rm dcc
+```

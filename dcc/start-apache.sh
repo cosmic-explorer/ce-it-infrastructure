@@ -23,6 +23,8 @@ fi
 chmod 0444 /etc/httpd/x509-certs/${DCC_INSTANCE}.pem /etc/httpd/x509-certs/${DCC_INSTANCE}.cert
 chmod 0400 /etc/httpd/x509-certs/${DCC_INSTANCE}.key
 
+rm -rf /var/lib/mysql.orig
+rm -rf /usr2/GLIMPSE.orig
 rm -rf /usr1/www/html/DocDB__Static /usr1/www/html/public__Static
 
 mkdir /run/httpd
