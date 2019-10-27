@@ -8,7 +8,7 @@ This package implements a simple RESTful API to the DCC DocDB database using
 
 To build the container, run
 ```sh
-docker build -t cosmicexplorer/rest-dcc .
+docker build -t cosmicexplorer/rest-dcc:1.0.0 .
 ````
 
 To add to a docker stack, use:

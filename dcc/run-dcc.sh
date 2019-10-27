@@ -37,8 +37,6 @@ echo ${MYSQL_DOCDBRO_PASSWD} | docker secret create mysql_docdbro_passwd -
 
 echo ${DCC_REST_SECRET} | docker secret create dcc_rest_secret -
 
-docker build --build-arg=DCC_INSTANCE=${DCC_INSTANCE} --rm -t cosmicexplorer/dcc .
-
 docker stack deploy --compose-file dcc.yml dcc
 
 trap - ERR

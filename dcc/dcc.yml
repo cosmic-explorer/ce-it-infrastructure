@@ -16,7 +16,7 @@ services:
             replicas: 1
 
     rest-api:
-        image: cosmicexplorer/rest-dcc:latest
+        image: cosmicexplorer/rest-dcc:1.0.0
         init: true
         secrets:
             - mysql_docdbrw_passwd
@@ -58,7 +58,7 @@ services:
             replicas: 1
 
     dcc:
-        image: cosmicexplorer/dcc:latest
+        image: cosmicexplorer/dcc:3.3.0
         volumes:
             - ${STORAGE_PATH}/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
             - ${STORAGE_PATH}/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
