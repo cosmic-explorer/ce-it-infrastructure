@@ -62,7 +62,7 @@ docker-compose down
 ## Running the DCC in production
 
 The production stack depends on the [DCC REST
-API](https://github.com/cosmic-explorer/rest-dcc) so before deploying the
+API](https://github.com/cosmic-explorer/ce-it-infrastructure/rest-dcc) so before deploying the
 stack, make sure that the image `cosmicexplorer/rest-dcc` is available.
 
 Set the environment variable `SECRETS_SYSTEM` to the value of the OAuth2
