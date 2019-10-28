@@ -23,8 +23,6 @@ services:
             - dcc_rest_secret
         networks:
             - default
-        ports:
-            - "8443:8443"
         deploy:
             replicas: 1
 
@@ -42,18 +40,14 @@ services:
         environment:
             - SECRETS_SYSTEM=${SECRETS_SYSTEM}
             - DSN=postgres://hydra:${HYDRA_PASSWD}@oauth-database:5432/hydra?sslmode=disable
-            - URLS_SELF_ISSUER=http://127.0.0.1:9000/
-            - URLS_CONSENT=http://127.0.0.1:9020/consent
-            - URLS_LOGIN=http://127.0.0.1:9020/login
-#            - URLS_SELF_ISSUER=http://${DCC_INSTANCE}:9000/
-#            - URLS_CONSENT=http://${DCC_INSTANCE}:9020/consent
-#            - URLS_LOGIN=http://${DCC_INSTANCE}:9020/login
+            - URLS_SELF_ISSUER=https://${DCC_INSTANCE}/oauth/
+            - URLS_CONSENT=https://${DCC_INSTANCE}/oauth-consent
+            - URLS_LOGIN=https://${DCC_INSTANCE}/oauth-login
+            - LOG_LEVEL=debug
+            - HTTPS_ALLOW_TERMINATION_FROM=0.0.0.0/0
         networks:
             - default
-        ports:
-            - "9000:4444"
-            - "9001:4445"
-        command: "serve all --dangerous-force-http"
+        command: "serve all"
         deploy:
             replicas: 1
 
