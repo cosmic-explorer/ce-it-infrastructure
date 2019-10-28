@@ -17,6 +17,24 @@ RUN rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
     sed -i -e '/VirtualHost/d;/ServerName/d;/logger/d;/SSLEngine/d;/SSLCertificate/d;/Files/d;/SSLOptions/d;/Directory/d;' /etc/httpd/conf.d/ssl.conf && \
     sed -i -e s+dcc-backup.ligo.org+"${DCC_INSTANCE}"+ /usr1/www/html/index.html && \
     sed -i -e 's+${DCC_INSTANCE}:443+_default_:443+' /etc/httpd/conf.d/dcc-dev.conf && \
+    printf 's+</VirtualHost>+    ProxyPreserveHost On\
+\
+    ProxyPass /rest-dcc/ http://rest-api:8443/\
+    ProxyPassReverse /rest-dcc/ http://rest-api:8443/\
+\
+   <LocationMatch "^/rest-dcc">\
+       require all granted\
+   </LocationMatch>\
+\
+    ProxyPass /oauth/ http://oauth-server:4444/\
+    ProxyPassReverse /oauth/ http://oauth-server:4444/\
+\
+   <LocationMatch "^/oauth">\
+       require all granted\
+       RequestHeader set X-Forwarded-Proto "https"\
+   </LocationMatch>\
+\
+</VirtualHost>+' | sed -i -f -  /etc/httpd/conf.d/dcc-dev.conf && \
     mv /etc/httpd/conf.d/dcc.public.conf.bak /etc/httpd/conf.d/dcc.public.conf && \
     mv /etc/httpd/conf.d/short_urls.public.conf.bak /etc/httpd/conf.d/short_urls.public.conf && \
     sed -i -e "s/LIGO/CE/g" /etc/httpd/conf.d/short_urls.private.conf && \
