@@ -113,9 +113,9 @@ docker run -d --rm \
   --name hydra-bootstrap-server \
   -e SECRETS_SYSTEM=${SECRETS_SYSTEM} \
   -e DSN=$DSN \
-  -e URLS_SELF_ISSUER=http://127.0.0.1:9000/ \
-  -e URLS_CONSENT=http://127.0.0.1:9020/consent \
-  -e URLS_LOGIN=http://127.0.0.1:9020/login \
+  -e URLS_SELF_ISSUER=https://${DCC_INSTANCE}/oauth/ \
+  -e URLS_CONSENT=https://${DCC_INSTANCE}/oauth-consent \
+  -e URLS_LOGIN=https://${DCC_INSTANCE}/oauth-login \
   oryd/hydra:v1.0.8 serve all --dangerous-force-http
 
 docker run -it --rm \
