@@ -68,11 +68,8 @@ docker-compose down
 ## Running the DCC in production
 
 The production stack depends on the [DCC REST
-API](https://github.com/cosmic-explorer/ce-it-infrastructure/rest-dcc) so before deploying the
-stack, make sure that the image `cosmicexplorer/rest-dcc` is available.
-
-Set the environment variable `SECRETS_SYSTEM` to the value of the OAuth2
-server secret created above.
+API](https://github.com/cosmic-explorer/ce-it-infrastructure/tree/master/rest-dcc) so before deploying the
+stack, make sure that the image `cosmicexplorer/rest-dcc` is available. To start the stack, you will need the `SECRETS_SYSTEM` created by the `bootstrap-dcc.sh` script.
 
 To run the DCC as a Docker stack in production, run the script
 ```sh
