@@ -68,3 +68,4 @@ To create an author:
  - [Instructions on running an OAuth2 server](https://www.ory.sh/run-oauth2-server-open-source-api-security/) and [validating tokens](https://www.ory.sh/docs/hydra/integration) from a node.js application.
  - [Running a node.js application in a Docker container.](https://nodejs.org/de/docs/guides/nodejs-docker-webapp/)
  - [node.js Shibboleth authentication](http://www.passportjs.org/packages/passport-uwshib/)
+ - [Reverse Proxy for Ory Hydra](https://medium.com/@jose.t.weeks/ory-hydra-in-the-cloud-with-nginx-reverse-proxy-23002fb4a0e3)
