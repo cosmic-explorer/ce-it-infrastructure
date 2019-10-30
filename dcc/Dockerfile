@@ -64,6 +64,15 @@ RUN rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
     sed -i -e "/\$Project/ s/LIGO/Cosmic Explorer/;" \
            -e "/\$ShortProject/ s/LIGO/CE/;" \
            -e "/DBWebMasterEmail/ s/ligo.org/cosmicexplorer.org/;" /usr1/www/cgi-bin/DocDB/ProjectGlobals.pm /usr1/www/cgi-bin/private/DocDB/ProjectGlobals.pm && \
+    sed -i -e "/\$SecureMainPage/ s+\$secure_root.\"DocumentDatabase\"+\$host_name.\"Shibboleth.sso/Login?target=\".urlencode(\$host_name.\"dcc\")+;" /usr1/www/cgi-bin/private/DocDB/DocDBGlobals.pm && \
+    echo -e 's|^1;$|sub urlencode {\\\n\
+    my $s = shift;\\\n\
+    $s =~ s/ /+/g;\\\n\
+    $s =~ s/([^A-Za-z0-9\+-])/sprintf("%%%02X", ord($1))/seg;\\\n\
+    return $s;\\\n\
+}\\\n\
+\\\n\
+1;|' | sed -i -f - /usr1/www/cgi-bin/private/DocDB/Utilities.pm && \
     rm -f  /etc/httpd/conf.d/mediawiki.conf && \
     rm -f /etc/httpd/conf.d/awstats.conf.rpmnew && \
     rm -rf /etc/awstats /usr1/www/cgi-bin/awstats /usr1/www/html/icon/other/awstats* /var/lib/awstats
