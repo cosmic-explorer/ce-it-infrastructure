@@ -114,8 +114,8 @@ docker run -d --rm \
   -e SECRETS_SYSTEM=${SECRETS_SYSTEM} \
   -e DSN=$DSN \
   -e URLS_SELF_ISSUER=https://${DCC_INSTANCE}/oauth/ \
-  -e URLS_CONSENT=https://${DCC_INSTANCE}/oauth-consent \
-  -e URLS_LOGIN=https://${DCC_INSTANCE}/oauth-login \
+  -e URLS_CONSENT=https://${DCC_INSTANCE}/consent \
+  -e URLS_LOGIN=https://${DCC_INSTANCE}/login \
   oryd/hydra:v1.0.8 serve all --dangerous-force-http
 
 docker run -it --rm \
@@ -134,10 +134,13 @@ docker run --rm -it \
   oryd/hydra:v1.0.8 \
   clients create \
     --endpoint http://hydra-bootstrap-server:4445 \
+    --callbacks https://${DCC_INSTANCE}/rest-dcc/callback \
     --id dcc-rest-api \
     --secret ${DCC_REST_SECRET} \
-    --grant-types client_credentials \
-    --response-types token,code
+    --grant-types authorization_code,refresh_token \
+    --response-types token,code \
+    --scope openid,offline \
+    --token-endpoint-auth-method client_secret_basic
 
 docker stop hydra-bootstrap-server
 docker stop hydra-database

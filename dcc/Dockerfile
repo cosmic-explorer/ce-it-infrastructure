@@ -21,15 +21,35 @@ RUN rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
 \\\n\
     ProxyPass /rest-dcc/ http://rest-api:8443/\\\n\
     ProxyPassReverse /rest-dcc/ http://rest-api:8443/\\\n\
-\\\n\
    <LocationMatch "^/rest-dcc">\\\n\
        require all granted\\\n\
    </LocationMatch>\\\n\
 \\\n\
     ProxyPass /oauth/ http://oauth-server:4444/\\\n\
     ProxyPassReverse /oauth/ http://oauth-server:4444/\\\n\
-\\\n\
    <LocationMatch "^/oauth">\\\n\
+       require all granted\\\n\
+       RequestHeader set X-Forwarded-Proto "https"\\\n\
+   </LocationMatch>\\\n\
+\\\n\
+   ProxyPass /hydra/ http://oauth-server:4445/\\\n\
+   ProxyPassReverse /hydra/ http://oauth-server:4445/\\\n\
+   <LocationMatch "^/hydra">\\\n\
+       RequestHeader set X-Forwarded-Proto "https"\\\n\
+       AuthType none\\\n\
+       Require ip 172.28\\\n\
+   </LocationMatch>\\\n\
+\\\n\
+   ProxyPass /consent http://oauth-consent:3000/consent\\\n\
+   ProxyPassReverse /consent http://oauth-consent:3000/consent\\\n\
+   <LocationMatch "^/consent">\\\n\
+       require all granted\\\n\
+       RequestHeader set X-Forwarded-Proto "https"\\\n\
+   </LocationMatch>\\\n\
+\\\n\
+   ProxyPass /login http://oauth-consent:3000/login\\\n\
+   ProxyPassReverse /login http://oauth-consent:3000/login\\\n\
+   <LocationMatch "^/login">\\\n\
        require all granted\\\n\
        RequestHeader set X-Forwarded-Proto "https"\\\n\
    </LocationMatch>\\\n\
