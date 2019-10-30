@@ -73,6 +73,7 @@ RUN rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
 }\\\n\
 \\\n\
 1;|' | sed -i -f - /usr1/www/cgi-bin/private/DocDB/Utilities.pm && \
+    rm -rf /usr1/www/html/login && \
     rm -f  /etc/httpd/conf.d/mediawiki.conf && \
     rm -f /etc/httpd/conf.d/awstats.conf.rpmnew && \
     rm -rf /etc/awstats /usr1/www/cgi-bin/awstats /usr1/www/html/icon/other/awstats* /var/lib/awstats
