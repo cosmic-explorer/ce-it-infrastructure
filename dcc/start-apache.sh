@@ -27,7 +27,9 @@ rm -rf /var/lib/mysql.orig
 rm -rf /usr2/GLIMPSE.orig
 rm -rf /usr1/www/html/DocDB__Static /usr1/www/html/public__Static
 
-mkdir /run/httpd
+if [ ! -d /run/httpd ] ; then
+  mkdir /run/httpd
+fi
 chown apache:apache /run/httpd/
 
 exec $@
