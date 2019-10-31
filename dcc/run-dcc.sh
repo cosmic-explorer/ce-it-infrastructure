@@ -1,6 +1,13 @@
 trap 'trap - ERR; kill -INT $$' ERR
 
 export STORAGE_PATH=/srv/docker/dcc
+export DCC_INSTANCE=seaview.phy.syr.edu
+export DCC_HOSTNAME=seaview.phy.syr.edu
+export DCC_DOMAINNAME=phy.syr.edu
+MYSQL_ROOT_PASSWD=badgers
+MYSQL_DOCDBRW_PASSWD=mushroommushroom
+MYSQL_DOCDBRO_PASSWD=badgersbadgersbadgers
+export HYDRA_PASSWD=aghitsasnake
 
 if [ ! -d ${STORAGE_PATH} ] ; then
   echo "Error: ${STORAGE_PATH} must have been created to run this script"
@@ -24,14 +31,6 @@ fi
 REST_AUTHORIZED_EPPN=${RESPONSE}
 
 SHIB_HEADER_SECRET=$(export LC_CTYPE=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
-
-export DCC_INSTANCE=seaview.phy.syr.edu
-export DCC_HOSTNAME=seaview.phy.syr.edu
-export DCC_DOMAINNAME=phy.syr.edu
-MYSQL_ROOT_PASSWD=badgers
-MYSQL_DOCDBRW_PASSWD=mushroommushroom
-MYSQL_DOCDBRO_PASSWD=badgersbadgersbadgers
-export HYDRA_PASSWD=aghitsasnake
 
 docker swarm leave --force &>/dev/null || true
 docker swarm init --advertise-addr 127.0.0.1
