@@ -15,6 +15,14 @@ if test "x${RESPONSE}" == "x" ; then
 fi
 export SECRETS_SYSTEM=${RESPONSE}
 
+echo "Enter ePPN of user authorized to connect to REST API"
+read RESPONSE
+if test "x${RESPONSE}" == "x" ; then
+  echo "Error: no ePPN specified"
+  kill -INT $$
+fi
+export REST_AUTHORIZED_EPPN=${RESPONSE}
+
 export SHIB_HEADER_SECRET=$(export LC_CTYPE=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
 export DCC_INSTANCE=seaview.phy.syr.edu
@@ -46,6 +54,7 @@ echo ${MYSQL_ROOT_PASSWD}  | docker secret create mariadb_root_password -
 echo ${MYSQL_DOCDBRW_PASSWD} | docker secret create mysql_docdbrw_passwd -
 echo ${MYSQL_DOCDBRO_PASSWD} | docker secret create mysql_docdbro_passwd -
 echo ${SHIB_HEADER_SECRET} | docker secret create shib_header_secret -
+echo ${REST_AUTHORIZED_EPPN} | docker secret create rest_authorized_eppn -
 
 docker stack deploy --compose-file dcc.yml dcc
 

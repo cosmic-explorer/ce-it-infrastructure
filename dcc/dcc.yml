@@ -82,6 +82,7 @@ services:
             - mysql_docdbrw_passwd
             - mysql_docdbro_passwd
             - shib_header_secret
+            - rest_authorized_eppn
         networks:
             - default
         ports:
@@ -121,4 +122,6 @@ secrets:
     mysql_docdbro_passwd:
         external: true
     shib_header_secret:
+        external: true
+    rest_authorized_eppn:
         external: true

@@ -47,6 +47,10 @@ RUN rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
        RequestHeader set X-Forwarded-Proto "https"\\\n\
        RequestHeader set X-Shib-Remote-User %{REMOTE_USER}s\\\n\
        RequestHeader set X-Shib-Secret ${SHIB_HEADER_SECRET}\\\n\
+       <RequireAll>\\\n\
+           require shib-session\\\n\
+           require shib-attr eduPersonPrincipalName ${REST_AUTHORIZED_EPPN}\\\n\
+       </RequireAll>\\\n\
    </LocationMatch>\\\n\
 \\\n\
 </VirtualHost>+' | sed -i -f - /etc/httpd/conf.d/dcc-dev.conf && \
