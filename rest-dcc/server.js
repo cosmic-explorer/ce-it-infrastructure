@@ -8,10 +8,12 @@ const databaseport = {
   port: 3306,
 }
 
+const authMiddleware = require('./auth')
 const initializeDatabase = require('./database')
 
 const app = express()
 app.use(bodyParser.json())
+app.use(authMiddleware)
 
 const startServer = async () => {
   await waitPort(databaseport)
