@@ -67,9 +67,25 @@ docker-compose down
 
 ## Running the DCC in production
 
-The production stack depends on the [DCC REST
-API](https://github.com/cosmic-explorer/ce-it-infrastructure/tree/master/rest-dcc) so before deploying the
-stack, make sure that the image `cosmicexplorer/rest-dcc` is available. 
+The production stack depends Docker images for
+ - The DCC itself, created by `bootstrap-dcc.sh`
+ - The [DCC REST
+   API](https://github.com/cosmic-explorer/ce-it-infrastructure/tree/master/rest-dcc)
+   which is published to
+   [cosmicexplorer/rest-dcc](https://cloud.docker.com/u/cosmicexplorer/repository/docker/cosmicexplorer/rest-dcc)
+   on Docker Hub.
+ - A Cosmic Explorer implementation of the [User Login and Consent flow of ORY
+   Hydra.](https://github.com/cosmic-explorer/hydra-login-consent-node/tree/dcc)
+   This relies on the Shibboleth ePPN to do the authentication, and so it just
+   passes the OAuth2 login and consent flow once Apache sees an approved ePPN.
+ - The [ORY Hydra](https://github.com/ory/hydra) OAuth2 server.
+ - The [Postgress](https://hub.docker.com/_/postgres) database for ORY Hydra
+   and the [MariaDB](https://hub.docker.com/_/mariadb) database for the DCC.
+
+All of the incomming connections are managed by the Apache server running in
+the main DCC container, so only port 443 on that container needs to be open to
+the outside world. All other network traffic is over the stack's internal
+network.
 
 The DCC stack is started by the script `run-dcc.sh`. Edit the variables at the
 top of the script to match the values given in the `bootstrap-dcc.sh` script:
