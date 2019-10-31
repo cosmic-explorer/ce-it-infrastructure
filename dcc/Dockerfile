@@ -43,8 +43,8 @@ RUN rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
    ProxyPass /login http://oauth-consent:3000/login\\\n\
    ProxyPassReverse /login http://oauth-consent:3000/login\\\n\
    <LocationMatch "^/login">\\\n\
-       require all granted\\\n\
        RequestHeader set X-Forwarded-Proto "https"\\\n\
+       RequestHeader set X-Shib-Remote-User %{REMOTE_USER}s\\\n\
    </LocationMatch>\\\n\
 \\\n\
 </VirtualHost>+' | sed -i -f - /etc/httpd/conf.d/dcc-dev.conf && \
