@@ -55,6 +55,8 @@ services:
         environment:
             - HYDRA_ADMIN_URL=http://oauth-server:4445
             - MOCK_TLS_TERMINATION=y
+        secrets:
+            - shib_header_secret
         networks:
             - default
         deploy:
@@ -79,6 +81,7 @@ services:
             - mysql_root_passwd
             - mysql_docdbrw_passwd
             - mysql_docdbro_passwd
+            - shib_header_secret
         networks:
             - default
         ports:
@@ -116,4 +119,6 @@ secrets:
     mysql_docdbrw_passwd:
         external: true
     mysql_docdbro_passwd:
+        external: true
+    shib_header_secret:
         external: true

@@ -46,6 +46,7 @@ RUN rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
    <LocationMatch "^/login">\\\n\
        RequestHeader set X-Forwarded-Proto "https"\\\n\
        RequestHeader set X-Shib-Remote-User %{REMOTE_USER}s\\\n\
+       RequestHeader set X-Shib-Secret ${SHIB_HEADER_SECRET}\\\n\
    </LocationMatch>\\\n\
 \\\n\
 </VirtualHost>+' | sed -i -f - /etc/httpd/conf.d/dcc-dev.conf && \

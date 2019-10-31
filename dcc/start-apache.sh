@@ -32,4 +32,5 @@ if [ ! -d /run/httpd ] ; then
 fi
 chown apache:apache /run/httpd/
 
+export SHIB_HEADER_SECRET=$(cat /run/secrets/shib_header_secret)
 exec $@

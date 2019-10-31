@@ -15,6 +15,8 @@ if test "x${RESPONSE}" == "x" ; then
 fi
 export SECRETS_SYSTEM=${RESPONSE}
 
+export SHIB_HEADER_SECRET=$(export LC_CTYPE=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+
 export DCC_INSTANCE=seaview.phy.syr.edu
 export DCC_HOSTNAME=seaview.phy.syr.edu
 export DCC_DOMAINNAME=phy.syr.edu
@@ -43,6 +45,7 @@ echo ${MYSQL_ROOT_PASSWD} | docker secret create mysql_root_passwd -
 echo ${MYSQL_ROOT_PASSWD}  | docker secret create mariadb_root_password -
 echo ${MYSQL_DOCDBRW_PASSWD} | docker secret create mysql_docdbrw_passwd -
 echo ${MYSQL_DOCDBRO_PASSWD} | docker secret create mysql_docdbro_passwd -
+echo ${SHIB_HEADER_SECRET} | docker secret create shib_header_secret -
 
 docker stack deploy --compose-file dcc.yml dcc
 
