@@ -69,12 +69,40 @@ docker-compose down
 
 The production stack depends on the [DCC REST
 API](https://github.com/cosmic-explorer/ce-it-infrastructure/tree/master/rest-dcc) so before deploying the
-stack, make sure that the image `cosmicexplorer/rest-dcc` is available. To start the stack, you will need the `SECRETS_SYSTEM` created by the `bootstrap-dcc.sh` script.
+stack, make sure that the image `cosmicexplorer/rest-dcc` is available. 
 
+The DCC stack is started by the script `run-dcc.sh`. Edit the variables at the
+top of the script to match the values given in the `bootstrap-dcc.sh` script:
+```sh
+export STORAGE_PATH=/srv/docker/dcc
+export DCC_INSTANCE=seaview.phy.syr.edu
+export DCC_HOSTNAME=seaview.phy.syr.edu
+export DCC_DOMAINNAME=phy.syr.edu
+MYSQL_ROOT_PASSWD=badgers
+MYSQL_DOCDBRW_PASSWD=mushroommushroom
+MYSQL_DOCDBRO_PASSWD=badgersbadgersbadgers
+export HYDRA_PASSWD=aghitsasnake
+```
 To run the DCC as a Docker stack in production, run the script
 ```sh
 . run-dcc.sh
 ```
+You will be prompted the `SECRETS_SYSTEM` created by the `bootstrap-dcc.sh` script
+and the eduperson principal name (ePPN) of a user who is authorized to grant
+access to the DCC REST API.
+
+When the script is complete, it shows the following message as the containers
+boot:
+```
+Creating network dcc_default
+Creating service dcc_oauth-consent
+Creating service dcc_dcc
+Creating service dcc_docdb-database
+Creating service dcc_rest-api
+Creating service dcc_oauth-database
+Creating service dcc_oauth-server
+```
+
 It takes some time for the images to boot (primarily the time for shibd to
 validate the InCommon service provider metadata). You can check the status
 of the machines with
@@ -120,47 +148,6 @@ If the OAuth2 server started successfully, the log will contain the messages
 Setting up http server on :4445
 Setting up http server on :4444
 ```
-You can also test to see if tokens can be issued and validated. To issue a
-token, run
-```sh
-docker run --rm -it \
-   --network dcc_default \
-   oryd/hydra:v1.0.8 \
-   token client \
-     --client-id dcc-rest-api \
-     --client-secret ${DCC_REST_SECRET} \
-     --endpoint http://dcc_oauth-server:4444
-```
-This should return an OAuth token that looks like
-```
-5_avf_XmTQC5YbHKmv5j_PvFmCfwfeiQvs6t9Zs5W0M.EJB_SmXm28XLkNIyMQOij-F2AsCnDtv6jWdP_afL2ho
-```
-Validate this token by running
-```sh
-docker run --rm -it \
-  --network dcc_default \
-  oryd/hydra:v1.0.8 \
-  token introspect \
-    --client-id dcc-rest-api \
-    --client-secret ${DCC_REST_SECRET} \
-    --endpoint http://dcc_oauth-server:4445 \
-    >INSERT-TOKEN-HERE<
-```
-This should return JSON that looks like
-```json
-{
-	"active": true,
-	"aud": null,
-	"client_id": "dcc-rest-api",
-	"exp": 1572210609,
-	"iat": 1572207009,
-	"iss": "http://127.0.0.1:9000/",
-	"sub": "dcc-rest-api",
-	"token_type": "access_token"
-}
-```
-If this contains `"active": true` and `"token_type": "access_token"` then the
-token is valid.
 
 ### REST API container
 
@@ -173,6 +160,10 @@ If the REST API started successfully, the log will contain the messages
 Executing (default): SELECT 1+1 AS result
 Listening on port 8443
 ```
+If the REST API container came up before the database container, you may see
+the message `ConnectionError: The address 'docdb-database' cannot be found`.
+This can be ignores, as long as the `Listening on port 8443` is eventually
+shown.
 
 ### DCC web server container
 
