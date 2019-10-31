@@ -44,8 +44,6 @@ echo ${MYSQL_ROOT_PASSWD}  | docker secret create mariadb_root_password -
 echo ${MYSQL_DOCDBRW_PASSWD} | docker secret create mysql_docdbrw_passwd -
 echo ${MYSQL_DOCDBRO_PASSWD} | docker secret create mysql_docdbro_passwd -
 
-echo ${DCC_REST_SECRET} | docker secret create dcc_rest_secret -
-
 docker stack deploy --compose-file dcc.yml dcc
 
 trap - ERR

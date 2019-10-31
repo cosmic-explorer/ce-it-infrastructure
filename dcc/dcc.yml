@@ -20,7 +20,6 @@ services:
         init: true
         secrets:
             - mysql_docdbrw_passwd
-            - dcc_rest_secret
         networks:
             - default
         deploy:
@@ -117,6 +116,4 @@ secrets:
     mysql_docdbrw_passwd:
         external: true
     mysql_docdbro_passwd:
-        external: true
-    dcc_rest_secret:
         external: true
