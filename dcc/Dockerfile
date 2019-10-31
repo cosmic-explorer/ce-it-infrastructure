@@ -9,6 +9,7 @@ RUN rm -f /etc/fstab && \
     sed -i -e '/ligo/,+5d;/Rhosts/d;' /etc/ssh/sshd_config && \
     rm -f /root/.ssh/* && \
     rm -f /etc/cron.hourly/maintain_glusterfs_mounts && \
+    yum-config-manager --disable '*lscsoft*' && \
     yum -y remove puppet && \
     yum -y remove ganglia ganglia-gmond
 
