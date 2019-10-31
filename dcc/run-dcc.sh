@@ -21,16 +21,16 @@ if test "x${RESPONSE}" == "x" ; then
   echo "Error: no ePPN specified"
   kill -INT $$
 fi
-export REST_AUTHORIZED_EPPN=${RESPONSE}
+REST_AUTHORIZED_EPPN=${RESPONSE}
 
-export SHIB_HEADER_SECRET=$(export LC_CTYPE=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+SHIB_HEADER_SECRET=$(export LC_CTYPE=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
 export DCC_INSTANCE=seaview.phy.syr.edu
 export DCC_HOSTNAME=seaview.phy.syr.edu
 export DCC_DOMAINNAME=phy.syr.edu
-export MYSQL_ROOT_PASSWD=badgers
-export MYSQL_DOCDBRW_PASSWD=mushroommushroom
-export MYSQL_DOCDBRO_PASSWD=badgersbadgersbadgers
+MYSQL_ROOT_PASSWD=badgers
+MYSQL_DOCDBRW_PASSWD=mushroommushroom
+MYSQL_DOCDBRO_PASSWD=badgersbadgersbadgers
 export HYDRA_PASSWD=aghitsasnake
 
 docker swarm leave --force &>/dev/null || true
