@@ -17,6 +17,7 @@ RUN rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
     sed -i -e '/VirtualHost/d;/ServerName/d;/logger/d;/SSLEngine/d;/SSLCertificate/d;/Files/d;/SSLOptions/d;/Directory/d;' /etc/httpd/conf.d/ssl.conf && \
     sed -i -e s+dcc-backup.ligo.org+"${DCC_INSTANCE}"+ /usr1/www/html/index.html && \
     sed -i -e 's+${DCC_INSTANCE}:443+_default_:443+' /etc/httpd/conf.d/dcc-dev.conf && \
+    sed -i -e '/<Location \/login>/,+3d;' /etc/httpd/conf.d/dcc-dev.conf && \
     echo -e 's+</VirtualHost>+    ProxyPreserveHost On\\\n\
 \\\n\
     ProxyPass /rest-dcc/ http://rest-api:8443/\\\n\
@@ -66,6 +67,7 @@ RUN rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
 \\\n\
 1;|' | sed -i -f - /usr1/www/cgi-bin/private/DocDB/Utilities.pm && \
     rm -rf /usr1/www/html/login && \
+    rm -rf  /etc/httpd/conf.d/shibboleth-ds.conf && \
     rm -f  /etc/httpd/conf.d/mediawiki.conf && \
     rm -f /etc/httpd/conf.d/awstats.conf.rpmnew && \
     rm -rf /etc/awstats /usr1/www/cgi-bin/awstats /usr1/www/html/icon/other/awstats* /var/lib/awstats
