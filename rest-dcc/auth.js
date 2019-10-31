@@ -1,5 +1,6 @@
 const fs = require('fs');
-const  qs = require('qs');
+const qs = require('qs');
+const fetch = require("node-fetch");
 
 try {
     var clientsecret = fs.readFileSync('/run/secrets/dcc_rest_secret', 'ascii');
