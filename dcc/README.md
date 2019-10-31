@@ -30,7 +30,6 @@ The various `PASSWD` variables should be set to real passwords.
 You may find this [password generator](https://www.youtube.com/embed/EIyixC9NsLI?autoplay=1)
 helpful to create secure passwords.
 
-
 To bootstrap the DCC, build the main container and the bootstrap continer by
 running
 ```sh
@@ -38,6 +37,12 @@ running
 ```
 You will need to make a note of the `SECRETS_SYSTEM` and the `DCC_REST_SECRET`
 strings as they is needed to start the OAuth2 server in production.
+
+The `bootstrap-dcc.sh` script uses a helper image that [implements a simple
+npm wait-port
+program](https://github.com/cosmic-explorer/ce-it-infrastructure/tree/master/wait-port)
+and is published on Docker Hub at
+[cosmicexplorer/wait-port](https://cloud.docker.com/u/cosmicexplorer/repository/docker/cosmicexplorer/wait-port).
 
 The boostrap container can then be started with
 ```sh
@@ -78,6 +83,7 @@ The production stack depends Docker images for
    Hydra.](https://github.com/cosmic-explorer/hydra-login-consent-node/tree/dcc)
    This relies on the Shibboleth ePPN to do the authentication, and so it just
    passes the OAuth2 login and consent flow once Apache sees an approved ePPN.
+   This image is published to [cosmicexplorer/hydra-login-consent-node](https://cloud.docker.com/u/cosmicexplorer/repository/docker/cosmicexplorer/hydra-login-consent-node) on Docker Hub.
  - The [ORY Hydra](https://github.com/ory/hydra) OAuth2 server.
  - The [Postgress](https://hub.docker.com/_/postgres) database for ORY Hydra
    and the [MariaDB](https://hub.docker.com/_/mariadb) database for the DCC.
