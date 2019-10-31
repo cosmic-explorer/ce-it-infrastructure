@@ -44,15 +44,15 @@ services:
             - URLS_CONSENT=https://${DCC_INSTANCE}/consent
             - URLS_LOGIN=https://${DCC_INSTANCE}/login
             - LOG_LEVEL=debug
-            - HTTPS_ALLOW_TERMINATION_FROM=0.0.0.0/0
+            - HTTPS_ALLOW_TERMINATION_FROM=172.28.0.0/24
         networks:
             - default
-        command: "serve all --dangerous-force-http"
+        command: "serve all"
         deploy:
             replicas: 1
 
     oauth-consent:
-        image: oryd/hydra-login-consent-node:v1.0.8
+        image: cosmicexplorer/hydra-login-consent-node:1.0.9
         environment:
             - HYDRA_ADMIN_URL=http://oauth-server:4445
             - MOCK_TLS_TERMINATION=y
