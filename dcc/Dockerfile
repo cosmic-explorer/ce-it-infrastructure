@@ -32,14 +32,6 @@ RUN rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
        RequestHeader set X-Forwarded-Proto "https"\\\n\
    </LocationMatch>\\\n\
 \\\n\
-   ProxyPass /hydra/ http://oauth-server:4445/\\\n\
-   ProxyPassReverse /hydra/ http://oauth-server:4445/\\\n\
-   <LocationMatch "^/hydra">\\\n\
-       RequestHeader set X-Forwarded-Proto "https"\\\n\
-       AuthType none\\\n\
-       Require ip 172.28\\\n\
-   </LocationMatch>\\\n\
-\\\n\
    ProxyPass /consent http://oauth-consent:3000/consent\\\n\
    ProxyPassReverse /consent http://oauth-consent:3000/consent\\\n\
    <LocationMatch "^/consent">\\\n\
