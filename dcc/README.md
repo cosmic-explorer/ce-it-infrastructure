@@ -2,6 +2,27 @@
 
 Docker stack for running the Cosmic Explorer DCC.
 
+The production stack depends Docker images for
+ - The DCC itself, created by `bootstrap-dcc.sh`
+ - The [DCC REST
+   API](https://github.com/cosmic-explorer/ce-it-infrastructure/tree/master/rest-dcc)
+   which is published to
+   [cosmicexplorer/rest-dcc](https://cloud.docker.com/u/cosmicexplorer/repository/docker/cosmicexplorer/rest-dcc)
+   on Docker Hub.
+ - A Cosmic Explorer implementation of the [User Login and Consent flow of ORY
+   Hydra.](https://github.com/cosmic-explorer/hydra-login-consent-node/tree/dcc)
+   This relies on the Shibboleth ePPN to do the authentication, and so it just
+   passes the OAuth2 login and consent flow once Apache sees an approved ePPN.
+   This image is published to [cosmicexplorer/hydra-login-consent-node](https://cloud.docker.com/u/cosmicexplorer/repository/docker/cosmicexplorer/hydra-login-consent-node) on Docker Hub.
+ - The [ORY Hydra](https://github.com/ory/hydra) OAuth2 server.
+ - The [Postgress](https://hub.docker.com/_/postgres) database for ORY Hydra
+   and the [MariaDB](https://hub.docker.com/_/mariadb) database for the DCC.
+
+All of the incomming connections are managed by the Apache server running in
+the main DCC container, so only port 443 on that container needs to be open to
+the outside world. All other network traffic is over the stack's internal
+network.
+
 ## Setup
 
 ### Bootstrapping from a DCC image
@@ -14,7 +35,7 @@ specified by `STORAGE_PATH` and creates a database for use by the OAuth2
 server.
 
 First, customize the script `bootstrap-dcc.sh` by setting the environment
-variables at the top of the script to the appropriate vales for your
+variables at the top of the script to the appropriate values for your
 installation:
 ```sh
 export STORAGE_PATH=/srv/docker/dcc
@@ -71,27 +92,6 @@ docker-compose down
 ```
 
 ## Running the DCC in production
-
-The production stack depends Docker images for
- - The DCC itself, created by `bootstrap-dcc.sh`
- - The [DCC REST
-   API](https://github.com/cosmic-explorer/ce-it-infrastructure/tree/master/rest-dcc)
-   which is published to
-   [cosmicexplorer/rest-dcc](https://cloud.docker.com/u/cosmicexplorer/repository/docker/cosmicexplorer/rest-dcc)
-   on Docker Hub.
- - A Cosmic Explorer implementation of the [User Login and Consent flow of ORY
-   Hydra.](https://github.com/cosmic-explorer/hydra-login-consent-node/tree/dcc)
-   This relies on the Shibboleth ePPN to do the authentication, and so it just
-   passes the OAuth2 login and consent flow once Apache sees an approved ePPN.
-   This image is published to [cosmicexplorer/hydra-login-consent-node](https://cloud.docker.com/u/cosmicexplorer/repository/docker/cosmicexplorer/hydra-login-consent-node) on Docker Hub.
- - The [ORY Hydra](https://github.com/ory/hydra) OAuth2 server.
- - The [Postgress](https://hub.docker.com/_/postgres) database for ORY Hydra
-   and the [MariaDB](https://hub.docker.com/_/mariadb) database for the DCC.
-
-All of the incomming connections are managed by the Apache server running in
-the main DCC container, so only port 443 on that container needs to be open to
-the outside world. All other network traffic is over the stack's internal
-network.
 
 The DCC stack is started by the script `run-dcc.sh`. Edit the variables at the
 top of the script to match the values given in the `bootstrap-dcc.sh` script:
