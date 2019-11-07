@@ -135,6 +135,8 @@ if [ $(uname) == "Darwin" ] ; then
   sudo chown -R ${USER} ${STORAGE_PATH}
 fi
 
+export COMANAGE_REGISTRY_ENABLE_PLUGIN=MailmanProvisioner,ChangelogProvisioner,GithubProvisioner
+
 popd
 
 trap - ERR

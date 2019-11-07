@@ -27,6 +27,7 @@ services:
             - /srv/docker/comanage/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
             - /srv/docker/comanage/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
         environment:
+            - COMANAGE_REGISTRY_ENABLE_PLUGIN=${COMANAGE_REGISTRY_ENABLE_PLUGIN}
             - COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=${COMANAGE_REGISTRY_ADMIN_GIVEN_NAME}
             - COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=${COMANAGE_REGISTRY_ADMIN_FAMILY_NAME}
             - COMANAGE_REGISTRY_ADMIN_USERNAME=${COMANAGE_REGISTRY_ADMIN_USERNAME}
