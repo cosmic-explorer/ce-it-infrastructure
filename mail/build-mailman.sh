@@ -23,7 +23,7 @@ if [ -d ${STORAGE_PATH} ] ; then
   fi
 fi
 
-set -e
+trap 'trap - ERR; kill -INT $$' ERR
 
 docker secret rm hyperkitty_api_key mailman_rest_password mailman_web_secret_key postgres_password mailman_database_url || true
 
@@ -73,4 +73,5 @@ if [ $(uname) == "Darwin" ] ; then
 fi
 
 popd
-set +e
+
+trap - ERR
