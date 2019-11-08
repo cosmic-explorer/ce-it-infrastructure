@@ -51,12 +51,13 @@ container. Our default Shibboleth attribute map maps the user's given
 name and surname to two different variables. [COmanage wants these to be
 stored](https://spaces.at.internet2.edu/display/COmanage/Consuming+External+Attributes+via+Web+Server+Environment+Variables#ConsumingExternalAttributesviaWebServerEnvironmentVariables-PopulatingDefaultValuesDuringEnrollment)
 in variables with a common string and the suffixes `_GIVEN` and `_FAMILY`.
-To do this, edit the file `/srv/docker/comanage/etc/shibboleth/attribute-map.xml` on the host machine and add the lines
+To do this, edit the file `/srv/docker/comanage/etc/shibboleth/attribute-map.xml` 
+on the host machine and remove any lines from the `<Attributes>` section of the file that reference `urn:oid:2.5.4.42` and `urn:oid:2.5.4.4`. Then add the lines:
 ```
     <Attribute name="urn:oid:2.5.4.42" id="name_GIVEN"/>
-    <Attribute name="urn:oid:2.5.4.4" id="name_LAST" />
+    <Attribute name="urn:oid:2.5.4.4" id="name_FAMILY" />
 ```
-to the `<Attributes>` section of the file. Since Shibboleth can't be restarted
+and save the file. Since Shibboleth can't be restarted
 from within the COmanage registry container, you will need to stop and restart
 the containers.
 
@@ -80,3 +81,88 @@ docker stack rm comanage-registry
 
 Once the registry is up and running, it is necessary to create the various
 COUs, groups, and enrollment flows. 
+
+### Registry Configuration
+
+#### Configure access to Shibboleth attributes
+
+`Platform` &rightarrow; `CMP Enrollment Configuration`
+
+Enable `Enable Environment Attribute Retrieval`
+
+`Given Name (Official)`: `name_GIVEN`
+`Family Name (Official)`: `name_FAMILY`
+`Email (Official)` : `mail`
+
+`Save`
+
+#### Create CO
+
+`Platform` &rightarrow; `COs`
+
+`Add CO`
+
+`Name`: `CosmicExplorer` (note no spaces)
+`Description` : `Cosmic Explorer` (spaces allowed)
+`Status`: `Active`
+
+`Add`
+
+#### Set up unique identifier within CO
+
+`Collaborations`  &rightarrow; `Cosmic Explorer`
+
+`Configuration`  &rightarrow; `Extended Types`
+
+`Add Extended Type`
+
+`Name`: `cosid`
+`Display Name`: `Cosmic Explorer ID`
+`Status`: `Active`
+
+`Configuration`  &rightarrow; `Identifier Assignments`
+
+`Add Identifier Assignment`
+
+`Description`: `Cosmic Explorer ID`
+`Type`: `Cosmic Explorer ID`
+`Email Type` : blank
+`Login` : unchecked
+`Algorith`: `Sequential`
+`Format`: `COS(#)`
+`Permitted Characters`: `AlphaNumeric Only`
+`Minimum`: `1000000`
+`Maximum`: blank
+
+`Save`
+
+#### Create COUs
+
+`Configuration` &rightarrow; `COUs`
+
+`Add a New COU`
+
+`Name`: `PrincipalInvestigarors`
+`Description`: `Cosmic Explorer PIs and coPIs`
+`Parent COU`: `No COUs are available to be assigned parent`
+
+`Add`
+
+`Add a New COU`
+
+`Name`: `CETeam`
+`Description`: `Members of the Cosmic Explorer Team`
+`Parent COU`: `PrincipalInvestigarors`
+
+`Add`
+
+`Add a New COU`
+
+`Name`: `CEConsortium`
+`Description`: `Cosmic Explorer Consortium`
+`Parent COU`: `CETeam`
+
+`Add`
+
+#### Create Enrollment Flows
+
