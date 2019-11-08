@@ -1,4 +1,4 @@
-STORAGE_PATH=/srv/docker/comanage
+. comanage-env.sh
 
 if [ -d ${STORAGE_PATH} ] ; then
   echo "${STORAGE_PATH} already exists"
@@ -29,9 +29,6 @@ docker swarm leave --force || true
 
 pushd comanage-registry-docker
 
-export COMANAGE_REGISTRY_VERSION=3.2.2
-export COMANAGE_REGISTRY_BASE_IMAGE_VERSION=1
-
 pushd comanage-registry-base
 TAG="${COMANAGE_REGISTRY_VERSION}-${COMANAGE_REGISTRY_BASE_IMAGE_VERSION}"
 docker build \
@@ -39,16 +36,11 @@ docker build \
   -t comanage-registry-base:${TAG} .
 popd
 
-export COMANAGE_REGISTRY_SHIBBOLETH_SP_BASE_IMAGE_VERSION=1
-
 pushd comanage-registry-shibboleth-sp-base
 TAG="${COMANAGE_REGISTRY_SHIBBOLETH_SP_BASE_IMAGE_VERSION}"
 docker build \
     -t comanage-registry-shibboleth-sp-base:$TAG . 
 popd
-
-export COMANAGE_REGISTRY_SHIBBOLETH_SP_IMAGE_VERSION=1
-export COMANAGE_REGISTRY_SHIBBOLETH_SP_VERSION=3.2.1
 
 pushd comanage-registry-shibboleth-sp
 TAG="${COMANAGE_REGISTRY_VERSION}-shibboleth-sp-${COMANAGE_REGISTRY_SHIBBOLETH_SP_IMAGE_VERSION}"
@@ -96,21 +88,11 @@ sudo cp inc-md-cert.pem ${STORAGE_PATH}/etc/shibboleth/inc-md-cert.pem
 rm -f inc-md-cert.pem
 sudo /bin/chmod 644 ${STORAGE_PATH}/etc/shibboleth/*
 
-export COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=Duncan
-export COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=Brown
-export COMANAGE_REGISTRY_ADMIN_USERNAME=dabrown@syr.edu
-
-export COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN=sugwg-test1.phy.syr.edu
-
-export COMANAGE_REGISTRY_SLAPD_BASE_IMAGE_VERSION=1
-
 pushd comanage-registry-slapd-base
 TAG="${COMANAGE_REGISTRY_SLAPD_BASE_IMAGE_VERSION}"
 docker build \
   -t comanage-registry-slapd-base:${TAG} .
 popd
-
-export COMANAGE_REGISTRY_SLAPD_IMAGE_VERSION=1
 
 pushd comanage-registry-slapd
 TAG="${COMANAGE_REGISTRY_SLAPD_IMAGE_VERSION}"
@@ -128,14 +110,9 @@ echo "{SSHA}bnjbUkuyt0MKJnDXbtwE2VjtoTeKjqFw" | docker secret create olc_root_pw
 sudo mkdir -p ${STORAGE_PATH}/var/lib/ldap
 sudo mkdir -p ${STORAGE_PATH}/etc/slapd.d
 
-export OLC_SUFFIX=dc=cosmicexplorer,dc=org
-export OLC_ROOT_DN=cn=admin,dc=cosmicexplorer,dc=org
-
 if [ $(uname) == "Darwin" ] ; then
   sudo chown -R ${USER} ${STORAGE_PATH}
 fi
-
-export COMANAGE_REGISTRY_ENABLE_PLUGIN=MailmanProvisioner,ChangelogProvisioner,GithubProvisioner
 
 popd
 
