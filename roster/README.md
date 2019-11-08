@@ -57,15 +57,24 @@ To do this, edit the file `/srv/docker/comanage/etc/shibboleth/attribute-map.xml
     <Attribute name="urn:oid:2.5.4.4" id="name_LAST" />
 ```
 to the `<Attributes>` section of the file. Since Shibboleth can't be restarted
-from within the COmanage registry container, you will need to
+from within the COmanage registry container, you will need to stop and restart
+the containers.
+
+## Starting and Stopping the Containers
+
+To start the containers, run
+```sh
+. comanage-env.sh
+docker stack deploy --compose-file comanage-registry-stack.yml comanage-registry
+```
+and check the status with
+```sh
+docker stack ps --no-trunc comanage-registry
+```
+To stop the containers, run
 ```sh
 docker stack rm comanage-registry
 ```
-then
-```sh
-docker stack deploy --compose-file comanage-registry-stack.yml comanage-registry
-```
-to restart Shibboleth.
 
 ## Set up instructions
 
