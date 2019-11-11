@@ -27,32 +27,32 @@ const initializeDatabase = async (app) => {
 
   finale.resource({
     model: Author,
-    endpoints: ['/Author', '/Author/:id' ]
+    endpoints: ['/Author', '/Author/:AuthorID' ]
   })
 
   finale.resource({
     model: EmailUser,
-    endpoints: ['/EmailUser', '/EmailUser/:id' ]
+    endpoints: ['/EmailUser', '/EmailUser/:EmailUserID' ]
   })
 
   finale.resource({
     model: Institution,
-    endpoints: ['/Institution', '/Institution/:id' ]
+    endpoints: ['/Institution', '/Institution/:InstitutionID', '/Institution/LongName/:LongName' ]
   })
 
   finale.resource({
     model: UsersGroup,
-    endpoints: ['/UsersGroup', '/UsersGroup/:id' ]
+    endpoints: ['/UsersGroup', '/UsersGroup/:UsersGroupID', '/UsersGroup/EmailUserID/:EmailUserID' ]
   })
 
   finale.resource({
     model: RemoteUser,
-    endpoints: ['/RemoteUser', '/RemoteUser/:id' ]
+    endpoints: ['/RemoteUser', '/RemoteUser/:RemoteUserID' ]
   })
 
   finale.resource({
     model: SecurityGroup,
-    endpoints: ['/SecurityGroup', '/SecurityGroup/:id' ]
+    endpoints: ['/SecurityGroup', '/SecurityGroup/:GroupID', '/SecurityGroup/Name/:Name' ]
   })
 
   await database.authenticate()
