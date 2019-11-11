@@ -16,7 +16,7 @@ services:
             replicas: 1
 
     rest-api:
-        image: cosmicexplorer/rest-dcc:1.1.0
+        image: cosmicexplorer/rest-dcc:1.2.0
         init: true
         secrets:
             - mysql_docdbrw_passwd
