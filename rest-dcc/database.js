@@ -37,12 +37,12 @@ const initializeDatabase = async (app) => {
 
   finale.resource({
     model: Institution,
-    endpoints: ['/Institution', '/Institution/:InstitutionID', '/Institution/LongName/:LongName' ]
+    endpoints: ['/Institution', '/Institution/:InstitutionID' ]
   })
 
   finale.resource({
     model: UsersGroup,
-    endpoints: ['/UsersGroup', '/UsersGroup/:UsersGroupID', '/UsersGroup/EmailUserID/:EmailUserID' ]
+    endpoints: ['/UsersGroup', '/UsersGroup/:UsersGroupID' ]
   })
 
   finale.resource({
@@ -52,7 +52,7 @@ const initializeDatabase = async (app) => {
 
   finale.resource({
     model: SecurityGroup,
-    endpoints: ['/SecurityGroup', '/SecurityGroup/:GroupID', '/SecurityGroup/Name/:Name' ]
+    endpoints: ['/SecurityGroup', '/SecurityGroup/:GroupID' ]
   })
 
   await database.authenticate()
