@@ -5,7 +5,7 @@ the collaboration cyberinfrastructure used by Cosmic Explorer. We deploy three
 primary services:
 
  * An instance of [COmanage Registry](https://www.internet2.edu/products-services/trust-identity/comanage/) to allow people to sign up to Cosmic Explorer and for the provisioning of associated services.
- * An instance of the [DocDB document server](http://docdb-v.sourceforge.net/) based on the fork used by the [LIGO Document Control Center](https://dcc.ligo.org/) to manage the storage and retrieval of doctuments.
+ * An instance of the [DocDB document server](http://docdb-v.sourceforge.net/) based on the fork used by the [LIGO Document Control Center](https://dcc.ligo.org/) to manage the storage and retrieval of documents.
  * A [GNU Mailman](https://list.org/) instance for mailing lists.
  * Integration with the [cosmic-explorer](https://github.com/cosmic-explorer) organization on [GitHub](https://github.com/) for collaborative repository management.
 
@@ -21,7 +21,7 @@ listed above.
 These services should be federated as [Shibboleth](https://www.internet2.edu/products-services/trust-identity/shibboleth/) Service Providers with [InCommon Research and Scholarship ](https://www.incommon.org/federation/research-and-scholarship/) and have appropriate host certificates and [Shibboleth metadata](https://spaces.at.internet2.edu/display/InCFederation/Research+and+Scholarship+for+SPs) prior to configuring them.
 
 
-This repostory contains instructions for:
+This repository contains instructions for:
 
  * [Installing COmanage](https://github.com/cosmic-explorer/ce-it-infrastructure/blob/master/roster) and [setting up the registry.](https://github.com/cosmic-explorer/ce-it-infrastructure/blob/master/roster/doc)
  * [Installing and running an instance of the DCC.](https://github.com/cosmic-explorer/ce-it-infrastructure/blob/master/dcc)
@@ -35,5 +35,5 @@ The repository provides two tools used by the services:
 The infrastructure also relies on the following repositories hosted by the [cosmic-explorer](https://github.com/cosmic-explorer) GitHub organization.
 
  * A fork of [COmanage Regustry](https://github.com/cosmic-explorer/comanage-registry) that contains the source for the fixed GitHub provisioner and the DCC provisioner until these are merged into the main COmanage repository.
- * A fork of the [Hydra Login and Consent Node](https://github.com/cosmic-explorer/hydra-login-consent-node) used by the DCC to perform OAuth2 delegation of credentials to COmanage. This is esentially the same as the original version, by removes the `foo@bar.com` login as authentication is managed by Apache Shibboleth which reverse proxys to the consent node.
+ * A fork of the [Hydra Login and Consent Node](https://github.com/cosmic-explorer/hydra-login-consent-node) used by the DCC to perform OAuth2 delegation of credentials to COmanage. This is essentially the same as the original version, by removes the `foo@bar.com` login as authentication is managed by Apache Shibboleth which reverse proxies to the consent node.
  * A fork of [the COmanage registry docker containers](https://github.com/cosmic-explorer/comanage-registry-docker) to allow us to make any CE specific changes. Currently this is even with the upstream repository as no patches are needed.
