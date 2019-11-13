@@ -17,15 +17,15 @@ membership. There are three primary services that we provision:
 Once the registry is up and running, log in as the admin user and configure
 the registry following the instructions below.
 
-## Enable Environment Attribute Retrival
+## Enable Environment Attribute Retrieval
 
-To extract the SAML attributes from the Apache environment, enable environment attribute retrival in the Platform configuration.
+To extract the SAML attributes from the Apache environment, enable environment attribute retrieval in the Platform configuration.
 
 <img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00000.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00010.png" width="275">
 
 ## Create the CO
 
-Add a CO for Cosmic Explorer. Note that spaces are not reccomended in the
+Add a CO for Cosmic Explorer. Note that spaces are not recommended in the
 CO Name, but are allowed in the description.
 
 <img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00020.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00030.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00040.png" width="275">
@@ -113,7 +113,7 @@ that we can create new flows.
 
 <img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00290.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00300.png" width="275">
 
-Duplicate the `Self Signup With Approval` template and use that as the basis
+Duplicate the `Self Sign-up With Approval` template and use that as the basis
 of a new enrollment flow. Edit this flow to configure it.
 
 <img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00310.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00320.png" width="275">
@@ -122,12 +122,12 @@ The images below outline how the flow should be configured. `Petitioner
 Enrollment Authorization` is set to `Authenticated User` to require that all
 users have a Shibboleth session when they enroll and then we can extract their
 ePPN, mail, givenName, and sn from their session. For the PIs, the `CO:admins`
-need to approve signup. Once the PIs are created, they can approve sign up of
+need to approve sign up. Once the PIs are created, they can approve sign up of
 other users.
 
 Check `Require Enrollee Authentication` and set `Duplicate Enrollment Mode` to
 `Flag as Duplicate`. This prevents multiple enrollments from users who
-re-enroll while their pettition is pending.
+re-enroll while their petition is pending.
 
 We set `Terms and Conditions Mode` to `Ignore`, as there are no terms and
 conditions for joining the Cosmic Explorer Consortium.
@@ -139,7 +139,7 @@ configure the actions that the flow will take.
 
 <img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00350.png" width="275">
 
-The three enrollment flows are esentially the same, but distinguised by the
+The three enrollment flows are essentially the same, but distinguished by the
 attributes that they set, as described below.
 
 ### PI/Co-PI Enrollment Attributes
@@ -148,9 +148,9 @@ The enrollment attributes of PIs and Co-PIs are configured to do the
 following:
 
  * Add them to the `PrincipalInvestigators` COU
- * Ask for the user's `Name (Offical, Organizational Identity)` which is copied to the CO Person record. Default values for the user's name are obtained from the SAML `givenName` and `sn` which are mapped to `name_GIVEN` and `name_FAMILY` by the [registry's Shibboleth configuration.](https://github.com/cosmic-explorer/ce-it-infrastructure/blob/master/roster/README.md#additional-shibboleth-configuration) The default values can be overridden, in case they are missing or incorrect.
- * Ask for the user's `Email (Offical, Organizational Identity)` which is copied to the CO Person record. Default values for the user's email are obtained from the SAML `email` which should be set for all InCommon Research and Scholarship users.
- * Set the `Affliliation (CO Person)` to `Faculty`.  This is hidden and not modifiable, as all of the PIs and CoPIs are faculty members.
+ * Ask for the user's `Name (Official, Organizational Identity)` which is copied to the CO Person record. Default values for the user's name are obtained from the SAML `givenName` and `sn` which are mapped to `name_GIVEN` and `name_FAMILY` by the [registry's Shibboleth configuration.](https://github.com/cosmic-explorer/ce-it-infrastructure/blob/master/roster/README.md#additional-shibboleth-configuration) The default values can be overridden, in case they are missing or incorrect.
+ * Ask for the user's `Email (Official, Organizational Identity)` which is copied to the CO Person record. Default values for the user's email are obtained from the SAML `email` which should be set for all InCommon Research and Scholarship users.
+ * Set the `Affiliation (CO Person)` to `Faculty`.  This is hidden and not modifiable, as all of the PIs and CoPIs are faculty members.
  * Ask the user to choose their `Organization (CO Person Role)` from the list of enumerated values. We have already populated this with the PIs and CoPUs (known) institutional names.
  * Select their `Title (CO Person Role)` from `PI`, `Co-PI`, or `Member`. We'll trust the PI/Co-PIs to select the correct one, but we can fix it later if they forget or get it wrong.
  * Require a GitHub username.
@@ -262,7 +262,7 @@ username, the Client ID, and Client Secret. Select both `Provision` and
 
 COmanage will trigger the GitHub OAuth2 flow. Sign in and authorize the client
 to administer to the [cosmic-explorer](https://github.com/cosmic-explorer/)
-organiztaion. Once the flow directs you back to COmanage, configuration is
+organization. Once the flow directs you back to COmanage, configuration is
 complete.
 
 ## DCC Provisioner
