@@ -1,4 +1,4 @@
-# CE COmanage Instance
+# Cosmic Explorer COmanage Registry
 
 These instructions are a guide for setting up the [COmanage
 registry](https://spaces.at.internet2.edu/display/COmanage/) for the Cosmic
