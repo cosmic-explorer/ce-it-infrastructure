@@ -184,7 +184,7 @@ Other than the flow can be left the same.
 
 Save and the edit the enrollment attributes as follows:
 
- * Change the COU to `CEProject`
+ * Change the COU to `CEProject`.
  * Edit `Affiliation` and allow the user to select their affiliation as part of the flow (e.g. faculty, student, staff, etc.)
  * Edit `Title` and set it to `Member`, not modifiable, and hidden as we don't distinguish titles for team and consortium members.
  * Delete the `Group Member (CO Person)` attribute that adds the CO Person to * the `CEPIs` group. The CO person is then just added to `CEProject` and `CEConsortium`.
@@ -201,11 +201,68 @@ After configuring, the enrollment attributes should be as shown below.
 To create the CE Consortium enrollment flow, duplicate the CE Project flow and then
 change the name to `Sign up for Cosmic Explorer Consortium with Approval`.
 
-<img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00540.png" width="275">
+<img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00540.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00550.png" width="275">
 
+Edit the enrollment attributes as follows:
 
-<img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00550.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00560.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00570.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00580.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00590.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00600.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00610.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00620.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00630.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00640.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00650.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00660.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00670.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00680.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00690.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00700.png" width="275">
+ * Change the COU to `CEConsortium`.
+ * Edit `Organization` and change the attribute to `Organization (Organizational Identity)`. Set this to required, modifiable, and not hidden. This will allow the user to specify the name of their institution in their organizational identity. We can propagate this later to their CO Person Organization once we have sanitized the contents.
+ * Edit `GitHub Username` and make this optional, as we don't require consortium members to have a GitHub account. 
 
+<img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00560.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00570.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00580.png" width="275">
 
+Once the attributes are saved, they should be as shown below.
+
+<img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00590.png" width="275">
+
+## Create Email Lists
+
+Navigate to the page to set up email lists in the CO.
+
+<img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00610.png" width="275">
+
+Create an email list for the consortium, the project, and the PIs, setting the
+membership, moderators, and admins appropriately.
+
+<img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00620.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00630.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00640.png" width="275">
+
+Once the three lists are configured, they should appear in the in the list of
+lists and be associated with their groups.
+
+<img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00650.png" width="275">
+
+## Configure the GitHub Provisioning Plugin
+
+As an owner or maintainer of the
+[cosmic-explorer](https://github.com/cosmic-explorer/) organization on GitHub,
+create three teams that have the same names as the CO Groups: `CEPIs`,
+`CEProject`, and `CEConsortium`. 
+
+<img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00660.png" width="275">
+
+In the CO Configuration window, click on `Provisioning Targets` to create a
+new provisioner.
+
+<img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00670.png" width="275">
+
+Add a new GitHub provisioner set to `Automatic Mode`. Allow it to provision
+all groups. Click `Add` and you will be taken to the configuration page.
+The configuration page will give you a callback URL that is needed when
+creating a OAuth2 client on GitHub.  Next create a new OAuth2 application that
+will be used by COmanage to talk to the GitHub API. 
+
+<img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00700.png" width="275">
+
+Make a node of the Client ID and Client Secret generated by GitHub and return
+to the GitHub provisioner configuration page in COmanage. Enter your GitHub
+username, the Client ID, and Client Secret. Select both `Provision` and
+`Remove` and save the configuration.
+
+<img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00680.png" width="275"><img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/roster/doc/images/comanage-setup-00690.png" width="275">
+
+COmanage will trigger the GitHub OAuth2 flow. Sign in and authorize the client
+to administer to the [cosmic-explorer](https://github.com/cosmic-explorer/)
+organiztaion. Once the flow directs you back to COmanage, configuration is
+complete.
 
 
