@@ -103,7 +103,7 @@ RUN curl http://download.opensuse.org/repositories/security://shibboleth/CentOS_
     find_esc=$(sed 's/[^^]/[&]/g; s/\^/\\^/g' <<<"${find}") && \
     replace='[ "^https:\\/\\/.*\\.phy\\.syr\\.edu\\/Shibboleth\\.sso\\/Login.*$" , "^https:\\/\\/.*\\.cosmicexplorer\\.org\\/Shibboleth\\.sso\\/Login.*$" ];' && \
     sed -i -e "s+${find_esc}+${replace}+g" /etc/shibboleth-ds/idpselect_config.js && \
-    sed -i -e '$r /etc/shibboleth-ds/shibboleth-ds.conf' /etc/httpd/conf.d/dcc-dev.conf && \
+    sed -i -e '$r /etc/shibboleth-ds/shibboleth-ds.conf' -e 1x -e '2,${x;p}' -e '${x;p}' /etc/httpd/conf.d/dcc-dev.conf && \
     rm -f /etc/httpd/conf.d/shibboleth-ds.conf && \
     sed -i -e 's/IDP select test bed/Cosmic Explorer Identity Selector/g' /etc/shibboleth-ds/index.html && \
     sed -i -e '/<noscript>/,/<\/noscript>/{/<noscript>/!{/<\/noscript>/!d;};}' /etc/shibboleth-ds/index.html && \
