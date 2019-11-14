@@ -1,4 +1,5 @@
-STORAGE_PATH=/srv/docker/mailman
+. ../roster/comanage-env.sh
+. mailman-env.sh
 
 if [ -d ${STORAGE_PATH} ] ; then
   echo "${STORAGE_PATH} already exists"
@@ -51,6 +52,7 @@ popd
 sudo mkdir -p ${STORAGE_PATH}/core
 sudo mkdir -p ${STORAGE_PATH}/web
 sudo mkdir -p ${STORAGE_PATH}/database
+sudo mkdir -p ${STORAGE_PATH}/letsencrypt/config
 
 echo "postgres://mailman:badgers@database/mailmandb" | docker secret create mailman_database_url -
 echo "badgers" | docker secret create hyperkitty_api_key -

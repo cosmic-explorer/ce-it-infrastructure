@@ -6,13 +6,35 @@ networks:
         ipam:
             driver: default
             config:
-                - subnet: 192.168.1.0/24
+                - subnet: ${POSTFIX_MYNETWORKS}
 
 services:
+
+    letsencrypt:
+        image: linuxserver/letsencrypt
+        environment:
+            - PUID=${UID}
+            - PGID=${GROUPS}
+            - TZ=America/New_York
+            - URL=${VIRTUAL_HOST_FQDN}
+            - VALIDATION=http
+            - EMAIL=
+            - DHLEVEL=2048
+            - ONLY_SUBDOMAINS=false
+            - STAGING=false
+        volumes:
+            - ${STORAGE_PATH}/letsencrypt/config:/config
+        networks:
+            - default
+        ports:
+            - "80:80"
+        deploy:
+          replicas: 1
+
     mailman-core:
         image: cosmicexplorer/mailman-core:0.2.1
         volumes:
-            - /srv/docker/mailman/core:/opt/mailman/
+            - ${STORAGE_PATH}/core:/opt/mailman/
         environment:
             - MAILMAN_DATABASE_URL_FILE=/run/secrets/mailman_database_url
             - MAILMAN_DATABASE_TYPE=postgres
@@ -30,22 +52,23 @@ services:
             - mailman_database_url
             - mailman_rest_password
         deploy:
+            replicas: 1
             endpoint_mode: dnsrr
 
     mailman-web:
         image: cosmicexplorer/mailman-web:0.2.1
         volumes:
-            - /srv/docker/mailman/web:/opt/mailman-web-data
-            - /srv/docker/mailman/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
-            - /srv/docker/mailman/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
-            - /srv/docker/mailman/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
+            - ${STORAGE_PATH}/web:/opt/mailman-web-data
+            - ${STORAGE_PATH}/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+            - ${STORAGE_PATH}/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+            - ${STORAGE_PATH}/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
         environment:
             - MAILMAN_DATABASE_URL_FILE=/run/secrets/mailman_database_url
             - MAILMAN_DATABASE_TYPE=postgres
             - HYPERKITTY_API_KEY_FILE=/run/secrets/hyperkitty_api_key
-            - SERVE_FROM_DOMAIN=sugwg-scitokens.phy.syr.edu
-            - MAILMAN_ADMIN_USER=dbrown
-            - MAILMAN_ADMIN_EMAIL=dabrown@syr.edu
+            - SERVE_FROM_DOMAIN=${SERVE_FROM_DOMAIN}
+            - MAILMAN_ADMIN_USER=${MAILMAN_ADMIN_USER}
+            - MAILMAN_ADMIN_EMAIL=${MAILMAN_ADMIN_EMAIL}
             - MAILMAN_WEB_SECRET_KEY_FILE=/run/secrets/mailman_web_secret_key
             - MAILMAN_REST_USER=restadmin
             - MAILMAN_REST_PASSWORD_FILE=/run/secrets/mailman_rest_password
@@ -59,12 +82,13 @@ services:
             - mailman_rest_password
             - mailman_web_secret_key
         deploy:
+            replicas: 1
             endpoint_mode: dnsrr
 
     database:
         image: postgres:9.6
         volumes:
-            - /srv/docker/mailman/database:/var/lib/postgresql/data
+            - ${STORAGE_PATH}/database:/var/lib/postgresql/data
         environment:
             - POSTGRES_DB=mailmandb
             - POSTGRES_USER=mailman
@@ -74,16 +98,17 @@ services:
         secrets:
             - postgres_password
         deploy:
+            replicas: 1
             endpoint_mode: dnsrr
 
     postfix:
         image: cosmicexplorer/mailman-postfix:latest
         volumes:
-            - /srv/docker/mailman:/opt/mailman
+            - ${STORAGE_PATH}:/opt/mailman
         environment:
-            - POSTFIX_MAILNAME=seaview.phy.syr.edu
-            - POSTFIX_MYHOSTNAME=sugwg-scitokens.phy.syr.edu
-            - POSTFIX_MYNETWORKS=192.168.1.0/24
+            - POSTFIX_MAILNAME=${POSTFIX_MAILNAME}
+            - POSTFIX_MYHOSTNAME=${POSTFIX_MYHOSTNAME}
+            - POSTFIX_MYNETWORKS=${POSTFIX_MYNETWORKS}
         ports:
             - target: 25
               published: 25
@@ -97,24 +122,26 @@ services:
         networks:
             - default
         deploy:
+            replicas: 1
             endpoint_mode: dnsrr
 
     apache:
         image: cosmicexplorer/mailman-core-apache-shib:latest
         volumes:
-            - /srv/docker/mailman/web:/opt/mailman-web-data
-            - /srv/docker/mailman/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
-            - /srv/docker/mailman/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+            - ${STORAGE_PATH}/web:/opt/mailman-web-data
+            - ${STORAGE_PATH}/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+            - ${STORAGE_PATH}/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+            - ${STORAGE_PATH}/letsencrypt/config/etc/letsencrypt:/etc/letsencrypt
         environment:
-            - HTTPS_CERT_FILE=/run/secrets/https_cert_file
+            - HTTPS_CERT_FILE=/etc/letsencrypt/live/${VIRTUAL_HOST_FQDN}/cert.pem
+            - HTTPS_PRIVKEY_FILE=/etc/letsencrypt/live/${VIRTUAL_HOST_FQDN}/privkey.pem
+            - HTTPS_CHAIN_FILE=/etc/letsencrypt/live/${VIRTUAL_HOST_FQDN}/fullchain.pem
             - HTTPS_KEY_FILE=/run/secrets/https_privkey_file
             - MAILMAN_ADMIN_EMAIL=dabrown@syr.edu
             - SHIBBOLETH_SP_ENCRYPT_CERT=/run/secrets/shibboleth_sp_encrypt_cert
             - SHIBBOLETH_SP_ENCRYPT_PRIVKEY=/run/secrets/shibboleth_sp_encrypt_privkey
             - VIRTUAL_HOST_FQDN=sugwg-scitokens.phy.syr.edu
         secrets:
-            - https_cert_file
-            - https_privkey_file
             - shibboleth_sp_encrypt_cert
             - shibboleth_sp_encrypt_privkey
         networks:
@@ -130,19 +157,11 @@ services:
               # front of the swarm would be used for the definitive access log.
               # See discussion at https://github.com/moby/moby/issues/25526 .
               mode: host
-            - target: 80
-              published: 80
-              protocol: tcp
-              mode: host
         deploy:
-            replicas: 1
+            replicas: 0
             endpoint_mode: dnsrr
 
 secrets:
-    https_cert_file:
-        external: true
-    https_privkey_file:
-        external: true
     hyperkitty_api_key:
         external: true
     mailman_database_url:
