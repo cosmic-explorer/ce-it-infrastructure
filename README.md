@@ -32,8 +32,14 @@ The repository provides two tools used by the services:
  * An implementation of a [RESTful API to the DCC DocDB Database](https://github.com/cosmic-explorer/ce-it-infrastructure/tree/master/rest-dcc) that allows COmanage to provision authors and groups in the DCC.
  * A helper container to determine when a [port is open](https://github.com/cosmic-explorer/ce-it-infrastructure/tree/master/wait-port) from inside a Docker container network.
 
-The infrastructure also relies on the following repositories hosted by the [cosmic-explorer](https://github.com/cosmic-explorer) GitHub organization.
+The infrastructure also relies on the following repositories hosted by the [cosmic-explorer](https://github.com/cosmic-explorer) GitHub organization:
 
  * A fork of [COmanage Regustry](https://github.com/cosmic-explorer/comanage-registry) that contains the source for the fixed GitHub provisioner and the DCC provisioner until these are merged into the main COmanage repository.
  * A fork of the [Hydra Login and Consent Node](https://github.com/cosmic-explorer/hydra-login-consent-node) used by the DCC to perform OAuth2 delegation of credentials to COmanage. This is essentially the same as the original version, by removes the `foo@bar.com` login as authentication is managed by Apache Shibboleth which reverse proxies to the consent node.
  * A fork of [the COmanage registry docker containers](https://github.com/cosmic-explorer/comanage-registry-docker) to allow us to make any CE specific changes. Currently this is even with the upstream repository as no patches are needed.
+
+The infrastructure also relies on the following externally provided infrastructure:
+
+ * The [Linux Server implementation](https://github.com/linuxserver/docker-letsencrypt) of [Let's Encrypt](https://letsencrypt.org/) to obtain host certificates run from a [Docker container.](https://hub.docker.com/r/linuxserver/letsencrypt/)
+ * The [Ory Hydra OAuth2 Server](https://github.com/ory/hydra) used to secure the [RESTful interface to the DCC.](https://github.com/cosmic-explorer/ce-it-infrastructure/tree/master/rest-dcc)
+ * Docker containers for [Postgress](https://hub.docker.com/_/postgres) and [MariaDB](https://hub.docker.com/_/mariadb) for database support.
