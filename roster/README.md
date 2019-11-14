@@ -11,8 +11,7 @@ data model.](https://spaces.at.internet2.edu/display/COmanage/Registry+Data+Mode
 To build and deploy COmanage, first download a copy of the
 [comanage-registry-docker](https://github.com/Internet2/comanage-registry-docker/)
 repository into this directory.  There are serveral outsiding pull requests
-that are needed which have not yet been merged to master, so the `ce-it`
-branch on the Cosmic Explorer
+that are needed which have not yet been merged to master so the Cosmic Explorer
 [fork](https://github.com/cosmic-explorer/comanage-registry-docker) of this
 repository should be used until the patches are merged.  This can be obtained
 by by running the commands
