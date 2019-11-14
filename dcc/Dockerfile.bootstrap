@@ -18,12 +18,12 @@ COPY docdb.sh /usr/local/sbin/docdb.sh
 COPY docdb-storage.service /lib/systemd/system/docdb-storage.service
 COPY docdb-storage.sh /usr/local/sbin/docdb-storage.sh
 
-RUN systemctl enable certificates.service && \
-    systemctl enable shibd.service && \
-    systemctl enable httpd.service && \
+RUN systemctl disable certificates.service && \
+    systemctl disable shibd.service && \
+    systemctl disable httpd.service && \
     systemctl enable mariadb.service && \
     systemctl enable docdb.service && \
     systemctl enable docdb-storage.service && \
-    systemctl enable crond.service
+    systemctl disable crond.service
 
 ENTRYPOINT ["/usr/sbin/init"]

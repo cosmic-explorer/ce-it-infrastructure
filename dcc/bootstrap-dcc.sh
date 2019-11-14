@@ -51,9 +51,6 @@ fi
 
 export CERT_DIR=$(mktemp -d)
 sudo chmod 700 ${CERT_DIR}
-sed -e 's///g' /etc/grid-security/igtf-ca-bundle.crt > ${CERT_DIR}/igtf-ca-bundle.crt
-sudo cp -a /etc/grid-security/hostkey.pem ${CERT_DIR}
-sudo cp -a /etc/grid-security/hostcert.pem ${CERT_DIR}
 sudo cp -a /etc/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
 sudo cp -a /etc/shibboleth/sp-encrypt-key.pem ${CERT_DIR}
 sudo chown ${USER} ${CERT_DIR}/*.pem
@@ -79,6 +76,7 @@ sudo mkdir -p ${STORAGE_PATH}/usr1/www/html/public
 sudo mkdir -p ${STORAGE_PATH}/var/lib/mysql
 sudo mkdir -p ${STORAGE_PATH}/usr2/GLIMPSE
 sudo mkdir -p ${STORAGE_PATH}/var/lib/postgresql/data
+sudo mkdir -p ${STORAGE_PATH}/letsencrypt/config
 
 if [ $(uname) == "Darwin" ] ; then
   sudo chown -R ${USER} ${STORAGE_PATH}

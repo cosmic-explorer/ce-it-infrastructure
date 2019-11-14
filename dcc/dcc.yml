@@ -1,6 +1,26 @@
-version: '3.7'
 
 services:
+
+    letsencrypt:
+        image: linuxserver/letsencrypt
+        environment:
+            - PUID=${UID}
+            - PGID=${GROUPS}
+            - TZ=America/New_York
+            - URL=${DCC_INSTANCE}
+            - VALIDATION=http
+            - EMAIL=
+            - DHLEVEL=2048
+            - ONLY_SUBDOMAINS=false
+            - STAGING=false
+        volumes:
+            - ${STORAGE_PATH}/letsencrypt/config:/config
+        networks:
+            - default
+        ports:
+            - "80:80"
+        deploy:
+          replicas: 1
 
     docdb-database:
         image: mariadb:10.4.8
@@ -72,12 +92,10 @@ services:
             - ${STORAGE_PATH}/usr1/www/html/public:/usr1/www/html/public
             - ${STORAGE_PATH}/var/lib/mysql:/var/lib/mysql
             - ${STORAGE_PATH}/usr2/GLIMPSE:/usr2/GLIMPSE
+            - ${STORAGE_PATH}/letsencrypt/config/etc/letsencrypt:/etc/letsencrypt
         secrets:
             - shibboleth_sp_encrypt_cert
             - shibboleth_sp_encrypt_privkey
-            - https_cert_file
-            - https_privkey_file
-            - https_chain_file
             - mysql_root_passwd
             - mysql_docdbrw_passwd
             - mysql_docdbro_passwd
@@ -93,6 +111,8 @@ services:
             - 208.67.220.220
         environment:
             - DCC_HOSTNAME=${DCC_HOSTNAME}
+        deploy:
+            replicas: 0            
 
 networks:
     default:
@@ -108,12 +128,6 @@ secrets:
     shibboleth_sp_encrypt_cert:
         external: true
     shibboleth_sp_encrypt_privkey:
-        external: true
-    https_cert_file:
-        external: true
-    https_privkey_file:
-        external: true
-    https_chain_file:
         external: true
     mysql_root_passwd:
         external: true

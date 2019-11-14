@@ -69,10 +69,11 @@ The boostrap container can then be started with
 ```sh
 docker-compose up --detach
 ```
-Although the bootstrap container is a functional DCC instance, is not intended
-for production use as it runs in a priveleged container and services are
-started using systemd. Once the bootstrap container is running, log into it as
-root by running
+The bootstrap container is not intended for production use. It runs
+in a priveleged container and services are started using systemd that
+configure the database.
+
+Once the bootstrap container is running, log into it as root by running
 ```sh
 docker exec -it dcc_dcc-bootstrap_1 /bin/bash -l
 ```
@@ -117,15 +118,30 @@ When the script is complete, it shows the following message as the containers
 boot:
 ```
 Creating network dcc_default
-Creating service dcc_oauth-consent
-Creating service dcc_dcc
-Creating service dcc_docdb-database
 Creating service dcc_rest-api
 Creating service dcc_oauth-database
 Creating service dcc_oauth-server
+Creating service dcc_oauth-consent
+Creating service dcc_dcc
+Creating service dcc_letsencrypt
+Creating service dcc_docdb-database
 ```
-
-It takes some time for the images to boot (primarily the time for shibd to
+The `dcc_dcc` container is not initially deployed, as it needs the
+certificates obtained by the Let's Encrypt container. Monitor this container's
+status with the command
+```sh
+docker service logs -f dcc_letsencrypt
+```
+until the logs file show the message
+```
+Server ready
+```
+Once the certificates have been obtained, start the main DCC container with
+the command
+```sh
+docker service scale dcc_dcc=1
+```
+It takes some time for the DCC to boot (primarily the time shibd takes to
 validate the InCommon service provider metadata). You can check the status
 of the machines with
 ```sh
@@ -138,7 +154,7 @@ docker stack ps --no-trunc dcc
 
 The log of the DCC database container can be checked with
 ```sh
-docker service logs dcc_docdb-database
+docker service logs -f dcc_docdb-database
 ```
 If the database started successfully, the log will contain the messages
 ```
@@ -152,7 +168,7 @@ ignored as we are not using database replication.
 ### OAuth2 database container
 The log of the OAuth2 database container can be checked with
 ```sh
-docker service logs dcc_oauth-database
+docker service logs -f dcc_oauth-database
 ```
 If the database started successfully, the log will contain the messages
 ```
@@ -163,7 +179,7 @@ LOG:  database system is ready to accept connections
 
 The log of the OAuth2 database container can be checked with
 ```sh
-docker service logs dcc_oauth-server
+docker service logs -f dcc_oauth-server
 ```
 If the OAuth2 server started successfully, the log will contain the messages
 ```
@@ -175,7 +191,7 @@ Setting up http server on :4444
 
 The log of the REST API container can be checked with
 ```sh
-docker service logs dcc_rest-api
+docker service logs -f dcc_rest-api
 ```
 If the REST API started successfully, the log will contain the messages
 ```
@@ -191,7 +207,7 @@ shown.
 
 The log of the main DCC web server container can be checked with
 ```sh
-docker service logs dcc_dcc
+docker service logs -f dcc_dcc
 ```
 If the DCC started successfully, the log will contain the messages
 ```

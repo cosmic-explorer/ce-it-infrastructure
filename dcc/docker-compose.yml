@@ -24,9 +24,6 @@ services:
     secrets:
       - shibboleth_sp_encrypt_cert
       - shibboleth_sp_encrypt_privkey
-      - https_cert_file
-      - https_privkey_file
-      - https_chain_file
       - mysql_root_passwd
       - mysql_docdbrw_passwd
       - mysql_docdbro_passwd
@@ -45,12 +42,6 @@ secrets:
          file: ${CERT_DIR}/sp-encrypt-cert.pem
     shibboleth_sp_encrypt_privkey:
          file: ${CERT_DIR}/sp-encrypt-key.pem
-    https_cert_file:
-         file: ${CERT_DIR}/hostcert.pem
-    https_privkey_file:
-         file: ${CERT_DIR}/hostkey.pem
-    https_chain_file:
-         file: ${CERT_DIR}/igtf-ca-bundle.crt
     mysql_root_passwd:
          file: ${CERT_DIR}/mysql_root_passwd.txt
     mysql_docdbrw_passwd:

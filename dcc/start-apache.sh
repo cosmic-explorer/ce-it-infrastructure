@@ -11,15 +11,9 @@ sed -i -e "/db_ropass/ s/Change.Me.too\!/${MYSQL_DOCDBRO_PASSWD}/;" /usr1/www/cg
 sed -i -e "/db_ropass/ s/Change.Me.too\!/${MYSQL_DOCDBRO_PASSWD}/;" /usr1/www/cgi-bin/DocDB/SiteConfig.pm
 
 DCC_INSTANCE=$(awk '/DCC_INSTANCE/ {print $3}' /etc/httpd/conf/httpd.conf)
-if [ ! -f /etc/httpd/x509-certs/${DCC_INSTANCE}.pem ] ; then
-  cp -v /run/secrets/https_cert_file /etc/httpd/x509-certs/${DCC_INSTANCE}.pem
-fi
-if [ ! -f /etc/httpd/x509-certs/${DCC_INSTANCE}.key ] ; then
-  cp -v /run/secrets/https_privkey_file /etc/httpd/x509-certs/${DCC_INSTANCE}.key
-fi
-if [ ! -f /etc/httpd/x509-certs/${DCC_INSTANCE}.cert ] ; then
-  cp -v /run/secrets/https_chain_file /etc/httpd/x509-certs/${DCC_INSTANCE}.cert
-fi
+cp -v /etc/letsencrypt/live/${DCC_INSTANCE}/cert.pem /etc/httpd/x509-certs/${DCC_INSTANCE}.pem
+cp -v /etc/letsencrypt/live/${DCC_INSTANCE}/privkey.pem /etc/httpd/x509-certs/${DCC_INSTANCE}.key
+cp -v /etc/letsencrypt/live/${DCC_INSTANCE}/fullchain.pem /etc/httpd/x509-certs/${DCC_INSTANCE}.cert
 chmod 0444 /etc/httpd/x509-certs/${DCC_INSTANCE}.pem /etc/httpd/x509-certs/${DCC_INSTANCE}.cert
 chmod 0400 /etc/httpd/x509-certs/${DCC_INSTANCE}.key
 
