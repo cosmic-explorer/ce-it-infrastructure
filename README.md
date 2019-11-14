@@ -65,4 +65,4 @@ docker build \
     --rm -t sugwg/apache-shibd .
 docker-compose up --detach
 ```
-Once the container is running, the metadata can be obtained from Shibboleth. Save the files `certificates/sp-cert.pem` and `certificates/sp-key.pem` for use in the container and send the SP metdata to InCommon for federation.
+Once the container is running, the metadata can be obtained from the `Shibboleth.sso/Metadata` endpoint. Send the SP metdata to InCommon for federation. Preserve the data that this container generates by copying the files `attribute-map.xml`, `inc-md-cert.pem`, `shibboleth2.xml`, `sp-encrypt-cert.pem`, and `sp-encrypt-key.pem` from `/etc/shibboleth` in the container to the same directory on the host.
