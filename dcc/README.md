@@ -136,8 +136,13 @@ until the logs file show the message
 ```
 Server ready
 ```
-Once the certificates have been obtained, start the main DCC container with
-the command
+
+The DCC web server includes a Shibboleth embedded discovery service which should be used as the SAMLDS for the Cosmic Explorer Shibboleth SPs. To confiure this, edit the file `${STORAGE_LOCATION}` and set the parameter `discoveryURL` to be
+```
+discoveryURL="https://dcc.cosmicexplorer.org/shibboleth-ds/index.html"
+```
+
+Once the certificates have been obtained and Shibboleth configured, start the main DCC container with the command
 ```sh
 docker service scale dcc_dcc=1
 ```
