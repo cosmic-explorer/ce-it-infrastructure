@@ -57,23 +57,47 @@ and save the file. Since Shibboleth can't be restarted
 from within the COmanage registry container, you will need to stop and restart
 the containers.
 
-## Starting and Stopping the Containers
+## Containers Management
+
+### Starting the Containers
 
 To start the containers, run
 ```sh
 . comanage-env.sh
 docker stack deploy --compose-file comanage-registry-stack.yml comanage-registry
 ```
-and check the status with
+Once the stack has been deployed, check the status of the [linuxserver/letsencrypt](https://hub.docker.com/r/linuxserver/letsencrypt/) container by running the command
+```sh
+docker service logs -f comanage-registry_letsencrypt
+```
+This container will obtain a host certificate signed by [Let's
+Encrypt](https://letsencrypt.org) which will be used by the COmanage web
+server and LDAP server. Once the certificate has been obtained, the logs will
+contain the message
+```
+Server ready
+```
+The registry and LDAP containers can then be started with the command
+```sh
+docker service scale comanage-registry_comanage-registry-ldap=1
+docker service scale comanage-registry_comanage-registry=1
+```
+
+### Checking Container Status
+
+You can check the status with
 ```sh
 docker stack ps --no-trunc comanage-registry
 ```
+
+### Stopping the Containers
+
 To stop the containers, run
 ```sh
 docker stack rm comanage-registry
 ```
 
-## Set up instructions
+## Registry Configuration
 
 Once the registry is up and running, it is necessary to create the various
 COUs, groups, and enrollment flows. The registry configuration depends on how

@@ -2,10 +2,33 @@ version: '3.1'
 
 services:
 
+    letsencrypt:
+        image: linuxserver/letsencrypt
+        cap_add:
+            - NET_ADMIN
+        environment:
+            - PUID=${UID}
+            - PGID=${GROUPS}
+            - TZ=America/New_York
+            - URL=${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}
+            - VALIDATION=http
+            - EMAIL=
+            - DHLEVEL=2048
+            - ONLY_SUBDOMAINS=false
+            - STAGING=false
+        volumes:
+            - ${STORAGE_PATH}/letsencrypt/config:/config
+        networks:
+            - default
+        ports:
+            - "80:80"
+        deploy:
+          replicas: 1
+
     comanage-registry-database:
         image: mariadb:10.2
         volumes:
-            - /srv/docker/comanage/var/lib/mysql:/var/lib/mysql
+            - ${STORAGE_PATH}/var/lib/mysql:/var/lib/mysql
         environment:
             - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mariadb_root_password
             - MYSQL_DATABASE=registry
@@ -22,10 +45,11 @@ services:
     comanage-registry:
         image: comanage-registry:${COMANAGE_REGISTRY_VERSION}-shibboleth-sp-${COMANAGE_REGISTRY_SHIBBOLETH_SP_IMAGE_VERSION}
         volumes:
-            - /srv/docker/comanage/srv/comanage-registry/local:/srv/comanage-registry/local
-            - /srv/docker/comanage/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
-            - /srv/docker/comanage/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
-            - /srv/docker/comanage/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
+            - ${STORAGE_PATH}/srv/comanage-registry/local:/srv/comanage-registry/local
+            - ${STORAGE_PATH}/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+            - ${STORAGE_PATH}/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+            - ${STORAGE_PATH}/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
+            - ${STORAGE_PATH}/letsencrypt/config/etc/letsencrypt:/etc/letsencrypt
         environment:
             - COMANAGE_REGISTRY_ENABLE_PLUGIN=${COMANAGE_REGISTRY_ENABLE_PLUGIN}
             - COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=${COMANAGE_REGISTRY_ADMIN_GIVEN_NAME}
@@ -38,49 +62,44 @@ services:
             - COMANAGE_REGISTRY_EMAIL_TRANSPORT=Smtp
             - COMANAGE_REGISTRY_EMAIL_HOST=smtp-relay.syr.edu
             - COMANAGE_REGISTRY_EMAIL_PORT=25
-            - HTTPS_CERT_FILE=/run/secrets/https_cert_file
-            - HTTPS_PRIVKEY_FILE=/run/secrets/https_privkey_file
+            - HTTPS_CERT_FILE=/etc/letsencrypt/live/${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}/cert.pem
+            - HTTPS_PRIVKEY_FILE=/etc/letsencrypt/live/${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}/privkey.pem
+            - HTTPS_CHAIN_FILE=/etc/letsencrypt/live/${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}/fullchain.pem
             - SHIBBOLETH_SP_ENCRYPT_CERT=/run/secrets/shibboleth_sp_encrypt_cert
             - SHIBBOLETH_SP_ENCRYPT_PRIVKEY=/run/secrets/shibboleth_sp_encrypt_privkey
         secrets:
             - comanage_registry_database_user_password
-            - https_cert_file
-            - https_privkey_file
             - shibboleth_sp_encrypt_cert
             - shibboleth_sp_encrypt_privkey
         networks:
             - default
         ports:
-            - "80:80"
             - "443:443"
         deploy:
-            replicas: 1
+            replicas: 0
 
     comanage-registry-ldap:
         image: comanage-registry-slapd:${COMANAGE_REGISTRY_SLAPD_IMAGE_VERSION}
         command: ["slapd", "-d", "256", "-h", "ldapi:/// ldap:/// ldaps:///", "-u", "openldap", "-g", "openldap"]
         volumes:
-            - /srv/docker/comanage/var/lib/ldap:/var/lib/ldap
-            - /srv/docker/comanage/etc/slapd.d:/etc/ldap/slapd.d
+            - ${STORAGE_PATH}/var/lib/ldap:/var/lib/ldap
+            - ${STORAGE_PATH}/etc/slapd.d:/etc/ldap/slapd.d
         environment:
             - OLC_ROOT_PW_FILE=/run/secrets/olc_root_pw
             - OLC_SUFFIX=${OLC_SUFFIX}
             - OLC_ROOT_DN=${OLD_ROOT_DN}
-            - SLAPD_CERT_FILE=/run/secrets/slapd_cert_file
-            - SLAPD_CHAIN_FILE=/run/secrets/slapd_chain_file
-            - SLAPD_PRIVKEY_FILE=/run/secrets/slapd_privkey_file
+            - SLAPD_CERT_FILE=/etc/letsencrypt/live/${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}/cert.pem
+            - SLAPD_CHAIN_FILE=/etc/letsencrypt/live/${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}/fullchain.pem
+            - SLAPD_PRIVKEY_FILE=/etc/letsencrypt/live/${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}/privkey.pem
         secrets:
             - olc_root_pw
-            - slapd_chain_file
-            - slapd_cert_file
-            - slapd_privkey_file
         networks:
             - default
         ports:
             - "389:389"
             - "636:636"
         deploy:
-            replicas: 1
+            replicas: 0
 
 secrets:
     comanage_registry_database_user_password:
@@ -93,15 +112,5 @@ secrets:
         external: true
     shibboleth_sp_encrypt_privkey:
         external: true
-    https_cert_file:
-        external: true
-    https_privkey_file:
-        external: true
     olc_root_pw:
-        external: true
-    slapd_chain_file:
-        external: true
-    slapd_cert_file:
-        external: true
-    slapd_privkey_file:
         external: true

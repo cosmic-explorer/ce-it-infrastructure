@@ -58,27 +58,20 @@ echo "badgers" | docker secret create mariadb_root_password -
 echo "badgers" | docker secret create mariadb_password - 
 echo "badgers" | docker secret create comanage_registry_database_user_password - 
 
-sed -e 's///g' /etc/grid-security/igtf-ca-bundle.crt > igtf-ca-bundle.crt
-cp /etc/grid-security/hostcert.pem .
-cp hostcert.pem fullchain.cert.pem
-echo >> fullchain.cert.pem
-cat igtf-ca-bundle.crt >> fullchain.cert.pem
 CERT_DIR=$(mktemp -d)
 sudo cp -a /etc/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
-sudo cp -a /etc/grid-security/hostkey.pem ${CERT_DIR}
 sudo cp -a /etc/shibboleth/sp-encrypt-key.pem ${CERT_DIR}
 sudo chown ${USER} ${CERT_DIR}/*.pem
 mv ${CERT_DIR}/*.pem .
 sudo rmdir ${CERT_DIR}
 
-docker secret create https_cert_file fullchain.cert.pem
-docker secret create https_privkey_file hostkey.pem
 docker secret create shibboleth_sp_encrypt_cert sp-encrypt-cert.pem
 docker secret create shibboleth_sp_encrypt_privkey sp-encrypt-key.pem
 
 sudo mkdir -p ${STORAGE_PATH}/var/lib/mysql
 sudo mkdir -p ${STORAGE_PATH}/srv/comanage-registry/local
 sudo mkdir -p ${STORAGE_PATH}/etc/shibboleth
+sudo mkdir -p ${STORAGE_PATH}/letsencrypt/config
 
 sudo cp /etc/shibboleth/shibboleth2.xml ${STORAGE_PATH}/etc/shibboleth/
 sudo cp /etc/shibboleth/attribute-map.xml ${STORAGE_PATH}/etc/shibboleth/
@@ -100,10 +93,6 @@ docker build \
     --build-arg COMANAGE_REGISTRY_SLAPD_BASE_IMAGE_VERSION=${COMANAGE_REGISTRY_SLAPD_BASE_IMAGE_VERSION} \
     -t comanage-registry-slapd:$TAG . 
 popd
-
-docker secret create slapd_chain_file igtf-ca-bundle.crt
-docker secret create slapd_cert_file hostcert.pem
-docker secret create slapd_privkey_file hostkey.pem
 
 echo "{SSHA}bnjbUkuyt0MKJnDXbtwE2VjtoTeKjqFw" | docker secret create olc_root_pw -
 
