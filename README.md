@@ -45,7 +45,9 @@ listed above.
 
 These services should be federated as [Shibboleth](https://www.internet2.edu/products-services/trust-identity/shibboleth/) Service Providers with [InCommon Research and Scholarship ](https://www.incommon.org/federation/research-and-scholarship/) and have appropriate host certificates and [Shibboleth metadata](https://spaces.at.internet2.edu/display/InCFederation/Research+and+Scholarship+for+SPs) prior to configuring them.
 
-The [sugwg/apache-shibd](https://github.com/sugwg/apache-shibd) Docker container can be used to create the Shibboleth metadata for federation to incommon. To do this, first obtain InCommon host certificates for each machine and then run the commands
+The [sugwg/apache-shibd](https://github.com/sugwg/apache-shibd) Docker container can be used to create the Shibboleth metadata for federation to incommon. To do this, first obtain InCommon host certificates for each machine.
+
+To create create the Shibboleth configuration on `ce-roster.phy.syr.edu`, run the commands
 ```sh
 git clone https://github.com/sugwg/apache-shibd.git
 cd apache-shibd/certificates
@@ -67,3 +69,29 @@ export DOMAINNAME=phy.syr.edu
 docker-compose up --detach
 ```
 Once the container is running, the metadata can be obtained from the `Shibboleth.sso/Metadata` endpoint. Send the SP metdata to InCommon for federation. Preserve the data that this container generates by copying the files `attribute-map.xml`, `inc-md-cert.pem`, `shibboleth2.xml`, `sp-encrypt-cert.pem`, and `sp-encrypt-key.pem` from `/etc/shibboleth` in the container to the same directory on the host.
+
+The machine `ce-dcc.phy.syr.edu` is configured in a similar way, but with the build arguments:
+```sh
+docker build \
+    --build-arg SHIBBOLETH_SP_ENTITY_ID=https://ce-dcc.phy.syr.edu/shibboleth-sp \
+    --build-arg SHIBBOLETH_SP_SAMLDS_URL=https://dcc.cosmicexplorer.org/shibboleth-ds/index.html \
+    --build-arg SP_MD_SERVICENAME="Syracuse University Gravitational Wave Group - CE DCC" \
+    --build-arg SP_MD_SERVICEDESCRIPTION="Cosmic Explorer DCC" \
+    --build-arg SP_MDUI_DISPLAYNAME="Syracuse University Gravitational Wave Group - CE DCC" \
+    --build-arg SP_MDUI_DESCRIPTION="Cosmic Explorer DCC" \
+    --build-arg SP_MDUI_INFORMATIONURL="https://cosmicexplorer.org" \
+    --rm -t sugwg/apache-shibd .
+ ```
+ 
+ The machine `ce-mail.phy.syr.edu` is configured in a similar way, but with the build arguments:
+```sh
+docker build \
+    --build-arg SHIBBOLETH_SP_ENTITY_ID=https://ce-mailman.phy.syr.edu/shibboleth-sp \
+    --build-arg SHIBBOLETH_SP_SAMLDS_URL=https://dcc.cosmicexplorer.org/shibboleth-ds/index.html \
+    --build-arg SP_MD_SERVICENAME="Syracuse University Gravitational Wave Group - CE Mailman" \
+    --build-arg SP_MD_SERVICEDESCRIPTION="Cosmic Explorer Mailman Server" \
+    --build-arg SP_MDUI_DISPLAYNAME="Syracuse University Gravitational Wave Group - CE Mailman" \
+    --build-arg SP_MDUI_DESCRIPTION="Cosmic Explorer Mailman Server" \
+    --build-arg SP_MDUI_INFORMATIONURL="https://cosmicexplorer.org" \
+    --rm -t sugwg/apache-shibd .
+```
