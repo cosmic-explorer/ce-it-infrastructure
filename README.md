@@ -63,6 +63,7 @@ docker build \
     --build-arg SP_MDUI_DESCRIPTION="Cosmic Explorer COmanage Roster" \
     --build-arg SP_MDUI_INFORMATIONURL="https://cosmicexplorer.org" \
     --rm -t sugwg/apache-shibd .
+export DOMAINNAME=phy.syr.edu
 docker-compose up --detach
 ```
 Once the container is running, the metadata can be obtained from the `Shibboleth.sso/Metadata` endpoint. Send the SP metdata to InCommon for federation. Preserve the data that this container generates by copying the files `attribute-map.xml`, `inc-md-cert.pem`, `shibboleth2.xml`, `sp-encrypt-cert.pem`, and `sp-encrypt-key.pem` from `/etc/shibboleth` in the container to the same directory on the host.
