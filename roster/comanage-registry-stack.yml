@@ -84,6 +84,7 @@ services:
         volumes:
             - ${STORAGE_PATH}/var/lib/ldap:/var/lib/ldap
             - ${STORAGE_PATH}/etc/slapd.d:/etc/ldap/slapd.d
+            - ${STORAGE_PATH}/letsencrypt/config/etc/letsencrypt:/etc/letsencrypt
         environment:
             - OLC_ROOT_PW_FILE=/run/secrets/olc_root_pw
             - OLC_SUFFIX=${OLC_SUFFIX}
