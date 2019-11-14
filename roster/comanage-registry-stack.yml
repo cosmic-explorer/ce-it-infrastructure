@@ -4,8 +4,6 @@ services:
 
     letsencrypt:
         image: linuxserver/letsencrypt
-        cap_add:
-            - NET_ADMIN
         environment:
             - PUID=${UID}
             - PGID=${GROUPS}
