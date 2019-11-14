@@ -97,6 +97,34 @@ RUN yum -y install yum-plugin-ovl supervisor
 RUN sed -i -e "/\$db_host/ s/localhost/docdb-database/;" /usr1/www/cgi-bin/private/DocDB/SiteConfig.pm /usr1/www/cgi-bin/DocDB/SiteConfig.pm && \
     sed -i -e 's/localhost/smtp-host.syr.edu/' /usr1/www/cgi-bin/private/DocDB/Utilities.pm /usr1/www/cgi-bin/DocDB/Utilities.pm
 
+RUN curl http://download.opensuse.org/repositories/security://shibboleth/CentOS_7/security:shibboleth.repo > /etc/yum.repos.d/shibboleth.repo && \
+    yum install -y shibboleth-embedded-ds && \
+    find='[ "^https:\/\/example\.org\/Shibboleth\.sso\/Login.*$" , "^https:\/\/example\.com\/Shibboleth\.sso\/Login.*$" ];' && \
+    find_esc=$(sed 's/[^^]/[&]/g; s/\^/\\^/g' <<<"${find}") && \
+    replace='[ "^https:\\/\\/.*\\.phy\\.syr\\.edu\\/Shibboleth\\.sso\\/Login.*$" , "^https:\\/\\/.*\\.cosmicexplorer\\.org\\/Shibboleth\\.sso\\/Login.*$" ];' && \
+    sed -i -e "s+${find_esc}+${replace}+g" /etc/shibboleth-ds/idpselect_config.js && \
+    sed -i -e '$r /etc/shibboleth-ds/shibboleth-ds.conf' /etc/httpd/conf.d/dcc-dev.conf && \
+    rm -f /etc/httpd/conf.d/shibboleth-ds.conf && \
+    sed -i -e 's/IDP select test bed/Cosmic Explorer Identity Selector/g' /etc/shibboleth-ds/index.html && \
+    sed -i -e '/<noscript>/,/<\/noscript>/{/<noscript>/!{/<\/noscript>/!d;};}' /etc/shibboleth-ds/index.html && \
+    echo -e 's+<body>+<body>\\\n\
+\\\n\
+<h1>Cosmic Explorer Identity Provider Selection Service</h1>\\\n\
+<h2>Please select an identity provider to login</h2>\\\n\
+\\\n\
+<h3>Choose an identity provider from the options in the box below</h3>\\\n\
+\\\n\
+<p>The first time that you log in, you should pick from the list or enter an or organization name. Your previous choice(s) will be suggested on future visits, or you can select a different provider from the list below.</p>\\\n\
+\\\n\
+<h3>Which provider should I choose?</h3>\\\n\
+\\\n\
+<ul>\\\n\
+<li> If your home institution is available in the list below, select that provider.\\\n\
+<li> If your home institution is not listed and you are an LSC/Virgo/Kagra collaboration member, then you can select one of the LIGO Identity providers and log in with your LIGO.ORG credentials. Information on managing these credentials is available at <a href="https://my.ligo.org">my.ligo.org</a>.\\\n\
+<li> If your institution is not listed and you are not an LSC/Virgo/Kagra collaboration member, please contact <a href="mailto:help@cosmicexplorer.org">help@cosmicexplorer.org</a> for assistance.\\\n\
+</ul>\\\n\
+\\\n+ | sed -i -f - /etc/shibboleth-ds/index.html
+
 COPY supervisord.conf /usr/local/etc/supervisord.conf
 COPY start-shibd.sh /usr/local/sbin/start-shibd.sh
 COPY start-apache.sh /usr/local/sbin/start-apache.sh
