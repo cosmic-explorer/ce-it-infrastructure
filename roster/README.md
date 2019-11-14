@@ -18,7 +18,6 @@ repository should be used until the patches are merged.  This can be obtained
 by by running the commands
 ```sh
 git clone git@github.com:cosmic-explorer/comanage-registry-docker.git
-popd
 ```
 After cloning this repository, run the build script by running the command
 ```sh
