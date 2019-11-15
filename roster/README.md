@@ -23,21 +23,6 @@ After cloning this repository, run the build script by running the command
 . build-comanage.sh
 ```
 
-One the containers are built and configured, start the stack with the command
-```sh
-docker stack deploy --compose-file comanage-registry-stack.yml comanage-registry
-```
-
-### Additional mail configuration
-
-The first time that the stack is run, you wull need to edit the file `/srv/docker/comanage/srv/comanage-registry/local/Config/email.php` and remove the lines
-```php
-    'username' => 'account@gmail.com',
-    'password' => 'password'
-```
-as well as the `,` on the preceeding line, since the Syracuse SMTP host use
-IP-based authorization rather than username/password authentication.
-
 ### Additional Shibboleth configuration
 
 The `build-comanage.sh` script is configured to inherit the Shibboleth
@@ -53,9 +38,24 @@ on the host machine and remove any lines from the `<Attributes>` section of the 
     <Attribute name="urn:oid:2.5.4.42" id="name_GIVEN"/>
     <Attribute name="urn:oid:2.5.4.4" id="name_FAMILY" />
 ```
-and save the file. Since Shibboleth can't be restarted
-from within the COmanage registry container, you will need to stop and restart
-the containers.
+and save the file.
+
+## Starting COmanage
+
+One the containers are built and configured, start the stack with the command
+```sh
+docker stack deploy --compose-file comanage-registry-stack.yml comanage-registry
+```
+
+### Additional mail configuration
+
+The first time that the stack is run, you wull need to edit the file `/srv/docker/comanage/srv/comanage-registry/local/Config/email.php` and remove the lines
+```php
+    'username' => 'account@gmail.com',
+    'password' => 'password'
+```
+as well as the `,` on the preceeding line, since the Syracuse SMTP host use
+IP-based authorization rather than username/password authentication.
 
 ## Containers Management
 
