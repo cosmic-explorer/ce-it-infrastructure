@@ -1,13 +1,6 @@
-export STORAGE_PATH=/srv/docker/dcc
-export DCC_INSTANCE=seaview.phy.syr.edu
-export DCC_HOSTNAME=seaview.phy.syr.edu
-export DCC_DOMAINNAME=phy.syr.edu
-export MYSQL_ROOT_PASSWD=badgers
-export MYSQL_DOCDBRW_PASSWD=mushroommushroom
-export MYSQL_DOCDBRO_PASSWD=badgersbadgersbadgers
-export HYDRA_PASSWD=aghitsasnake
-
 echo "Checking for ${STORAGE_PATH}"
+
+. dcc-environment.sh
 
 if [ -d ${STORAGE_PATH} ] ; then
   echo "${STORAGE_PATH} already exists"
@@ -40,7 +33,6 @@ docker image inspect cosmicexplorer/dcc-base:3.3.0 &>/dev/null
 RET=${?}
 
 trap 'trap - ERR; kill -INT $$' ERR
-
 
 if [ ${RET} -eq 0 ] ; then
   echo "Using existing dcc-base docker image"
