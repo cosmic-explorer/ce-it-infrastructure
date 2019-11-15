@@ -54,9 +54,9 @@ popd
 
 docker swarm init --advertise-addr 127.0.0.1
 
-echo "badgers" | docker secret create mariadb_root_password - 
-echo "badgers" | docker secret create mariadb_password - 
-echo "badgers" | docker secret create comanage_registry_database_user_password - 
+echo ${MARIADB_ROOT_PASSWD} | docker secret create mariadb_root_password - 
+echo ${MARIADB_PASSWD} | docker secret create mariadb_password - 
+echo ${REGISTRY_DATABASE_PASSWD} | docker secret create comanage_registry_database_user_password - 
 
 CERT_DIR=$(mktemp -d)
 sudo cp -a /etc/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
