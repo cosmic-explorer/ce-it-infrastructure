@@ -54,6 +54,7 @@ helpful to create secure passwords.
 To bootstrap the DCC, build the main container and the bootstrap continer by
 running
 ```sh
+export LIBGUESTFS_BACKEND=direct
 . bootstrap-dcc.sh
 ```
 You will need to make a note of the `SECRETS_SYSTEM` and the `DCC_REST_SECRET`
