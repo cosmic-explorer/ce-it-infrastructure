@@ -35,19 +35,11 @@ specified by `STORAGE_PATH` and creates a database for use by the OAuth2
 server.
 
 First, customize the script `dcc-environment.sh` by setting the environment
-variables at the top of the script to the appropriate values for your
-installation:
+variables to the appropriate values for your installation. The various 
+`PASSWD` variables should be set to real passwords generated, for example, by
 ```sh
-export STORAGE_PATH=/srv/docker/dcc
-export DCC_INSTANCE=seaview.phy.syr.edu
-export DCC_HOSTNAME=seaview.phy.syr.edu
-export DCC_DOMAINNAME=phy.syr.edu
-export MYSQL_ROOT_PASSWD=badgers
-export MYSQL_DOCDBRW_PASSWD=mushroommushroom
-export MYSQL_DOCDBRO_PASSWD=badgersbadgersbadgers
-export HYDRA_PASSWD=aghitsasnake
+export LC_CTYPE=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1
 ```
-The various `PASSWD` variables should be set to real passwords. 
 
 To bootstrap the DCC, build the main container and the bootstrap continer by
 running
@@ -55,8 +47,6 @@ running
 export LIBGUESTFS_BACKEND=direct
 . bootstrap-dcc.sh
 ```
-You will need to make a note of the `SECRETS_SYSTEM` and the `DCC_REST_SECRET`
-strings as they is needed to start the OAuth2 server in production.
 
 The `bootstrap-dcc.sh` script uses a helper image that [implements a simple
 npm wait-port
@@ -89,6 +79,10 @@ systemctl stop mariadb.service
 Then log out of the bootstrap container and stop it with
 ```sh
 docker-compose down
+```
+Remove the temporary certificates directory with the command
+```sh
+rm -rf ${CERT_DIR}
 ```
 
 ## Running the DCC in production
