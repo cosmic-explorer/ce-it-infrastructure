@@ -65,10 +65,28 @@ docker build \
     --build-arg SP_MDUI_DESCRIPTION="Cosmic Explorer COmanage Roster" \
     --build-arg SP_MDUI_INFORMATIONURL="https://cosmicexplorer.org" \
     --rm -t sugwg/apache-shibd .
+```
+
+The container can then be started with
+```sh
 export DOMAINNAME=phy.syr.edu
+mkdir -p /etc/shibboleth
 docker-compose up --detach
 ```
-Once the container is running, the metadata can be obtained from the `Shibboleth.sso/Metadata` endpoint. Send the SP metdata to InCommon for federation. Preserve the data that this container generates by copying the files `attribute-map.xml`, `inc-md-cert.pem`, `shibboleth2.xml`, `sp-encrypt-cert.pem`, and `sp-encrypt-key.pem` from `/etc/shibboleth` in the container to the same directory on the host.
+Once the container is running, the metadata can be obtained from the `Shibboleth.sso/Metadata` endpoint. Send the SP metdata to InCommon for federation. 
+
+Preserve the data that this container generates by copying the files `attribute-map.xml`, `inc-md-cert.pem`, `shibboleth2.xml`, `sp-encrypt-cert.pem`, and `sp-encrypt-key.pem` from `/etc/shibboleth` in the container to the same directory on the host. That can be done from inside the container by running
+```sh
+docker exec -it apache-shibd_apache-shibd_1 /bin/bash -l
+cd /etc/shibboleth
+cp attribute-map.xml inc-md-cert.pem sp-encrypt-cert.pem  sp-encrypt-key.pem shibboleth2.xml /mnt/
+exit
+```
+
+Finally, shut down the Apache container with
+```sh
+docker-compose down
+```
 
 The machine `ce-dcc.phy.syr.edu` is configured in a similar way, but with the build arguments:
 ```sh
