@@ -57,7 +57,7 @@ cp /path/to/certs/ce-roster_phy_syr_edu_cert.cer certificates/hostcert.pem
 cp /path/to/certs/ce-roster.phy.syr.edu.key certificates/hostkey.pem
 touch provider-metadata.xml
 docker build \
-    --build-arg SHIBBOLETH_SP_ENTITY_ID=https://ce-roster.phy.syr.edu/shibboleth-sp \
+    --build-arg SHIBBOLETH_SP_ENTITY_ID=http://ce-roster.phy.syr.edu/shibboleth-sp \
     --build-arg SHIBBOLETH_SP_SAMLDS_URL=https://dcc.cosmicexplorer.org/shibboleth-ds/index.html \
     --build-arg SP_MD_SERVICENAME="Syracuse University Gravitational Wave Group - CE COmanage" \
     --build-arg SP_MD_SERVICEDESCRIPTION="Cosmic Explorer COmanage Roster" \
@@ -91,7 +91,7 @@ docker-compose down
 The machine `ce-dcc.phy.syr.edu` is configured in a similar way, but with the build arguments:
 ```sh
 docker build \
-    --build-arg SHIBBOLETH_SP_ENTITY_ID=https://ce-dcc.phy.syr.edu/shibboleth-sp \
+    --build-arg SHIBBOLETH_SP_ENTITY_ID=http://ce-dcc.phy.syr.edu/shibboleth-sp \
     --build-arg SHIBBOLETH_SP_SAMLDS_URL=https://dcc.cosmicexplorer.org/shibboleth-ds/index.html \
     --build-arg SP_MD_SERVICENAME="Syracuse University Gravitational Wave Group - CE DCC" \
     --build-arg SP_MD_SERVICEDESCRIPTION="Cosmic Explorer DCC" \
@@ -104,7 +104,7 @@ docker build \
  The machine `ce-mail.phy.syr.edu` is configured in a similar way, but with the build arguments:
 ```sh
 docker build \
-    --build-arg SHIBBOLETH_SP_ENTITY_ID=https://ce-mailman.phy.syr.edu/shibboleth-sp \
+    --build-arg SHIBBOLETH_SP_ENTITY_ID=http://ce-mailman.phy.syr.edu/shibboleth-sp \
     --build-arg SHIBBOLETH_SP_SAMLDS_URL=https://dcc.cosmicexplorer.org/shibboleth-ds/index.html \
     --build-arg SP_MD_SERVICENAME="Syracuse University Gravitational Wave Group - CE Mailman" \
     --build-arg SP_MD_SERVICEDESCRIPTION="Cosmic Explorer Mailman Server" \
