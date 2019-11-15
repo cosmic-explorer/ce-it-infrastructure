@@ -37,7 +37,9 @@ by by running the commands
 ```sh
 git clone https://github.com/cosmic-explorer/comanage-registry-docker.git
 ```
-After cloning this repository, run the build script by running the command
+
+Edit the file `comanage-env.sh` to set the environment variables to the appropriate values for the installation.
+Then run the build script by running the command
 ```sh
 . build-comanage.sh
 ```
