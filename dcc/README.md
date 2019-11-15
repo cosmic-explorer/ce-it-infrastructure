@@ -2,8 +2,8 @@
 
 Docker stack for running the Cosmic Explorer DCC.
 
-The production stack depends Docker images for
- - The DCC itself, created by `bootstrap-dcc.sh`
+The production stack depends Docker images for:
+ - The DCC itself, which is created from `dcc-syr-disk0.qcow2` by `bootstrap-dcc.sh`
  - The [DCC REST
    API](https://github.com/cosmic-explorer/ce-it-infrastructure/tree/master/rest-dcc)
    which is published to
