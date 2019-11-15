@@ -40,14 +40,18 @@ To create and deploy these services, we use three (virtual) machines:
  * `dcc.cosmicexplorer.org`, an alias to `128.230.146.13`, internally known as `ce-dcc.phy.syr.edu`.
  * `mail.cosmicexplorer.org`, an alias to `128.230.146.15`, internally known as `ce-mailman.phy.syr.edu`.
 
-The services themselves are run inside Docker containers on the machines
-listed above.
+The services themselves are run inside Docker containers on the machines listed above.
+
+## Shibboleth Setup
 
 These services should be federated as [Shibboleth](https://www.internet2.edu/products-services/trust-identity/shibboleth/) Service Providers with [InCommon Research and Scholarship ](https://www.incommon.org/federation/research-and-scholarship/) and have appropriate host certificates and [Shibboleth metadata](https://spaces.at.internet2.edu/display/InCFederation/Research+and+Scholarship+for+SPs) prior to configuring them.
 
 The [sugwg/apache-shibd](https://github.com/sugwg/apache-shibd) Docker container can be used to create the Shibboleth metadata for federation to incommon. To do this, first obtain InCommon host certificates for each machine.
 
-To create create the Shibboleth configuration on `ce-roster.phy.syr.edu`, run the commands
+To create create the Shibboleth configuration on `ce-roster.phy.syr.edu`, run the commands below for each machine.
+
+### COmanage
+
 ```sh
 git clone https://github.com/sugwg/apache-shibd.git
 cd apache-shibd/certificates
@@ -55,7 +59,14 @@ cd apache-shibd/certificates
 cd ..
 cp /path/to/certs/ce-roster_phy_syr_edu_cert.cer certificates/hostcert.pem
 cp /path/to/certs/ce-roster.phy.syr.edu.key certificates/hostkey.pem
-touch provider-metadata.xml
+cat >> assertion-consumer-service.xml <<EOF
+	       <EndpointBase>https://roster.cosmicexplorer.org/Shibboleth.sso</EndpointBase>
+           <EndpointBase>https://ce-roster.phy.syr.edu/Shibboleth.sso</EndpointBase>
+EOF
+cat >> provider-metadata.xml <<EOF
+	<MetadataProvider type="XML" url="https://sugwg-ds.phy.syr.edu/sugwg-orcid-metadata.xml"
+        backingFilePath="/var/log/shibboleth/sugwg-orcid-metadata.xml" reloadInterval="82800" legacyOrgNames="true"/>
+EOF
 docker build \
     --build-arg SHIBBOLETH_SP_ENTITY_ID=http://ce-roster.phy.syr.edu/shibboleth-sp \
     --build-arg SHIBBOLETH_SP_SAMLDS_URL=https://dcc.cosmicexplorer.org/shibboleth-ds/index.html \
@@ -67,29 +78,23 @@ docker build \
     --rm -t sugwg/apache-shibd .
 ```
 
-The container can then be started with
-```sh
-export DOMAINNAME=phy.syr.edu
-mkdir -p /etc/shibboleth
-docker-compose up --detach
-```
-Once the container is running, the metadata can be obtained from the `Shibboleth.sso/Metadata` endpoint. Send the SP metdata to InCommon for federation. 
+### DCC
 
-Preserve the data that this container generates by copying the files `attribute-map.xml`, `inc-md-cert.pem`, `shibboleth2.xml`, `sp-encrypt-cert.pem`, and `sp-encrypt-key.pem` from `/etc/shibboleth` in the container to the same directory on the host. That can be done from inside the container by running
 ```sh
-docker exec -it apache-shibd_apache-shibd_1 /bin/bash -l
-cd /etc/shibboleth
-cp attribute-map.xml inc-md-cert.pem sp-encrypt-cert.pem  sp-encrypt-key.pem shibboleth2.xml /mnt/
-exit
-```
-
-Finally, shut down the Apache container with
-```sh
-docker-compose down
-```
-
-The machine `ce-dcc.phy.syr.edu` is configured in a similar way, but with the build arguments:
-```sh
+git clone https://github.com/sugwg/apache-shibd.git
+cd apache-shibd/certificates
+./keygen.sh
+cd ..
+cp /path/to/certs/ce-roster_phy_syr_edu_cert.cer certificates/hostcert.pem
+cp /path/to/certs/ce-roster.phy.syr.edu.key certificates/hostkey.pem
+cat >> assertion-consumer-service.xml <<EOF
+	       <EndpointBase>https://dcc.cosmicexplorer.org/Shibboleth.sso</EndpointBase>
+           <EndpointBase>https://ce-dcc.phy.syr.edu/Shibboleth.sso</EndpointBase>
+EOF
+cat >> provider-metadata.xml <<EOF
+	<MetadataProvider type="XML" url="https://sugwg-ds.phy.syr.edu/sugwg-orcid-metadata.xml"
+        backingFilePath="/var/log/shibboleth/sugwg-orcid-metadata.xml" reloadInterval="82800" legacyOrgNames="true"/>
+EOF
 docker build \
     --build-arg SHIBBOLETH_SP_ENTITY_ID=http://ce-dcc.phy.syr.edu/shibboleth-sp \
     --build-arg SHIBBOLETH_SP_SAMLDS_URL=https://dcc.cosmicexplorer.org/shibboleth-ds/index.html \
@@ -99,12 +104,26 @@ docker build \
     --build-arg SP_MDUI_DESCRIPTION="Cosmic Explorer DCC" \
     --build-arg SP_MDUI_INFORMATIONURL="https://cosmicexplorer.org" \
     --rm -t sugwg/apache-shibd .
- ```
- 
- The machine `ce-mail.phy.syr.edu` is configured in a similar way, but with the build arguments:
+```
+### Mailman
+
 ```sh
+git clone https://github.com/sugwg/apache-shibd.git
+cd apache-shibd/certificates
+./keygen.sh
+cd ..
+cp /path/to/certs/ce-roster_phy_syr_edu_cert.cer certificates/hostcert.pem
+cp /path/to/certs/ce-roster.phy.syr.edu.key certificates/hostkey.pem
+cat >> assertion-consumer-service.xml <<EOF
+	       <EndpointBase>https://mail.cosmicexplorer.org/Shibboleth.sso</EndpointBase>
+           <EndpointBase>https://ce-mailman.phy.syr.edu/Shibboleth.sso</EndpointBase>
+EOF
+cat >> provider-metadata.xml <<EOF
+	<MetadataProvider type="XML" url="https://sugwg-ds.phy.syr.edu/sugwg-orcid-metadata.xml"
+        backingFilePath="/var/log/shibboleth/sugwg-orcid-metadata.xml" reloadInterval="82800" legacyOrgNames="true"/>
+EOF
 docker build \
-    --build-arg SHIBBOLETH_SP_ENTITY_ID=http://ce-mailman.phy.syr.edu/shibboleth-sp \
+    --build-arg SHIBBOLETH_SP_ENTITY_ID=http://ce-dcc.phy.syr.edu/shibboleth-sp \
     --build-arg SHIBBOLETH_SP_SAMLDS_URL=https://dcc.cosmicexplorer.org/shibboleth-ds/index.html \
     --build-arg SP_MD_SERVICENAME="Syracuse University Gravitational Wave Group - CE Mailman" \
     --build-arg SP_MD_SERVICEDESCRIPTION="Cosmic Explorer Mailman Server" \
@@ -112,4 +131,26 @@ docker build \
     --build-arg SP_MDUI_DESCRIPTION="Cosmic Explorer Mailman Server" \
     --build-arg SP_MDUI_INFORMATIONURL="https://cosmicexplorer.org" \
     --rm -t sugwg/apache-shibd .
+```
+
+### Start Apache Containers
+
+The container can then be started with
+```sh
+export DOMAINNAME=phy.syr.edu
+docker-compose up --detach
+```
+Once the container is running, the metadata can be obtained from the `Shibboleth.sso/Metadata` endpoint. Send the SP metdata to InCommon for federation. 
+
+Preserve the data that this container generates by copying the files `attribute-map.xml`, `inc-md-cert.pem`, `shibboleth2.xml`, `sp-encrypt-cert.pem`, and `sp-encrypt-key.pem` from the `shibboleth/` to `/etc/shibboleth` on the host by running the commands
+```sh
+mkdir -p /etc/shibboleth
+cp shibboleth/* /etc/shibboleth
+```
+
+### Stop Apache Container
+
+Finally, shut down the Apache container with
+```sh
+docker-compose down
 ```
