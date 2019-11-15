@@ -90,7 +90,6 @@ docker run -it --rm \
   cosmicexplorer/wait-port:0.2.6 \
   wait-port hydra-database:5432
 
-export SECRETS_SYSTEM=$(export LC_CTYPE=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 export DSN="postgres://hydra:${HYDRA_PASSWD}@hydra-database:5432/hydra?sslmode=disable"
 
 docker run -it --rm \
@@ -118,7 +117,6 @@ docker run -it --rm \
   cosmicexplorer/wait-port:0.2.6 \
   wait-port hydra-bootstrap-server:4444
 
-export DCC_REST_SECRET=$(export LC_CTYPE=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 docker run --rm -it \
   --network dcc-bootstrap-network \
   oryd/hydra:v1.0.8 \
@@ -135,8 +133,5 @@ docker run --rm -it \
 docker stop hydra-bootstrap-server
 docker stop hydra-database
 docker network rm dcc-bootstrap-network
-
-echo "OAuth2 server SECRETS_SYSTEM=${SECRETS_SYSTEM}"
-echo "OAuth2 server DCC_REST_SECRET=${DCC_REST_SECRET}"
 
 trap - ERR
