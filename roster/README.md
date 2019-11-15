@@ -16,7 +16,7 @@ that are needed which have not yet been merged to master so the Cosmic Explorer
 repository should be used until the patches are merged.  This can be obtained
 by by running the commands
 ```sh
-git clone git@github.com:cosmic-explorer/comanage-registry-docker.git
+git clone https://github.com/cosmic-explorer/comanage-registry-docker.git
 ```
 After cloning this repository, run the build script by running the command
 ```sh
