@@ -6,6 +6,25 @@ Explorer Consortium. They are not intended to be an exhausive guide to
 COmanage, and assume that the user is familiar with the [COmanage registry
 data model.](https://spaces.at.internet2.edu/display/COmanage/Registry+Data+Model)
 
+## Additional Shibboleth configuration
+
+The `build-comanage.sh` script is configured to inherit the Shibboleth
+configuration of the host machine in `/etc/shibboleth`, which is copied into
+`/srv/docker/comanage/etc/shibboleth` on the host and then used by the
+container. The default Shibboleth attribute map maps the user's given 
+name and surname to two different variables. [COmanage wants these to be
+stored](https://spaces.at.internet2.edu/display/COmanage/Consuming+External+Attributes+via+Web+Server+Environment+Variables#ConsumingExternalAttributesviaWebServerEnvironmentVariables-PopulatingDefaultValuesDuringEnrollment)
+in variables with a common string and the suffixes `_GIVEN` and `_FAMILY`.
+We also need to provide the `mail` attribute to COmanage.
+To do this, edit the file `/etc/shibboleth/attribute-map.xml` 
+on the host machine and remove any lines from the `<Attributes>` section of the file that reference `urn:oid:2.5.4.42`, `urn:oid:2.5.4.4`, and `urn:oid:0.9.2342.19200300.100.1.3`. Then add the lines:
+```
+    <Attribute name="urn:oid:2.5.4.42" id="name_GIVEN"/>
+    <Attribute name="urn:oid:2.5.4.4" id="name_FAMILY" />
+    <Attribute name="urn:oid:0.9.2342.19200300.100.1.3" id="mail" />
+```
+and save the file.
+
 ## Install Instructions
 
 To build and deploy COmanage, first download a copy of the
@@ -22,25 +41,6 @@ After cloning this repository, run the build script by running the command
 ```sh
 . build-comanage.sh
 ```
-
-### Additional Shibboleth configuration
-
-The `build-comanage.sh` script is configured to inherit the Shibboleth
-configuration of the host machine, which is copied into
-`/srv/docker/comanage/etc/shibboleth` on the host and then used by the
-container. The default Shibboleth attribute map maps the user's given 
-name and surname to two different variables. [COmanage wants these to be
-stored](https://spaces.at.internet2.edu/display/COmanage/Consuming+External+Attributes+via+Web+Server+Environment+Variables#ConsumingExternalAttributesviaWebServerEnvironmentVariables-PopulatingDefaultValuesDuringEnrollment)
-in variables with a common string and the suffixes `_GIVEN` and `_FAMILY`.
-We also need to provide the `mail` attribute to COmanage.
-To do this, edit the file `/srv/docker/comanage/etc/shibboleth/attribute-map.xml` 
-on the host machine and remove any lines from the `<Attributes>` section of the file that reference `urn:oid:2.5.4.42`, `urn:oid:2.5.4.4`, and `urn:oid:0.9.2342.19200300.100.1.3`. Then add the lines:
-```
-    <Attribute name="urn:oid:2.5.4.42" id="name_GIVEN"/>
-    <Attribute name="urn:oid:2.5.4.4" id="name_FAMILY" />
-    <Attribute name="urn:oid:0.9.2342.19200300.100.1.3" id="mail" />
-```
-and save the file.
 
 ## Starting COmanage
 
