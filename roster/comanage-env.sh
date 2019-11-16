@@ -15,4 +15,4 @@ export OLC_ROOT_DN=cn=admin,dc=cosmicexplorer,dc=org
 export COMANAGE_REGISTRY_ENABLE_PLUGIN=MailmanProvisioner,ChangelogProvisioner,GithubProvisioner
 export MARIADB_ROOT_PASSWD=badgers
 export MARIADB_PASSWD=badgers
-export REGISTRY_DATABASE_PASSWD=badgers
+export REGISTRY_DATABASE_PASSWD=${MARIADB_PASSWD}
