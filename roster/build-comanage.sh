@@ -73,14 +73,6 @@ sudo mkdir -p ${STORAGE_PATH}/srv/comanage-registry/local
 sudo mkdir -p ${STORAGE_PATH}/etc/shibboleth
 sudo mkdir -p ${STORAGE_PATH}/letsencrypt/config
 
-sudo cp /etc/shibboleth/shibboleth2.xml ${STORAGE_PATH}/etc/shibboleth/
-sudo cp attribute-map.xml ${STORAGE_PATH}/etc/shibboleth/
-/usr/bin/curl -O -s https://ds.incommon.org/certs/inc-md-cert.pem
-/bin/chmod 644 inc-md-cert.pem
-sudo cp inc-md-cert.pem ${STORAGE_PATH}/etc/shibboleth/inc-md-cert.pem
-rm -f inc-md-cert.pem
-sudo /bin/chmod 644 ${STORAGE_PATH}/etc/shibboleth/*
-
 pushd comanage-registry-slapd-base
 TAG="${COMANAGE_REGISTRY_SLAPD_BASE_IMAGE_VERSION}"
 docker build \
@@ -99,10 +91,18 @@ echo "{SSHA}bnjbUkuyt0MKJnDXbtwE2VjtoTeKjqFw" | docker secret create olc_root_pw
 sudo mkdir -p ${STORAGE_PATH}/var/lib/ldap
 sudo mkdir -p ${STORAGE_PATH}/etc/slapd.d
 
+popd
+
+sudo cp /etc/shibboleth/shibboleth2.xml ${STORAGE_PATH}/etc/shibboleth/
+sudo cp attribute-map.xml ${STORAGE_PATH}/etc/shibboleth/
+/usr/bin/curl -O -s https://ds.incommon.org/certs/inc-md-cert.pem
+/bin/chmod 644 inc-md-cert.pem
+sudo cp inc-md-cert.pem ${STORAGE_PATH}/etc/shibboleth/inc-md-cert.pem
+rm -f inc-md-cert.pem
+sudo /bin/chmod 644 ${STORAGE_PATH}/etc/shibboleth/*
+
 if [ $(uname) == "Darwin" ] ; then
   sudo chown -R ${USER} ${STORAGE_PATH}
 fi
-
-popd
 
 trap - ERR
