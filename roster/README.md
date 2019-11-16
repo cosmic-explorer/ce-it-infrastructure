@@ -25,24 +25,7 @@ Then run the build script by running the command
 . build-comanage.sh
 ```
 
-## Starting COmanage
-
-One the containers are built and configured, start the stack with the command
-```sh
-docker stack deploy --compose-file comanage-registry-stack.yml comanage-registry
-```
-
-### Additional mail configuration
-
-The first time that the stack is run, you wull need to edit the file `/srv/docker/comanage/srv/comanage-registry/local/Config/email.php` and remove the lines
-```php
-    'username' => 'account@gmail.com',
-    'password' => 'password'
-```
-as well as the `,` on the preceeding line, since the Syracuse SMTP host uses
-IP-based authorization, rather than username/password authentication.
-
-## Containers Management
+## Container Management
 
 ### Starting the Containers
 
@@ -67,6 +50,16 @@ The registry and LDAP containers can then be started with the command
 docker service scale comanage-registry_comanage-registry-ldap=1
 docker service scale comanage-registry_comanage-registry=1
 ```
+
+### Additional mail configuration
+
+The first time that the stack is run, you wull need to edit the file `/srv/docker/comanage/srv/comanage-registry/local/Config/email.php` and remove the lines
+```php
+    'username' => 'account@gmail.com',
+    'password' => 'password'
+```
+as well as the `,` on the preceeding line, since the Syracuse SMTP host uses
+IP-based authorization, rather than username/password authentication.
 
 ### Checking Container Status
 
