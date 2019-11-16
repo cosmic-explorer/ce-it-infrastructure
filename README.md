@@ -52,6 +52,12 @@ To create create the Shibboleth configuration on `ce-roster.phy.syr.edu`, run th
 
 ### COmanage
 
+The default Shibboleth attribute map maps the user's given 
+name and surname to two the variables `givenName` and `sn`. [COmanage wants these to be
+stored](https://spaces.at.internet2.edu/display/COmanage/Consuming+External+Attributes+via+Web+Server+Environment+Variables#ConsumingExternalAttributesviaWebServerEnvironmentVariables-PopulatingDefaultValuesDuringEnrollment)
+in variables with a common string (we use `name`) with the suffixes `_GIVEN` and `_FAMILY`.
+This set up adds the `<Attribute Resolver>` elements needed to create these.
+
 ```sh
 git clone https://github.com/sugwg/apache-shibd.git
 cd apache-shibd/certificates
@@ -66,6 +72,13 @@ EOF
 cat >> provider-metadata.xml <<EOF
 	<MetadataProvider type="XML" url="https://sugwg-ds.phy.syr.edu/sugwg-orcid-metadata.xml"
         backingFilePath="/var/log/shibboleth/sugwg-orcid-metadata.xml" reloadInterval="82800" legacyOrgNames="true"/>
+
+        <AttributeResolver type="Template" sources="givenName" dest="name_GIVEN">
+            <Template>\$givenName</Template>
+        </AttributeResolver>
+        <AttributeResolver type="Template" sources="sn" dest="name_FAMILY">
+            <Template>\$sn</Template>
+        </AttributeResolver>
 EOF
 docker build \
     --build-arg SHIBBOLETH_SP_ENTITY_ID=http://ce-roster.phy.syr.edu/shibboleth-sp \
