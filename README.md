@@ -8,12 +8,14 @@ primary services:
  * An instance of the [DocDB document server](http://docdb-v.sourceforge.net/) based on the fork used by the [LIGO Document Control Center](https://dcc.ligo.org/) to manage the storage and retrieval of documents.
  * A [GNU Mailman](https://list.org/) instance for mailing lists.
  * Integration with the [cosmic-explorer](https://github.com/cosmic-explorer) organization on [GitHub](https://github.com/) for collaborative repository management.
+ * [Shibboleth Identity Provider](https://www.shibboleth.net/products/identity-provider/) that acts as an ORCiD to SAML gateway for providing user identities.
 
 This repository contains instructions for:
 
  * [Installing COmanage](https://github.com/cosmic-explorer/ce-it-infrastructure/blob/master/roster) and [setting up the registry.](https://github.com/cosmic-explorer/ce-it-infrastructure/blob/master/roster/doc)
  * [Installing and running an instance of the DCC.](https://github.com/cosmic-explorer/ce-it-infrastructure/blob/master/dcc)
  * [Installing and configuring Mailman.](https://github.com/cosmic-explorer/ce-it-infrastructure/blob/master/mail)
+ * [Configuring the Shibboleth IdP.](https://github.com/duncan-brown/ce-it-infrastructure/tree/master/idp)
 
 The repository provides two tools used by the services:
 
