@@ -307,3 +307,12 @@ We release all attributed *except* `uid` to the the SPs:
 
 </AttributeFilterPolicyGroup>
 ```
+
+### OAuth2 Token
+
+The attribute resolver needs an OAuth2 access token to query the ORCiD API.
+Since ORCiD issues long-lived tokens (20 years), we obtain a token using 
+[Insomnia](https://insomnia.rest) and hard-wire it into the code as the 
+`Bearer` token.
+
+<img src="" alt="Obtain an OAuth2 Token" width="800">
