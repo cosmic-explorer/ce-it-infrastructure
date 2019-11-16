@@ -315,4 +315,4 @@ Since ORCiD issues long-lived tokens (20 years), we obtain a token using
 [Insomnia](https://insomnia.rest) and hard-wire it into the code as the 
 `Bearer` token.
 
-<img src="" alt="Obtain an OAuth2 Token" width="800">
+<img src="https://raw.githubusercontent.com/duncan-brown/ce-it-infrastructure/master/idp/orcid-insomnia.png" alt="Obtain an OAuth2 Token" width="800">
