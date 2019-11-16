@@ -74,7 +74,7 @@ sudo mkdir -p ${STORAGE_PATH}/etc/shibboleth
 sudo mkdir -p ${STORAGE_PATH}/letsencrypt/config
 
 sudo cp /etc/shibboleth/shibboleth2.xml ${STORAGE_PATH}/etc/shibboleth/
-sudo cp /etc/shibboleth/attribute-map.xml ${STORAGE_PATH}/etc/shibboleth/
+sudo cp attribute-map.xml ${STORAGE_PATH}/etc/shibboleth/
 /usr/bin/curl -O -s https://ds.incommon.org/certs/inc-md-cert.pem
 /bin/chmod 644 inc-md-cert.pem
 sudo cp inc-md-cert.pem ${STORAGE_PATH}/etc/shibboleth/inc-md-cert.pem
