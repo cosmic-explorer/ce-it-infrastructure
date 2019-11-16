@@ -123,8 +123,11 @@ RUN curl http://download.opensuse.org/repositories/security://shibboleth/CentOS_
 <ul>\\\n\
 <li> If your home institution is available in the list below, select that provider.\\\n\
 <li> If your home institution is not listed and you are an LSC/Virgo/Kagra collaboration member, then you can select one of the LIGO Identity providers and log in with your LIGO.ORG credentials. Information on managing these credentials is available at <a href="https://my.ligo.org">my.ligo.org</a>.\\\n\
-<li> If your institution is not listed and you are not an LSC/Virgo/Kagra collaboration member, please contact <a href="mailto:help@cosmicexplorer.org">help@cosmicexplorer.org</a> for assistance.\\\n\
+<li> If your institution is not listed and you are not an LSC/Virgo/Kagra collaboration member, you can select the ORCiD identity provider and log in with your <a href="https://orcid.org/">ORCiD credentials.</a> If you do not have an ORCiD, you can obtain one by visiting the <a href="https://orcid.org/register">ORCiD registration page.</a>\\\n\
 </ul>\\\n\
+\\\n\
+<p>The identity selector will appear below. It may take a few seconds to gather the information from all available identity providers.</p>\\\n\
+\\\n\
 \\\n+' | sed -i -f - /etc/shibboleth-ds/index.html
 
 COPY supervisord.conf /usr/local/etc/supervisord.conf
