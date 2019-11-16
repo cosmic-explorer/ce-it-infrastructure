@@ -8,7 +8,7 @@ primary services:
  * An instance of the [DocDB document server](http://docdb-v.sourceforge.net/) based on the fork used by the [LIGO Document Control Center](https://dcc.ligo.org/) to manage the storage and retrieval of documents.
  * A [GNU Mailman](https://list.org/) instance for mailing lists.
  * Integration with the [cosmic-explorer](https://github.com/cosmic-explorer) organization on [GitHub](https://github.com/) for collaborative repository management.
- * [Shibboleth Identity Provider](https://www.shibboleth.net/products/identity-provider/) that acts as an ORCiD to SAML gateway for providing user identities.
+ * A [Shibboleth Identity Provider](https://www.shibboleth.net/products/identity-provider/) that acts as an ORCiD to SAML gateway for providing user identities.
 
 This repository contains instructions for:
 
