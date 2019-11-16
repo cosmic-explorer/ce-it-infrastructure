@@ -1,7 +1,7 @@
 # Cosmic Explorer IT Infrastructure
 
 This repository contains the resources and documentation necessary to set up
-the collaboration cyberinfrastructure used by Cosmic Explorer. We deploy three
+the collaboration cyberinfrastructure used by Cosmic Explorer. We deploy four
 primary services:
 
  * An instance of [COmanage Registry](https://www.internet2.edu/products-services/trust-identity/comanage/) to allow people to sign up to Cosmic Explorer and for the provisioning of associated services.
@@ -25,7 +25,7 @@ The repository provides two tools used by the services:
 The infrastructure also relies on the following repositories hosted by the [cosmic-explorer](https://github.com/cosmic-explorer) GitHub organization:
 
  * A fork of [COmanage Regustry](https://github.com/cosmic-explorer/comanage-registry) that contains the source for the fixed GitHub provisioner and the DCC provisioner until these are merged into the main COmanage repository.
- * A fork of the [Hydra Login and Consent Node](https://github.com/cosmic-explorer/hydra-login-consent-node) used by the DCC to perform OAuth2 delegation of credentials to COmanage. This is essentially the same as the original version, by removes the `foo@bar.com` login as authentication is managed by Apache Shibboleth which reverse proxies to the consent node.
+ * A fork of the [Hydra Login and Consent Node](https://github.com/cosmic-explorer/hydra-login-consent-node) used by the DCC to perform OAuth2 delegation of credentials to COmanage. This is essentially the same as the original version, but removes the `foo@bar.com` login as authentication is managed by Apache Shibboleth which reverse proxies to the consent node.
  * A fork of [the COmanage registry docker containers](https://github.com/cosmic-explorer/comanage-registry-docker) to allow us to make any CE specific changes. Currently this is even with the upstream repository as no patches are needed.
 
 The infrastructure also relies on the following externally provided infrastructure:
@@ -50,7 +50,7 @@ These services should be federated as [Shibboleth](https://www.internet2.edu/pro
 
 The [sugwg/apache-shibd](https://github.com/sugwg/apache-shibd) Docker container can be used to create the Shibboleth metadata for federation to incommon. To do this, first obtain InCommon host certificates for each machine.
 
-To create create the Shibboleth configuration on `ce-roster.phy.syr.edu`, run the commands below for each machine.
+To create create the Shibboleth configuration, run the commands below for each machine.
 
 ### COmanage
 
