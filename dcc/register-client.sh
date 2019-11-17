@@ -1,11 +1,9 @@
 #!/bin/bash 
 
-set -o errexit -o pipefail -o noclobber -o nounset
+set -o errexit
 
 OPTIONS=hi:u:
 LONGOPTS=help,client-id:,callback-url:
-
-
 
 client_id=""
 callback_url=""
@@ -19,7 +17,6 @@ fi
 # read getopt’s output this way to handle the quoting right:
 eval set -- "$PARSED"
 
-d=n f=n v=n outFile=-
 # now enjoy the options in order and nicely split until we see --
 while true; do
     case "$1" in
@@ -65,7 +62,7 @@ docker run --rm -it \
   --network dcc_default \
   oryd/hydra:v1.0.8 \
   clients create \
-    --endpoint http://hydra-bootstrap-server:4445 \
+    --endpoint http://oauth-server:4445 \
     --callbacks ${callback_url} \
     --id ${client_id} \
     --secret ${SECRET} \
