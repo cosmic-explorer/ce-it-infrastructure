@@ -66,10 +66,10 @@ docker run --rm -it \
     --callbacks ${callback_url} \
     --id ${client_id} \
     --secret ${client_secret} \
-    --grant-types authorization_code,refresh_token \
-    --response-types token,code \
-    --scope openid,offline \
-    --token-endpoint-auth-method client_secret_basic \
+    --grant-types authorization_code \
+    --response-types code \
+    --scope offline \
+    --token-endpoint-auth-method client_secret_post \
     --fake-tls-termination
 
 echo "Registered OAuth2 client successfully"
