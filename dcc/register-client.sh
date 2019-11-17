@@ -39,7 +39,7 @@ while true; do
             client_id="$2"
             shift 2
             ;;
-        -u|--callbacl-url)
+        -u|--callback-url)
             callback_url="$2"
             shift 2
             ;;
