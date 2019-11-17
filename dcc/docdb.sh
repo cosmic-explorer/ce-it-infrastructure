@@ -9,10 +9,31 @@ MYSQL_DOCDBRO_PASSWD=$(cat /run/secrets/mysql_docdbro_passwd)
 if [ ! -f /var/lib/mysql/docdb.init ] ; then
 mysql -u root << EOF
 USE dcc_docdb;
-INSERT INTO \`Author\` VALUES (1,'Duncan',NULL,'Brown',50,1,'2019-01-30','dabrown','Duncan Brown');
-INSERT INTO \`RemoteUser\` VALUES (1,'dabrown@syr.edu',1,'dabrown@syr.edu');
-INSERT INTO \`EmailUser\` VALUES (1,'dabrown','','Duncan Brown','dabrown@syr.edu',0,'2019-01-30',1,1,1,1);
-INSERT INTO \`UsersGroup\` VALUES (1,1,45,'2019-01-30');
+DELETE FROM \`SecurityGroup\` WHERE GroupID <> 1 AND GroupID <> 3;
+INSERT INTO \`SecurityGroup\` VALUES(2, 'CO:admins', 'Administrators', CURRENT_TIMESTAMP, 1, 1, 1, 1, '1');
+INSERT INTO \`SecurityGroup\` VALUES(4, 'CEPIs', 'Cosmic Explorer PIs and CoPIs', CURRENT_TIMESTAMP, 1, 0, 1, 0, '1');
+INSERT INTO \`SecurityGroup\` VALUES(5, 'CEProject', 'Cosmic Explorer Project', CURRENT_TIMESTAMP, 1, 0, 1, 0, '1');
+INSERT INTO \`SecurityGroup\` VALUES(6, 'CEConsortium', 'Cosmic Explorer Consortium', CURRENT_TIMESTAMP, 0, 0, 1, 0, '1');
+INSERT INTO \`SecurityGroup\` VALUES(7, 'NSF', 'Cosmic Explorer NSF Program Officers', CURRENT_TIMESTAMP, 1, 0, 1, 0, '1');
+DELETE FROM \`GroupHierarchy\`;
+INSERT INTO \`GroupHierarchy\` VALUES(1, 101, 100, CURRENT_TIMESTAMP);
+INSERT INTO \`GroupHierarchy\` VALUES(2, 102, 100, CURRENT_TIMESTAMP);
+INSERT INTO \`GroupHierarchy\` VALUES(3, 102, 101, CURRENT_TIMESTAMP);
+DELETE FROM \`Institution\`;
+INSERT INTO \`Institution\` VALUES(1, 'CEConsortium', 'Cosmic Explorer Consortium', CURRENT_TIMESTAMP);
+INSERT INTO \`Institution\` VALUES(2, 'Caltech', 'California Institute Of Technology', CURRENT_TIMESTAMP);
+INSERT INTO \`Institution\` VALUES(3, 'CSUF', 'California State University Fullerton', CURRENT_TIMESTAMP);
+INSERT INTO \`Institution\` VALUES(4, 'MIT', 'Massachusetts Institute Of Technology', CURRENT_TIMESTAMP);
+INSERT INTO \`Institution\` VALUES(5, 'PennState', 'Penn State University', CURRENT_TIMESTAMP);
+INSERT INTO \`Institution\` VALUES(6, 'NSF', 'National Science Foundation', CURRENT_TIMESTAMP);
+INSERT INTO \`Institution\` VALUES(7, 'SU', 'Syracuse University', CURRENT_TIMESTAMP);
+DELETE FROM \`AuthorGroupDefinition\`;
+INSERT INTO \`AuthorGroupDefinition\` VALUES(1, 'CEProject', 'Cosmic Explorer Project');
+INSERT INTO \`AuthorGroupDefinition\` VALUES(2, 'CEConsortium', 'Cosmic Explorer Consortium');
+DELETE FROM \`EventGroup\`;
+INSERT INTO \`EventGroup\` VALUES(1, 'Project Team Meetings', 'Project Team Meetings', CURRENT_TIMESTAMP);
+INSERT INTO \`EventGroup\` VALUES(2, 'Consortium Meetings', 'Consortium Meetings', CURRENT_TIMESTAMP);
+DELETE FROM \`EventTopic\`;
 EOF
 mysql -u root << EOF
 GRANT USAGE ON *.* TO 'docdbrw'@'%';
