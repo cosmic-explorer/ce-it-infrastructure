@@ -66,7 +66,7 @@ docker run --rm -it \
     --callbacks ${callback_url} \
     --id ${client_id} \
     --secret ${client_secret} \
-    --grant-types authorization_code \
+    --grant-types authorization_code,refresh_token \
     --response-types code \
     --scope offline \
     --token-endpoint-auth-method client_secret_post \
