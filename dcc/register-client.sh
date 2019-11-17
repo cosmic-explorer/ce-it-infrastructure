@@ -56,7 +56,7 @@ if [ -z ${client_id} ] || [ -z ${callback_url} ] ; then
     exit 1
 fi
 
-SECRET=$(export LC_CTYPE=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+client_secret=$(export LC_CTYPE=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
 docker run --rm -it \
   --network dcc_default \
@@ -65,11 +65,12 @@ docker run --rm -it \
     --endpoint http://oauth-server:4445 \
     --callbacks ${callback_url} \
     --id ${client_id} \
-    --secret ${SECRET} \
+    --secret ${client_secret} \
     --grant-types authorization_code,refresh_token \
     --response-types token,code \
     --scope openid,offline \
-    --token-endpoint-auth-method client_secret_basic
+    --token-endpoint-auth-method client_secret_basic \
+    --fake-tls-termination
 
 echo "Registered OAuth2 client successfully"
 echo "Client ID: ${client_id}"
