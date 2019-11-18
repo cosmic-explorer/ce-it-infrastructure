@@ -130,6 +130,9 @@ RUN curl http://download.opensuse.org/repositories/security://shibboleth/CentOS_
 \\\n\
 \\\n+' | sed -i -f - /etc/shibboleth-ds/index.html
 
+COPY AuthorSQL.pm.patch /tmp/AuthorSQL.pm.patch
+RUN patch -p0 /usr1/www/cgi-bin/private/DocDB/AuthorSQL.pm < /tmp/AuthorSQL.pm.patch
+
 COPY supervisord.conf /usr/local/etc/supervisord.conf
 COPY start-shibd.sh /usr/local/sbin/start-shibd.sh
 COPY start-apache.sh /usr/local/sbin/start-apache.sh
