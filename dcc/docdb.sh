@@ -34,6 +34,9 @@ DELETE FROM \`EventGroup\`;
 INSERT INTO \`EventGroup\` VALUES(1, 'Project Team Meetings', 'Project Team Meetings', CURRENT_TIMESTAMP);
 INSERT INTO \`EventGroup\` VALUES(2, 'Consortium Meetings', 'Consortium Meetings', CURRENT_TIMESTAMP);
 DELETE FROM \`EventTopic\`;
+INSERT INTO \`DocumentType\` VALUES(16, 'N - Funding proposals', 'Proposals to funding agencies (federal or private foundation)', CURRENT_TIME, 1);
+UPDATE \`DocumentType\` SET NextDocNumber = 1;
+UPDATE \`DocumentType\` SET LongType = 'Serial Numbers for Cosmic Explorer Equipment' WHERE DocTypeID=9;
 EOF
 mysql -u root << EOF
 GRANT USAGE ON *.* TO 'docdbrw'@'%';
