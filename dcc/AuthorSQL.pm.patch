@@ -1,0 +1,54 @@
+--- /usr1/www/cgi-bin/private/DocDB/AuthorSQL.pm.orig	2019-11-18 06:33:26.379723031 -0800
++++ /usr1/www/cgi-bin/private/DocDB/AuthorSQL.pm	2019-11-18 07:08:32.466619393 -0800
+@@ -511,10 +511,14 @@
+       }                   
+       next;  
+     }
++
++### Split the first name into first and middle initials
++    my($first, $middle) = split(/ /, $first, 2);
++    $middle =~ s/\.//g;    # Remove dots if any  
+  
+-    my $author_list_query = "select AuthorID from Author where FirstName = \"$first\" and LastName = \"$last\""; 
++    my $author_list_query = "select AuthorId from Author where FirstName = \"$first\" and MiddleInitials=\"$middle\" and LastName = \"$last\""; 
+     my $author_list = $dbh -> prepare($author_list_query);
+-    my $fuzzy_list_query = "select AuthorID from Author where FirstName LIKE (\"$first%\") and LastName LIKE (\"$last%\")"; 
++    my $fuzzy_list_query = "select AuthorId from Author where FirstName like (\"$first%\") and MiddleInitials like (\"$middle%\") and LastName like (\"$last%\")"; 
+     my $fuzzy_list = $dbh -> prepare($fuzzy_list_query);
+ 
+ 
+@@ -566,7 +570,8 @@
+     if ($Warn) {
+       push @WarnStack, "No match was found for the author $entry.";
+     } else {      
+-      push @ErrorStack,"No match was found for the author $entry, first name: $first, last name: $last. Please go back and try again.";
++      my $xxx = join(",", @Matches);
++      push @ErrorStack,"No match was found for the author $entry, first name: \"$first\", middle initials \"$middle\", last name: \"$last\". Please go back and try again.";
+     }                   
+   }
+   return @AuthorIDs;
+@@ -610,9 +615,13 @@
+       next;  
+     }
+  
+-    my $author_list_query = "select AuthorID from Author where FirstName = \"$first\" and LastName = \"$last\""; 
++### Split the first name into first and middle initials
++    my($first, $middle) = split(/ /, $first, 2);
++    $middle =~ s/\.//g;    # Remove dots if any  
++
++    my $author_list_query = "select AuthorId from Author where FirstName = \"$first\" and MiddleInitials=\"$middle\" and LastName = \"$last\""; 
+     my $author_list = $dbh -> prepare($author_list_query);
+-    my $fuzzy_list_query = "select AuthorID from Author where FirstName LIKE (\"$first%\") and LastName LIKE (\"$last%\")"; 
++    my $fuzzy_list_query = "select AuthorId from Author where FirstName like (\"$first%\") and MiddleInitials like (\"$middle%\") and LastName like (\"$last%\")"; 
+     my $fuzzy_list = $dbh -> prepare($fuzzy_list_query);
+ 
+ 
+@@ -664,7 +673,7 @@
+     if ($Warn) {
+       push @WarnStack, "No match was found for the author $entry.";
+     } else {      
+-      push @ErrorStack,"No match was found for the author $entry, first name: $first, last name: $last. Please go back and try again.";
++      push @ErrorStack,"No match was found for the author $entry, first name: \"$first\", middle initials \"$middle\", last name: \"$last\". Please go back and try again.";
+     }                   
+   }
+   return @AuthorIDs;
