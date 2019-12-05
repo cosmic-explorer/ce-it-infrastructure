@@ -136,15 +136,15 @@ cd ..
 cp /path/to/certs/ce-roster_phy_syr_edu_cert.cer certificates/hostcert.pem
 cp /path/to/certs/ce-roster.phy.syr.edu.key certificates/hostkey.pem
 cat >> assertion-consumer-service.xml <<EOF
-	       <EndpointBase>https://mail.cosmicexplorer.org/Shibboleth.sso</EndpointBase>
-           <EndpointBase>https://ce-mailman.phy.syr.edu/Shibboleth.sso</EndpointBase>
+           <EndpointBase>https://mail.cosmicexplorer.org/Shibboleth.sso</EndpointBase>
+           <EndpointBase>https://ce-mail.phy.syr.edu/Shibboleth.sso</EndpointBase>
 EOF
 cat >> provider-metadata.xml <<EOF
 	<MetadataProvider type="XML" url="https://sugwg-ds.phy.syr.edu/sugwg-orcid-metadata.xml"
         backingFilePath="/var/log/shibboleth/sugwg-orcid-metadata.xml" reloadInterval="82800" legacyOrgNames="true"/>
 EOF
 docker build \
-    --build-arg SHIBBOLETH_SP_ENTITY_ID=http://ce-dcc.phy.syr.edu/shibboleth-sp \
+    --build-arg SHIBBOLETH_SP_ENTITY_ID=http://ce-mailman.phy.syr.edu/shibboleth-sp \
     --build-arg SHIBBOLETH_SP_SAMLDS_URL=https://dcc.cosmicexplorer.org/shibboleth-ds/index.html \
     --build-arg SP_MD_SERVICENAME="Syracuse University Gravitational Wave Group - CE Mailman" \
     --build-arg SP_MD_SERVICEDESCRIPTION="Cosmic Explorer Mailman Server" \
