@@ -40,7 +40,7 @@ To create and deploy these services, we use a single VMware host machine `ce-ser
 
  * `roster.cosmicexplorer.org`, an alias to `128.230.146.12`, internally known as `ce-roster.phy.syr.edu`.
  * `dcc.cosmicexplorer.org`, an alias to `128.230.146.13`, internally known as `ce-dcc.phy.syr.edu`.
- * `mail.cosmicexplorer.org`, an alias to `128.230.146.15`, internally known as `ce-mailman.phy.syr.edu`.
+ * `mail.cosmicexplorer.org`, an alias to `128.230.146.15`, internally known as `ce-mail.phy.syr.edu`.
 
 The services themselves are run inside Docker containers on the machines listed above.
 
@@ -50,9 +50,13 @@ First [set up the host networking](https://github.com/cosmic-explorer/ce-it-infr
 
 These services should be federated as [Shibboleth](https://www.internet2.edu/products-services/trust-identity/shibboleth/) Service Providers with [InCommon Research and Scholarship ](https://www.incommon.org/federation/research-and-scholarship/) and have appropriate host certificates and [Shibboleth metadata](https://spaces.at.internet2.edu/display/InCFederation/Research+and+Scholarship+for+SPs) prior to configuring them.
 
-The [sugwg/apache-shibd](https://github.com/sugwg/apache-shibd) Docker container can be used to create the Shibboleth metadata for federation to incommon. To do this, first obtain InCommon host certificates for each machine.
+The [sugwg/apache-shibd](https://github.com/sugwg/apache-shibd) Docker container can be used to create the Shibboleth metadata for federation to incommon. To do this, first obtain InCommon host certificates for each interface.
 
-To create create the Shibboleth configuration, run the commands below for each machine.
+To create the Shibboleth metadata, run the commands below for each interface. First, make a directory for each interface
+```
+mkdir -p ce-mail ce-roster ce-dcc
+```
+and perform in the apache shibd configuration step in each directory.
 
 ### COmanage
 
