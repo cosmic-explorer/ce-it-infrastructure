@@ -1,0 +1,14 @@
+.autorelabel
+bin
+boot/
+dev/
+etc/
+lib
+lib64
+proc/
+root/
+run/
+sbin
+sys/
+usr/
+var/
