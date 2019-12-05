@@ -1,0 +1,2 @@
+128.230.146.0/24 dev ens160 src 128.230.146.17 table services
+default via 128.230.146.1 dev ens160 table services
