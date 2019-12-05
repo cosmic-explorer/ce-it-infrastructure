@@ -36,13 +36,15 @@ The infrastructure also relies on the following externally provided infrastructu
 
 ## Server Setup
 
-To create and deploy these services, we use three (virtual) machines:
+To create and deploy these services, we use a single VMware host machine `ce-services.phy.syr.edu` that contains three additional virtual NICs for the services that we will deploy:
 
  * `roster.cosmicexplorer.org`, an alias to `128.230.146.12`, internally known as `ce-roster.phy.syr.edu`.
  * `dcc.cosmicexplorer.org`, an alias to `128.230.146.13`, internally known as `ce-dcc.phy.syr.edu`.
  * `mail.cosmicexplorer.org`, an alias to `128.230.146.15`, internally known as `ce-mailman.phy.syr.edu`.
 
 The services themselves are run inside Docker containers on the machines listed above.
+
+First [set up the host networking](https://github.com/cosmic-explorer/ce-it-infrastructure/blob/master/etc/README.md) to configure the multiple NICs to route to the `128.230.146.0` subnet correctly.
 
 ## Shibboleth Setup
 
