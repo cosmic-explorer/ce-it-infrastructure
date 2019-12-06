@@ -28,10 +28,10 @@ etc/sysctl.d/*
 Then checkout the network configuration files with
 ```sh
 git checkout master
-and reboot the machine.
 ```
+and reboot the machine so that the changes take effect.
 
-The routing tables should show
+The routing tables output by `route` should show
 ```
 Kernel IP routing table
 Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
@@ -45,4 +45,17 @@ default         _gateway        0.0.0.0         UG    104    0        0 ens256
 128.230.146.0   0.0.0.0         255.255.255.0   U     103    0        0 ens224
 128.230.146.0   0.0.0.0         255.255.255.0   U     104    0        0 ens256
 172.17.0.0      0.0.0.0         255.255.0.0     U     0      0        0 docker0
+```
+and the rules output by `ip rule` should show
+```
+0:	from all lookup local 
+32759:	from 192.168.101.2 lookup dcc 
+32760:	from 192.168.100.2 lookup roster 
+32761:	from 128.230.146.13 lookup dcc 
+32762:	from 128.230.146.12 lookup roster 
+32763:	from 192.168.102.2 lookup mail 
+32764:	from 128.230.146.15 lookup mail 
+32765:	from 128.230.146.17 lookup services 
+32766:	from all lookup main 
+32767:	from all lookup default 
 ```
