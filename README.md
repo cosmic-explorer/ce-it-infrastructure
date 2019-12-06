@@ -100,11 +100,18 @@ docker build \
     
 docker network create --attachable \
     --opt 'com.docker.network.bridge.name=bridge-roster' \
-    --opt 'com.docker.network.bridge.enable_ip_masquerade=false' \
+    --opt 'com.docker.network.bridge.host_binding_ipv4'='128.230.146.12' \
+    --driver=bridge \
+    --subnet=192.168.100.0/24 \
+    --ip-range=192.168.100.0/24 \
+    --gateway=192.168.100.1 \
     bridge-roster
-    
+
+ip rule add table roster from 192.168.100.2
+
 docker run --name=apache-shibd-roster --rm -d \
     --network=bridge-roster \
+    --ip=192.168.100.2 \
     --hostname ce-roster.phy.syr.edu \
     --domainname phy.syr.edu \
     -v `pwd`/shibboleth:/mnt \
@@ -141,11 +148,18 @@ docker build \
     
 docker network create --attachable \
     --opt 'com.docker.network.bridge.name=bridge-dcc' \
-    --opt 'com.docker.network.bridge.enable_ip_masquerade=false' \
+    --opt 'com.docker.network.bridge.host_binding_ipv4'='128.230.146.13' \
+    --driver=bridge \
+    --subnet=192.168.101.0/24 \
+    --ip-range=192.168.101.0/24 \
+    --gateway=192.168.101.1 \
     bridge-dcc
+    
+ip rule add table dcc from 192.168.101.2
     
 docker run --name=apache-shibd-dcc --rm -d \
     --network=bridge-dcc \
+    --ip=192.168.101.2 \
     --hostname ce-dcc.phy.syr.edu \
     --domainname phy.syr.edu \
     -v `pwd`/shibboleth:/mnt \
@@ -182,26 +196,28 @@ docker build \
     
 docker network create --attachable \
     --opt 'com.docker.network.bridge.name=bridge-mail' \
-    --opt 'com.docker.network.bridge.enable_ip_masquerade=false' \
+    --opt 'com.docker.network.bridge.host_binding_ipv4'='128.230.146.15' \
+    --driver=bridge \
+    --subnet=192.168.102.0/24 \
+    --ip-range=192.168.102.0/24 \
+    --gateway=192.168.102.1 \
     bridge-mail
-    
+
+ip rule add table mail from 192.168.102.2
+
 docker run --name=apache-shibd-mail --rm -d \
     --network=bridge-mail \
+    --ip=192.168.102.2 \
     --hostname ce-mail.phy.syr.edu \
     --domainname phy.syr.edu \
     -v `pwd`/shibboleth:/mnt \
+    -p 128.230.146.15:443:443 \
     cosmicexplorer/apache-shibd-mail:latest
-
 ```
 
-### Start Apache Containers
+### Download Metadata
 
-The container can then be started with
-```sh
-export DOMAINNAME=phy.syr.edu
-docker-compose up --detach
-```
-Once the container is running, the metadata can be obtained from the `Shibboleth.sso/Metadata` endpoint. Send the SP metdata to InCommon for federation. 
+Once the containers are running, the metadata can be obtained from the `Shibboleth.sso/Metadata` endpoint. Send the SP metdata to InCommon for federation. 
 
 Preserve the data that this container generates by copying the files `attribute-map.xml`, `inc-md-cert.pem`, `shibboleth2.xml`, `sp-encrypt-cert.pem`, and `sp-encrypt-key.pem` from the `shibboleth/` to `/etc/shibboleth` on the host by running the commands
 ```sh
@@ -213,5 +229,5 @@ cp shibboleth/* /etc/shibboleth
 
 Finally, shut down the Apache container with
 ```sh
-docker-compose down
+docker stop apache-shibd-roster apache-shibd-dcc apache-shibd-mail
 ```
