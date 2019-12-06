@@ -97,6 +97,18 @@ docker build \
     --build-arg SP_MDUI_DESCRIPTION="Cosmic Explorer COmanage Roster" \
     --build-arg SP_MDUI_INFORMATIONURL="https://cosmicexplorer.org" \
     --rm -t cosmicexplorer/apache-shibd-roster .
+    
+docker network create --attachable \
+    --opt 'com.docker.network.bridge.name=bridge-roster' \
+    --opt 'com.docker.network.bridge.enable_ip_masquerade=false' \
+    bridge-roster
+    
+docker run --rm -d \
+    --network=bridge-roster \
+    --hostname ce-roster.phy.syr.edu \
+    --domainname phy.syr.edu \
+    -v `pwd`/shibboleth:/mnt \
+    cosmicexplorer/apache-shibd-roster:latest
 ```
 
 ### DCC
@@ -125,7 +137,20 @@ docker build \
     --build-arg SP_MDUI_DESCRIPTION="Cosmic Explorer DCC" \
     --build-arg SP_MDUI_INFORMATIONURL="https://cosmicexplorer.org" \
     --rm -t cosmicexplorer/apache-shibd-dcc .
+    
+docker network create --attachable \
+    --opt 'com.docker.network.bridge.name=bridge-dcc' \
+    --opt 'com.docker.network.bridge.enable_ip_masquerade=false' \
+    bridge-dcc
+    
+docker run --rm -d \
+    --network=bridge-dcc \
+    --hostname ce-roster.phy.syr.edu \
+    --domainname phy.syr.edu \
+    -v `pwd`/shibboleth:/mnt \
+    cosmicexplorer/apache-shibd-dcc:latest
 ```
+
 ### Mailman
 
 ```sh
