@@ -59,8 +59,8 @@ echo ${MARIADB_PASSWD} | docker secret create mariadb_password -
 echo ${REGISTRY_DATABASE_PASSWD} | docker secret create comanage_registry_database_user_password - 
 
 CERT_DIR=$(mktemp -d)
-sudo cp -a /etc/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
-sudo cp -a /etc/shibboleth/sp-encrypt-key.pem ${CERT_DIR}
+sudo cp -a ${APACHE_SHIBD_DIR}/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
+sudo cp -a ${APACHE_SHIBD_DIR}/shibboleth/sp-encrypt-key.pem ${CERT_DIR}
 sudo chown ${USER} ${CERT_DIR}/*.pem
 mv ${CERT_DIR}/*.pem .
 sudo rmdir ${CERT_DIR}
@@ -93,7 +93,7 @@ sudo mkdir -p ${STORAGE_PATH}/etc/slapd.d
 
 popd
 
-sudo cp /etc/shibboleth/shibboleth2.xml ${STORAGE_PATH}/etc/shibboleth/
+sudo cp ${APACHE_SHIBD_DIR}/shibboleth/shibboleth2.xml ${STORAGE_PATH}/etc/shibboleth/
 sudo cp attribute-map.xml ${STORAGE_PATH}/etc/shibboleth/
 /usr/bin/curl -O -s https://ds.incommon.org/certs/inc-md-cert.pem
 /bin/chmod 644 inc-md-cert.pem
