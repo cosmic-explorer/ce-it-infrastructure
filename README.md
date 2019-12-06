@@ -107,8 +107,6 @@ docker network create --attachable \
     --gateway=192.168.100.1 \
     bridge-roster
 
-ip rule add table roster from 192.168.100.2
-
 docker run --name=apache-shibd-roster --rm -d \
     --network=bridge-roster \
     --ip=192.168.100.2 \
@@ -154,9 +152,7 @@ docker network create --attachable \
     --ip-range=192.168.101.0/24 \
     --gateway=192.168.101.1 \
     bridge-dcc
-    
-ip rule add table dcc from 192.168.101.2
-    
+        
 docker run --name=apache-shibd-dcc --rm -d \
     --network=bridge-dcc \
     --ip=192.168.101.2 \
@@ -202,8 +198,6 @@ docker network create --attachable \
     --ip-range=192.168.102.0/24 \
     --gateway=192.168.102.1 \
     bridge-mail
-
-ip rule add table mail from 192.168.102.2
 
 docker run --name=apache-shibd-mail --rm -d \
     --network=bridge-mail \
