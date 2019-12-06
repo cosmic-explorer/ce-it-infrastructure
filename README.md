@@ -108,6 +108,7 @@ docker run --name=apache-shibd-roster --rm -d \
     --hostname ce-roster.phy.syr.edu \
     --domainname phy.syr.edu \
     -v `pwd`/shibboleth:/mnt \
+    -p 128.230.146.12:443:443 \
     cosmicexplorer/apache-shibd-roster:latest
 ```
 
@@ -148,6 +149,7 @@ docker run --name=apache-shibd-dcc --rm -d \
     --hostname ce-dcc.phy.syr.edu \
     --domainname phy.syr.edu \
     -v `pwd`/shibboleth:/mnt \
+    -p 128.230.146.13:443:443 \
     cosmicexplorer/apache-shibd-dcc:latest
 ```
 
