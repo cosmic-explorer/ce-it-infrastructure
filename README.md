@@ -96,7 +96,7 @@ docker build \
     --build-arg SP_MDUI_DISPLAYNAME="Syracuse University Gravitational Wave Group - CE COmanage" \
     --build-arg SP_MDUI_DESCRIPTION="Cosmic Explorer COmanage Roster" \
     --build-arg SP_MDUI_INFORMATIONURL="https://cosmicexplorer.org" \
-    --rm -t sugwg/apache-shibd .
+    --rm -t cosmicexplorer/apache-shibd-roster .
 ```
 
 ### DCC
@@ -124,7 +124,7 @@ docker build \
     --build-arg SP_MDUI_DISPLAYNAME="Syracuse University Gravitational Wave Group - CE DCC" \
     --build-arg SP_MDUI_DESCRIPTION="Cosmic Explorer DCC" \
     --build-arg SP_MDUI_INFORMATIONURL="https://cosmicexplorer.org" \
-    --rm -t sugwg/apache-shibd .
+    --rm -t cosmicexplorer/apache-shibd-dcc .
 ```
 ### Mailman
 
@@ -151,7 +151,7 @@ docker build \
     --build-arg SP_MDUI_DISPLAYNAME="Syracuse University Gravitational Wave Group - CE Mailman" \
     --build-arg SP_MDUI_DESCRIPTION="Cosmic Explorer Mailman Server" \
     --build-arg SP_MDUI_INFORMATIONURL="https://cosmicexplorer.org" \
-    --rm -t sugwg/apache-shibd .
+    --rm -t cosmicexplorer/apache-shibd-mail .
 ```
 
 ### Start Apache Containers
