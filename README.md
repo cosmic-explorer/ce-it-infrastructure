@@ -103,7 +103,7 @@ docker network create --attachable \
     --opt 'com.docker.network.bridge.enable_ip_masquerade=false' \
     bridge-roster
     
-docker run --rm -d \
+docker run --name=apache-shibd-roster --rm -d \
     --network=bridge-roster \
     --hostname ce-roster.phy.syr.edu \
     --domainname phy.syr.edu \
@@ -143,9 +143,9 @@ docker network create --attachable \
     --opt 'com.docker.network.bridge.enable_ip_masquerade=false' \
     bridge-dcc
     
-docker run --rm -d \
+docker run --name=apache-shibd-dcc --rm -d \
     --network=bridge-dcc \
-    --hostname ce-roster.phy.syr.edu \
+    --hostname ce-dcc.phy.syr.edu \
     --domainname phy.syr.edu \
     -v `pwd`/shibboleth:/mnt \
     cosmicexplorer/apache-shibd-dcc:latest
@@ -177,6 +177,19 @@ docker build \
     --build-arg SP_MDUI_DESCRIPTION="Cosmic Explorer Mailman Server" \
     --build-arg SP_MDUI_INFORMATIONURL="https://cosmicexplorer.org" \
     --rm -t cosmicexplorer/apache-shibd-mail .
+    
+docker network create --attachable \
+    --opt 'com.docker.network.bridge.name=bridge-mail' \
+    --opt 'com.docker.network.bridge.enable_ip_masquerade=false' \
+    bridge-mail
+    
+docker run --name=apache-shibd-mail --rm -d \
+    --network=bridge-mail \
+    --hostname ce-mail.phy.syr.edu \
+    --domainname phy.syr.edu \
+    -v `pwd`/shibboleth:/mnt \
+    cosmicexplorer/apache-shibd-mail:latest
+
 ```
 
 ### Start Apache Containers
