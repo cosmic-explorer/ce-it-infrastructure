@@ -52,7 +52,7 @@ docker build \
     -t comanage-registry:$TAG .
 popd
 
-docker swarm init --advertise-addr 127.0.0.1
+# docker swarm init --advertise-addr 127.0.0.1
 
 echo ${MARIADB_ROOT_PASSWD} | docker secret create mariadb_root_password - 
 echo ${MARIADB_PASSWD} | docker secret create mariadb_password - 
