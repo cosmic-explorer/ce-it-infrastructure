@@ -33,9 +33,7 @@ services:
         networks:
             roster-bridge:
                 ipv4_address: 192.168.100.3
-                priority: 10
-            roster-net:
-                priority: 1
+            roster-net: {}
         ports:
             - "128.230.146.12:443:443"
         restart: always
