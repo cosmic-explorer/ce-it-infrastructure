@@ -21,7 +21,6 @@ services:
 networks:
     roster-net:
         attachable: true
-        driver: default
         ipam:
             config:
                 - subnet: 172.30.100.0/24
