@@ -16,8 +16,7 @@ services:
             - mariadb_password
         networks:
             - roster-net
-        deploy:
-            replicas: 1
+        restart: always
 
 networks:
     roster-net:
