@@ -17,3 +17,6 @@ export COMANAGE_REGISTRY_ENABLE_PLUGIN=MailmanProvisioner,ChangelogProvisioner,G
 export MARIADB_ROOT_PASSWD=badgers
 export MARIADB_PASSWD=badgers
 export REGISTRY_DATABASE_PASSWD=${MARIADB_PASSWD}
+
+# temporary storage of secrets until we have macvlan
+echo "${REGISTRY_DATABASE_PASSWD}" > ./comanage_registry_database_user_password.txt
