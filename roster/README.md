@@ -29,6 +29,7 @@ Then run the build script by running the command
 
 ### Starting the Containers
 
+<!--
 To start the containers, run
 ```sh
 . comanage-env.sh
@@ -38,6 +39,16 @@ Once the stack has been deployed, check the status of the [linuxserver/letsencry
 ```sh
 docker service logs -f comanage-registry_letsencrypt
 ```
+-->
+
+Start the [Let's Encrypt](https://letsencrypt.org) container with the command
+```sh
+docker-compose --file=letsencrypt.yml up --detach
+```
+and check the status of its output with
+```sh
+docker logs -f roster_letsencrypt_1
+```
 This container will obtain a host certificate signed by [Let's
 Encrypt](https://letsencrypt.org) which will be used by the COmanage web
 server and LDAP server. Once the certificate has been obtained, the logs will
@@ -45,11 +56,34 @@ contain the message
 ```
 Server ready
 ```
+The database container can be started with
+```sh
+docker-compose --file=comanage-database.yml up --detach
+```
+and its logs checked with
+```sh
+docker logs -f roster_comanage-registry-database_1
+```
+Once the database says
+```
+mysqld: ready for connections.
+```
+then the registry container can be started with
+```sh
+docker-compose --file=comanage.yml up --detach
+```
+and the container status checked with
+```sh
+docker logs -f roster_comanage-registry_1
+```
+
+<!--
 The registry and LDAP containers can then be started with the command
 ```sh
 docker service scale comanage-registry_comanage-registry-ldap=1
 docker service scale comanage-registry_comanage-registry=1
 ```
+-->
 
 ### Additional mail configuration
 
@@ -61,6 +95,7 @@ The first time that the stack is run, you wull need to edit the file `/srv/docke
 as well as the `,` on the preceeding line, since the Syracuse SMTP host uses
 IP-based authorization, rather than username/password authentication.
 
+<!--
 ### Checking Container Status
 
 You can check the status with
@@ -73,6 +108,16 @@ docker stack ps --no-trunc comanage-registry
 To stop the containers, run
 ```sh
 docker stack rm comanage-registry
+```
+-->
+
+### Stopping the Containers
+
+To stop the containers, run
+```sh
+docker-compose --file=comanage.yml down
+docker-compose --file=comanage-database.yml down
+docker-compose --file=letsencrypt.yml down
 ```
 
 ## Registry Configuration
