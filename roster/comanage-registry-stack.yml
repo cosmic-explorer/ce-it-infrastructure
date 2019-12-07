@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.7'
 
 services:
 
@@ -17,11 +17,11 @@ services:
         volumes:
             - ${STORAGE_PATH}/letsencrypt/config:/config
         networks:
-            - default
+            - roster-net
         ports:
             - "80:80"
         deploy:
-          replicas: 1
+          replicas: 0
 
     comanage-registry-database:
         image: mariadb:10.2
@@ -36,7 +36,7 @@ services:
             - mariadb_root_password
             - mariadb_password
         networks:
-            - default
+            - roster-net
         deploy:
             replicas: 1
 
@@ -70,7 +70,7 @@ services:
             - shibboleth_sp_encrypt_cert
             - shibboleth_sp_encrypt_privkey
         networks:
-            - default
+            - roster-net
         ports:
             - "443:443"
         deploy:
@@ -93,12 +93,20 @@ services:
         secrets:
             - olc_root_pw
         networks:
-            - default
+            - roster-net
         ports:
             - "389:389"
             - "636:636"
         deploy:
             replicas: 0
+
+networks:
+    roster-net:
+        attachable: true
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.30.100.0/24
 
 secrets:
     comanage_registry_database_user_password:
