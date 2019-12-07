@@ -1,0 +1,30 @@
+    comanage-registry-database:
+        image: mariadb:10.2
+        volumes:
+            - ${STORAGE_PATH}/var/lib/mysql:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mariadb_root_password
+            - MYSQL_DATABASE=registry
+            - MYSQL_USER=registry_user
+            - MYSQL_PASSWORD_FILE=/run/secrets/mariadb_password
+        secrets:
+            - mariadb_root_password
+            - mariadb_password
+        networks:
+            - roster-net
+        deploy:
+            replicas: 1
+
+networks:
+    roster-net:
+        attachable: true
+        ipam:
+            driver: overlay
+            config:
+                - subnet: 172.30.100.0/24
+
+secrets:
+    mariadb_root_password:
+        file: ./mariadb_root_password.txt
+    mariadb_password:
+        file: ./mariadb_password.txt
