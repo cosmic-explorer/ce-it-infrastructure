@@ -20,3 +20,5 @@ export REGISTRY_DATABASE_PASSWD=${MARIADB_PASSWD}
 
 # temporary storage of secrets until we have macvlan
 echo "${REGISTRY_DATABASE_PASSWD}" > ./comanage_registry_database_user_password.txt
+echo "${MARIADB_ROOT_PASSWD}" > ./mariadb_root_password.txt
+echo "${MARIADB_PASSWD}" > ./mariadb_password.txt
