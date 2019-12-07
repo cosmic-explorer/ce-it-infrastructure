@@ -22,12 +22,12 @@ To allow the containers that talk over the physical NICs to route properly, the 
 
 The following addresses are assigned to the following containers:
 
-| IP | Container |
-|----|-----------|
-| 192.168.100.2 | Let's Encrypt Server for COmanage |
-| 192.168.100.3 | COmanage Apache Server |
-| 192.168.101.2 | Let's Encrypt Server for DCC |
-| 192.168.101.2 | DCC Apache Server |
+| IP | Port | Container |
+|----|------|-----------|
+| 192.168.100.2 | 80 | Let's Encrypt Server for COmanage |
+| 192.168.100.3 | 443 | COmanage Apache Server |
+| 192.168.101.2 | 80 | Let's Encrypt Server for DCC |
+| 192.168.101.2 | 443 | DCC Apache Server |
 
 Note that since these machines all map to the same host IP, they cannot use the same port. This is fine, however, as Let's Encrypt runs on port 80 and we only open port 443 for Apache.
 
