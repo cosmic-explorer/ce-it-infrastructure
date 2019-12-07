@@ -1,0 +1,49 @@
+version: '3.7'
+
+services:
+    comanage-registry:
+        image: comanage-registry:${COMANAGE_REGISTRY_VERSION}-shibboleth-sp-${COMANAGE_REGISTRY_SHIBBOLETH_SP_IMAGE_VERSION}
+        volumes:
+            - ${STORAGE_PATH}/srv/comanage-registry/local:/srv/comanage-registry/local
+            - ${STORAGE_PATH}/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+            - ${STORAGE_PATH}/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+            - ${STORAGE_PATH}/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
+            - ${STORAGE_PATH}/letsencrypt/config/etc/letsencrypt:/etc/letsencrypt
+        environment:
+            - COMANAGE_REGISTRY_ENABLE_PLUGIN=${COMANAGE_REGISTRY_ENABLE_PLUGIN}
+            - COMANAGE_REGISTRY_ADMIN_GIVEN_NAME=${COMANAGE_REGISTRY_ADMIN_GIVEN_NAME}
+            - COMANAGE_REGISTRY_ADMIN_FAMILY_NAME=${COMANAGE_REGISTRY_ADMIN_FAMILY_NAME}
+            - COMANAGE_REGISTRY_ADMIN_USERNAME=${COMANAGE_REGISTRY_ADMIN_USERNAME}
+            - COMANAGE_REGISTRY_DATASOURCE=Database/Mysql
+            - COMANAGE_REGISTRY_DATABASE_USER_PASSWORD_FILE=/run/secrets/comanage_registry_database_user_password
+            - COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN=${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}
+            - COMANAGE_REGISTRY_EMAIL_FROM=array('comanage-do-not-reply@cosmicexplorer.org' => 'Cosmic Explorer COManage Registry')
+            - COMANAGE_REGISTRY_EMAIL_TRANSPORT=Smtp
+            - COMANAGE_REGISTRY_EMAIL_HOST=smtp-relay.syr.edu
+            - COMANAGE_REGISTRY_EMAIL_PORT=25
+            - HTTPS_CERT_FILE=/etc/letsencrypt/live/${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}/cert.pem
+            - HTTPS_PRIVKEY_FILE=/etc/letsencrypt/live/${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}/privkey.pem
+            - HTTPS_CHAIN_FILE=/etc/letsencrypt/live/${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}/fullchain.pem
+            - SHIBBOLETH_SP_ENCRYPT_CERT=/run/secrets/shibboleth_sp_encrypt_cert
+            - SHIBBOLETH_SP_ENCRYPT_PRIVKEY=/run/secrets/shibboleth_sp_encrypt_privkey
+        secrets:
+            - comanage_registry_database_user_password
+            - shibboleth_sp_encrypt_cert
+            - shibboleth_sp_encrypt_privkey
+        networks:
+            roster-bridge:
+                ipv4_address: 192.168.100.3
+                priority: 10
+            roster-net:
+                priority: 1
+        ports:
+            - "128.230.146.12:443:443"
+        restart: always
+
+secrets:
+    comanage_registry_database_user_password:
+        file: ./comanage_registry_database_user_password.txt
+    shibboleth_sp_encrypt_cert:
+        file: ./shibboleth_sp_encrypt_cert.txt
+    shibboleth_sp_encrypt_privkey:
+        file: ./shibboleth_sp_encrypt_privkey.txt
