@@ -17,11 +17,11 @@ services:
         volumes:
             - ${STORAGE_PATH}/letsencrypt/config:/config
         networks:
-            - default
+            - dcc-net
         ports:
             - "80:80"
         deploy:
-          replicas: 1
+          replicas: 0
 
     docdb-database:
         image: mariadb:10.4.8
@@ -32,7 +32,7 @@ services:
         secrets:
             - mariadb_root_password
         networks:
-            - default
+            - dcc-net
         deploy:
             replicas: 1
 
@@ -42,7 +42,7 @@ services:
         secrets:
             - mysql_docdbrw_passwd
         networks:
-            - default
+            - dcc-net
         deploy:
             replicas: 1
 
@@ -51,7 +51,7 @@ services:
         volumes:
             - ${STORAGE_PATH}/var/lib/postgresql/data:/var/lib/postgresql/data
         networks:
-            - default
+            - dcc-net
         deploy:
             replicas: 1
 
@@ -66,7 +66,7 @@ services:
             - LOG_LEVEL=debug
             - HTTPS_ALLOW_TERMINATION_FROM=172.28.0.0/24
         networks:
-            - default
+            - dcc-net
         command: "serve all"
         deploy:
             replicas: 1
@@ -79,7 +79,7 @@ services:
         secrets:
             - shib_header_secret
         networks:
-            - default
+            - dcc-net
         deploy:
             replicas: 1
 
@@ -103,7 +103,7 @@ services:
             - shib_header_secret
             - rest_authorized_eppn
         networks:
-            - default
+            - dcc-net
         ports:
             - "443:443"
         hostname: ${DCC_INSTANCE}
@@ -116,12 +116,12 @@ services:
             replicas: 0            
 
 networks:
-    default:
+    dcc-net:
         attachable: true
         ipam:
             driver: default
             config:
-                - subnet: 172.28.0.0/24
+                - subnet: 192.168.101.0/24
 
 secrets:
     mariadb_root_password:
