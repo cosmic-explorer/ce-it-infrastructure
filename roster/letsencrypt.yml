@@ -5,8 +5,8 @@ services:
     letsencrypt:
         image: linuxserver/letsencrypt
         environment:
-            - PUID=${UID}
-            - PGID=${GROUPS}
+            - PUID=${UID:-0}
+            - PGID=${GROUPS:-0}
             - TZ=America/New_York
             - URL=${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}
             - VALIDATION=http
