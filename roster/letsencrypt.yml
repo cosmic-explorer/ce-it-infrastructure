@@ -33,4 +33,3 @@ networks:
         driver_opts:
             com.docker.network.bridge.name: "roster-bridge"
             com.docker.network.bridge.host_binding_ipv4: "128.230.146.12"
-                
