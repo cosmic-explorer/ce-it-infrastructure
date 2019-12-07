@@ -23,6 +23,7 @@ To allow the containers that talk over the physical NICs to route properly, the 
 The following addresses are assigned to the following containers:
 
 | IP | Container |
+|----|-----------|
 | 192.168.100.2 | Let's Encrypt Server for COmanage |
 | 192.168.100.3 | COmanage Apache Server |
 | 192.168.101.2 | Let's Encrypt Server for DCC |
