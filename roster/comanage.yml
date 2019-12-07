@@ -40,6 +40,12 @@ services:
             - "128.230.146.12:443:443"
         restart: always
 
+networks:
+    roster-net:
+        external
+    roster-bridge:
+        external
+
 secrets:
     comanage_registry_database_user_password:
         file: ./comanage_registry_database_user_password.txt
