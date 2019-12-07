@@ -26,10 +26,9 @@ services:
 networks:
     roster-bridge:
         attachable: true
-        ipam:
-            driver: bridge
-            config:
-                - subnet: 192.168.100.0/24
+        driver: bridge
+        config:
+            - subnet: 192.168.100.0/24
         driver_opts:
             com.docker.network.bridge.name: "roster-bridge"
             com.docker.network.bridge.host_binding_ipv4: "128.230.146.12"
