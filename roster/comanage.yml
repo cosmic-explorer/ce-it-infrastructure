@@ -42,9 +42,11 @@ services:
 
 networks:
     roster-net:
-        external
+        external: true
+        name: roster_roster-net
     roster-bridge:
-        external
+        external: true
+        name: roster_roster-bridge
 
 secrets:
     comanage_registry_database_user_password:
