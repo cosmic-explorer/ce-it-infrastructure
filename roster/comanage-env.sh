@@ -22,3 +22,6 @@ export REGISTRY_DATABASE_PASSWD=${MARIADB_PASSWD}
 echo "${REGISTRY_DATABASE_PASSWD}" > ./comanage_registry_database_user_password.txt
 echo "${MARIADB_ROOT_PASSWD}" > ./mariadb_root_password.txt
 echo "${MARIADB_PASSWD}" > ./mariadb_password.txt
+
+# temporary use of compose until we have macvlan
+export COMPOSE_IGNORE_ORPHANS=1
