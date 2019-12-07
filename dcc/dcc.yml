@@ -121,7 +121,7 @@ networks:
         ipam:
             driver: default
             config:
-                - subnet: 192.168.101.0/24
+                - subnet: 172.30.101.0/24
 
 secrets:
     mariadb_root_password:
