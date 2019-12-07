@@ -68,6 +68,12 @@ sudo rmdir ${CERT_DIR}
 docker secret create shibboleth_sp_encrypt_cert sp-encrypt-cert.pem
 docker secret create shibboleth_sp_encrypt_privkey sp-encrypt-key.pem
 
+# temporary secret files until we have macvlan
+cat sp-encrypt-cert.pem > ../shibboleth_sp_encrypt_cert.txt
+cat sp-encrypt-key.pem > ../shibboleth_sp_encrypt_privkey.txt
+
+rm -f sp-encrypt-cert.pem sp-encrypt-key.pem
+
 sudo mkdir -p ${STORAGE_PATH}/var/lib/mysql
 sudo mkdir -p ${STORAGE_PATH}/srv/comanage-registry/local
 sudo mkdir -p ${STORAGE_PATH}/etc/shibboleth
