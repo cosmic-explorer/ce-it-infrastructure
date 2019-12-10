@@ -8,7 +8,7 @@ services:
             - TZ=America/New_York
             - URL=${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}
             - VALIDATION=http
-            - EMAIL=
+            - EMAIL=dabrown@syr.edu
             - DHLEVEL=2048
             - ONLY_SUBDOMAINS=false
             - STAGING=false
