@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+
+    letsencrypt:
+        image: linuxserver/letsencrypt
+        environment:
+            - TZ=America/New_York
+            - URL=${DCC_INSTANCE}
+            - VALIDATION=http
+            - EMAIL=dabrown@syr.edu
+            - DHLEVEL=2048
+            - ONLY_SUBDOMAINS=false
+            - STAGING=false
+        volumes:
+            - ${STORAGE_PATH}/letsencrypt/config:/config
+        networks:
+            dcc-bridge:
+                ipv4_address: 192.168.101.2
+        ports:
+            - "128.230.146.13:80:80"
+        restart: always
+
+networks:
+    dcc-bridge:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 192.168.101.0/24
+        driver_opts:
+            com.docker.network.bridge.name: "roster-bridge"
+            com.docker.network.bridge.host_binding_ipv4: "128.230.146.13"
