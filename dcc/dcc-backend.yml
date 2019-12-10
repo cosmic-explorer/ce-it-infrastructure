@@ -12,8 +12,7 @@ services:
             - mariadb_root_password
         networks:
             - dcc-net
-        deploy:
-            replicas: 1
+        restart: always
 
     rest-api:
         image: cosmicexplorer/rest-dcc:1.2.1
@@ -22,8 +21,7 @@ services:
             - mysql_docdbrw_passwd
         networks:
             - dcc-net
-        deploy:
-            replicas: 1
+        restart: always
 
     oauth-database:
         image: postgres:9.6
@@ -31,8 +29,7 @@ services:
             - ${STORAGE_PATH}/var/lib/postgresql/data:/var/lib/postgresql/data
         networks:
             - dcc-net
-        deploy:
-            replicas: 1
+        restart: always
 
     oauth-server:
         image: oryd/hydra:v1.0.8
@@ -47,8 +44,7 @@ services:
         networks:
             - dcc-net
         command: "serve all"
-        deploy:
-            replicas: 1
+        restart: always
 
     oauth-consent:
         image: cosmicexplorer/hydra-login-consent-node:1.0.9
@@ -59,8 +55,7 @@ services:
             - shib_header_secret
         networks:
             - dcc-net
-        deploy:
-            replicas: 1
+        restart: always
 
 networks:
     dcc-net:
