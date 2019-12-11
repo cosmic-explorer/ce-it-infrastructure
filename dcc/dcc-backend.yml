@@ -70,4 +70,4 @@ secrets:
     mysql_docdbrw_passwd:
         file: ./mysql_docdbrw_passwd.txt
     shib_header_secret:
-        external: ./shib_header_secret.txt
+        file: ./shib_header_secret.txt
