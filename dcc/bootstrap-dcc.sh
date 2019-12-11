@@ -27,7 +27,7 @@ else
   echo "${STORAGE_PATH} not found, creating"
 fi
 
-docker swarm leave --force &>/dev/null || true
+# docker swarm leave --force &>/dev/null || true
 
 docker image inspect cosmicexplorer/dcc-base:3.3.0 &>/dev/null
 RET=${?}
@@ -43,16 +43,17 @@ fi
 
 export CERT_DIR=$(mktemp -d)
 sudo chmod 700 ${CERT_DIR}
-sudo cp -a /etc/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
-sudo cp -a /etc/shibboleth/sp-encrypt-key.pem ${CERT_DIR}
+sudo cp -a ${APACHE_SHIBD_DIR}/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
+sudo cp -a ${APACHE_SHIBD_DIR}/shibboleth/sp-encrypt-key.pem ${CERT_DIR}
 sudo chown ${USER} ${CERT_DIR}/*.pem
+
 echo ${MYSQL_ROOT_PASSWD} > ${CERT_DIR}/mysql_root_passwd.txt
 echo ${MYSQL_DOCDBRW_PASSWD} > ${CERT_DIR}/mysql_docdbrw_passwd.txt
 echo ${MYSQL_DOCDBRO_PASSWD} > ${CERT_DIR}/mysql_docdbro_passwd.txt
 
 sudo mkdir -p ${STORAGE_PATH}/etc/shibboleth
 
-sudo cp /etc/shibboleth/shibboleth2.xml ${STORAGE_PATH}/etc/shibboleth/
+sudo cp ${APACHE_SHIBD_DIR}/shibboleth/shibboleth2.xml ${STORAGE_PATH}/etc/shibboleth/
 sudo cp attribute-map.xml ${STORAGE_PATH}/etc/shibboleth/
 /usr/bin/curl -O -s https://ds.incommon.org/certs/inc-md-cert.pem
 /bin/chmod 644 inc-md-cert.pem
