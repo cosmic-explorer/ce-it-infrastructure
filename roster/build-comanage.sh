@@ -52,11 +52,13 @@ docker build \
     -t comanage-registry:$TAG .
 popd
 
+# FIXME
 # docker swarm init --advertise-addr 127.0.0.1
 
-echo ${MARIADB_ROOT_PASSWD} | docker secret create mariadb_root_password - 
-echo ${MARIADB_PASSWD} | docker secret create mariadb_password - 
-echo ${REGISTRY_DATABASE_PASSWD} | docker secret create comanage_registry_database_user_password - 
+# FIXME
+# echo ${MARIADB_ROOT_PASSWD} | docker secret create mariadb_root_password - 
+# echo ${MARIADB_PASSWD} | docker secret create mariadb_password - 
+# echo ${REGISTRY_DATABASE_PASSWD} | docker secret create comanage_registry_database_user_password - 
 
 CERT_DIR=$(mktemp -d)
 sudo cp -a ${APACHE_SHIBD_DIR}/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
@@ -65,8 +67,9 @@ sudo chown ${USER} ${CERT_DIR}/*.pem
 mv ${CERT_DIR}/*.pem .
 sudo rmdir ${CERT_DIR}
 
-docker secret create shibboleth_sp_encrypt_cert sp-encrypt-cert.pem
-docker secret create shibboleth_sp_encrypt_privkey sp-encrypt-key.pem
+# FIXME
+# docker secret create shibboleth_sp_encrypt_cert sp-encrypt-cert.pem
+# docker secret create shibboleth_sp_encrypt_privkey sp-encrypt-key.pem
 
 # temporary secret files until we have macvlan
 cat sp-encrypt-cert.pem > ../shibboleth_sp_encrypt_cert.txt
@@ -92,7 +95,7 @@ docker build \
     -t comanage-registry-slapd:$TAG . 
 popd
 
-echo "{SSHA}bnjbUkuyt0MKJnDXbtwE2VjtoTeKjqFw" | docker secret create olc_root_pw -
+# echo "{SSHA}bnjbUkuyt0MKJnDXbtwE2VjtoTeKjqFw" | docker secret create olc_root_pw -
 
 sudo mkdir -p ${STORAGE_PATH}/var/lib/ldap
 sudo mkdir -p ${STORAGE_PATH}/etc/slapd.d
