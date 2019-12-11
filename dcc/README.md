@@ -92,10 +92,24 @@ To run the DCC as a Docker stack in production, run the script
 ```sh
 . run-dcc.sh
 ```
-You will be prompted the `SECRETS_SYSTEM` created by the `bootstrap-dcc.sh` script
-and the eduperson principal name (ePPN) of a user who is authorized to grant
-access to the DCC REST API.
 
+Start the [Let's Encrypt](https://letsencrypt.org) container with the command
+```sh
+docker-compose --file=letsencrypt.yml up --detach
+```
+and check the status of its output with
+```sh
+docker logs -f roster_letsencrypt_1
+```
+This container will obtain a host certificate signed by [Let's
+Encrypt](https://letsencrypt.org) which will be used by the COmanage web
+server and LDAP server. Once the certificate has been obtained, the logs will
+contain the message
+```
+Server ready
+```
+
+<!--
 When the script is complete, it shows the following message as the containers
 boot:
 ```
@@ -118,6 +132,7 @@ until the logs file show the message
 ```
 Server ready
 ```
+-->
 
 Once the certificates have been obtained, start the main DCC container with the command
 ```sh
