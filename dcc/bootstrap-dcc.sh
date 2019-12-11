@@ -34,6 +34,8 @@ RET=${?}
 
 trap 'trap - ERR; kill -INT $$' ERR
 
+set -o pipefail
+
 if [ ${RET} -eq 0 ] ; then
   echo "Using existing dcc-base docker image"
 else
