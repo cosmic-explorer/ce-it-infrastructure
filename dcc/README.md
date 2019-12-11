@@ -159,7 +159,7 @@ docker stack ps --no-trunc dcc
 
 The log of the DCC database container can be checked with
 ```sh
-docker service logs -f dcc_docdb-database
+docker logs -f dcc_docdb-database_1
 ```
 If the database started successfully, the log will contain the messages
 ```
@@ -173,7 +173,7 @@ ignored as we are not using database replication.
 ### OAuth2 database container
 The log of the OAuth2 database container can be checked with
 ```sh
-docker service logs -f dcc_oauth-database
+docker logs -f dcc_oauth-database_1
 ```
 If the database started successfully, the log will contain the messages
 ```
@@ -184,7 +184,7 @@ LOG:  database system is ready to accept connections
 
 The log of the OAuth2 database container can be checked with
 ```sh
-docker service logs -f dcc_oauth-server
+docker logs -f dcc_oauth-server_1
 ```
 If the OAuth2 server started successfully, the log will contain the messages
 ```
@@ -196,7 +196,7 @@ Setting up http server on :4444
 
 The log of the REST API container can be checked with
 ```sh
-docker service logs -f dcc_rest-api
+docker logs -f dcc_rest-api_1
 ```
 If the REST API started successfully, the log will contain the messages
 ```
@@ -212,7 +212,7 @@ shown.
 
 The log of the main DCC web server container can be checked with
 ```sh
-docker service logs -f dcc_dcc
+docker logs -f dcc_dcc_1
 ```
 If the DCC started successfully, the log will contain the messages
 ```
@@ -227,12 +227,26 @@ connections.
 ## Shutting Down and Restarting the DCC
 
 The system can be stopped with
+<!--
 ```sh
 docker stack rm dcc
 ```
+-->
+```sh
+docker-compose --file=dcc-backend.yml up --detach
+docker-compose --file dcc-apache.yml up --detach
+```
+
 and started with
+<!--
 ```sh
 . dcc-envrionment.sh
 docker stack deploy --compose-file dcc.yml dcc
 docker service scale dcc_dcc=1
+```
+-->
+```sh
+. dcc-envrionment.sh
+docker-compose --file=dcc-backend.yml up --detach
+docker-compose --file dcc-apache.yml up --detach
 ```
