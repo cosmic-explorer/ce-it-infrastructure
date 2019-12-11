@@ -5,3 +5,4 @@ shibboleth_sp_encrypt_cert.txt
 shibboleth_sp_encrypt_privkey.txt
 mariadb_password.txt
 mariadb_root_password.txt
+olc_root_pw.txt
