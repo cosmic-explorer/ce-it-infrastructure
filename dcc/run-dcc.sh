@@ -26,8 +26,8 @@ sudo chown ${USER} ${CERT_DIR}/*.pem
 # echo ${MYSQL_DOCDBRO_PASSWD} | docker secret create mysql_docdbro_passwd -
 # echo ${SHIB_HEADER_SECRET} | docker secret create shib_header_secret -
 # echo ${REST_AUTHORIZED_EPPN} | docker secret create rest_authorized_eppn -
-cat sp-encrypt-cert.pem > ./shibboleth_sp_encrypt_cert.txt
-cat sp-encrypt-key.pem > ./shibboleth_sp_encrypt_privkey.txt
+cat ${CERT_DIR}/sp-encrypt-cert.pem > ./shibboleth_sp_encrypt_cert.txt
+cat ${CERT_DIR}/sp-encrypt-key.pem > ./shibboleth_sp_encrypt_privkey.txt
 
 rm -rf ${CERT_DIR}
 
