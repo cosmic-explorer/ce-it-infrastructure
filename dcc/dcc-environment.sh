@@ -1,4 +1,5 @@
 export STORAGE_PATH=/srv/docker/dcc
+export APACHE_SHIBD_DIR=/root/ce-dcc/apache-shibd
 export DCC_INSTANCE=dcc.cosmicexplorer.org
 export DCC_HOSTNAME=dcc.cosmicexplorer.org
 export DCC_DOMAINNAME=cosmicexplorer.org
