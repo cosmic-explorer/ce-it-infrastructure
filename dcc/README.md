@@ -134,6 +134,13 @@ Server ready
 ```
 -->
 
+Once the certificates have been obtained, start the DCC services with the commands
+```sh
+docker-compose --file=dcc-backend.yml up --detach
+docker-compose --file dcc-apache.yml up --detach
+```
+
+<!--
 Once the certificates have been obtained, start the main DCC container with the command
 ```sh
 docker service scale dcc_dcc=1
@@ -144,6 +151,7 @@ of the machines with
 ```sh
 docker stack ps --no-trunc dcc
 ```
+-->
 
 ## Monitoring status
 
