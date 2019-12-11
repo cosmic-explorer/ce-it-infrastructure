@@ -25,7 +25,7 @@ fi
 
 trap 'trap - ERR; kill -INT $$' ERR
 
-docker swarm leave --force || true
+# docker swarm leave --force || true
 
 pushd comanage-registry-docker
 
