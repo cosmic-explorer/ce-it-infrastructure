@@ -44,6 +44,7 @@ export LC_CTYPE=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 
 To bootstrap the DCC, build the main container and the bootstrap continer by
 running
 ```sh
+yum -y install libguestfs-tools-c
 export LIBGUESTFS_BACKEND=direct
 . bootstrap-dcc.sh
 ```
