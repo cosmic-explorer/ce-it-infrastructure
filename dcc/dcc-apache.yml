@@ -50,10 +50,10 @@ secrets:
     mysql_root_passwd:
         file: ./mysql_root_passwd.txt
     mysql_docdbrw_passwd:
-        external: ./mysql_docdbrw_passwd.txt
+        file: ./mysql_docdbrw_passwd.txt
     mysql_docdbro_passwd:
-        external: ./mysql_docdbro_passwd.txt
+        file: ./mysql_docdbro_passwd.txt
     shib_header_secret:
-        external: ./shib_header_secret.txt
+        file: ./shib_header_secret.txt
     rest_authorized_eppn:
-        external: ./rest_authorized_eppn.txt
+        file: ./rest_authorized_eppn.txt
