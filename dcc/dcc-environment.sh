@@ -19,3 +19,6 @@ echo "${MYSQL_DOCDBRW_PASSWD}" > ./mysql_docdbrw_passwd.txt
 echo "${MYSQL_DOCDBRO_PASSWD}" > ./mysql_docdbro_passwd.txt
 echo "${REST_AUTHORIZED_EPPN}" > ./rest_authorized_eppn.txt
 echo "${SHIB_HEADER_SECRET}" > ./shib_header_secret.txt
+
+# temporary use of compose until we have macvlan
+export COMPOSE_IGNORE_ORPHANS=1
