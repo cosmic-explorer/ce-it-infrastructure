@@ -25,6 +25,7 @@ fi
 
 trap 'trap - ERR; kill -INT $$' ERR
 
+# FIXME
 # docker swarm leave --force || true
 
 pushd comanage-registry-docker
@@ -71,10 +72,10 @@ sudo rmdir ${CERT_DIR}
 # docker secret create shibboleth_sp_encrypt_cert sp-encrypt-cert.pem
 # docker secret create shibboleth_sp_encrypt_privkey sp-encrypt-key.pem
 
+# FIXME
 # temporary secret files until we have macvlan
 cat sp-encrypt-cert.pem > ../shibboleth_sp_encrypt_cert.txt
 cat sp-encrypt-key.pem > ../shibboleth_sp_encrypt_privkey.txt
-
 rm -f sp-encrypt-cert.pem sp-encrypt-key.pem
 
 sudo mkdir -p ${STORAGE_PATH}/var/lib/mysql
@@ -95,6 +96,7 @@ docker build \
     -t comanage-registry-slapd:$TAG . 
 popd
 
+# FIXME
 # echo "{SSHA}bnjbUkuyt0MKJnDXbtwE2VjtoTeKjqFw" | docker secret create olc_root_pw -
 
 sudo mkdir -p ${STORAGE_PATH}/var/lib/ldap
