@@ -37,10 +37,10 @@ services:
 networks:
     roster-net:
         external: true
-        name: roster_roster-net
+        name: dcc_dcc-net
     roster-bridge:
         external: true
-        name: roster_roster-bridge
+        name: dcc_dcc-bridge
 
 secrets:
     shibboleth_sp_encrypt_cert:
