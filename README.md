@@ -46,6 +46,13 @@ The services themselves are run inside Docker containers on the machines listed 
 
 First [set up the host networking](https://github.com/cosmic-explorer/ce-it-infrastructure/blob/master/etc/README.md) to configure the multiple NICs to route to the `128.230.146.0` subnet correctly.
 
+Install OpenLDAP so that the host can use the `slappasswd` tool:
+```sh
+yum -y install epel-release
+yum config-manager --set-enabled PowerTools
+yum install openldap-servers
+```
+
 ## Shibboleth Setup
 
 These services should be federated as [Shibboleth](https://www.internet2.edu/products-services/trust-identity/shibboleth/) Service Providers with [InCommon Research and Scholarship ](https://www.incommon.org/federation/research-and-scholarship/) and have appropriate host certificates and [Shibboleth metadata](https://spaces.at.internet2.edu/display/InCFederation/Research+and+Scholarship+for+SPs) prior to configuring them.
