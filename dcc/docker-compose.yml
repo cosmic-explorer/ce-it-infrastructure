@@ -20,7 +20,7 @@ services:
       - ${STORAGE_PATH}/var/lib/mysql:/var/lib/mysql
       - ${STORAGE_PATH}/usr2/GLIMPSE:/usr2/GLIMPSE
     ports:
-      - "443:443"
+      - "128.230.146.13:443:443"
     secrets:
       - shibboleth_sp_encrypt_cert
       - shibboleth_sp_encrypt_privkey
