@@ -35,10 +35,10 @@ services:
         restart: always
 
 networks:
-    roster-net:
+    dcc-net:
         external: true
         name: dcc_dcc-net
-    roster-bridge:
+    dcc-bridge:
         external: true
         name: dcc_dcc-bridge
 
