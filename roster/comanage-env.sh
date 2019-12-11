@@ -17,11 +17,13 @@ export COMANAGE_REGISTRY_ENABLE_PLUGIN=MailmanProvisioner,ChangelogProvisioner,G
 export MARIADB_ROOT_PASSWD=badgers
 export MARIADB_PASSWD=badgers
 export REGISTRY_DATABASE_PASSWD=${MARIADB_PASSWD}
+export OLC_ROOT_PASSWD=badgers
 
 # temporary storage of secrets until we have macvlan
 echo "${REGISTRY_DATABASE_PASSWD}" > ./comanage_registry_database_user_password.txt
 echo "${MARIADB_ROOT_PASSWD}" > ./mariadb_root_password.txt
 echo "${MARIADB_PASSWD}" > ./mariadb_password.txt
+slappasswd -s ${OLC_ROOT_PASSWD} > ./olc_root_pw.txt
 
 # temporary use of compose until we have macvlan
 export COMPOSE_IGNORE_ORPHANS=1
