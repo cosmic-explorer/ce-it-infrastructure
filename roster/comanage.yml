@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
     comanage-registry:
-        image: comanage-registry:${COMANAGE_REGISTRY_VERSION}-shibboleth-sp-${COMANAGE_REGISTRY_SHIBBOLETH_SP_IMAGE_VERSION}
+        image: cosmicexplorer/comanage-registry:${COMANAGE_REGISTRY_VERSION}-shibboleth-sp-${COMANAGE_REGISTRY_SHIBBOLETH_SP_IMAGE_VERSION}
         volumes:
             - ${STORAGE_PATH}/srv/comanage-registry/local:/srv/comanage-registry/local
             - ${STORAGE_PATH}/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
