@@ -105,7 +105,10 @@ sudo mkdir -p ${STORAGE_PATH}/etc/slapd.d
 
 popd
 
-docker build --rm -t cosmicexplorer/comanage-registry:${COMANAGE_REGISTRY_VERSION}-shibboleth-sp-${COMANAGE_REGISTRY_SHIBBOLETH_SP_IMAGE_VERSION} .
+docker build \
+    --build-arg COMANAGE_REGISTRY_VERSION=${COMANAGE_REGISTRY_VERSION} \
+    --build-arg COMANAGE_REGISTRY_SHIBBOLETH_SP_IMAGE_VERSION=${COMANAGE_REGISTRY_SHIBBOLETH_SP_IMAGE_VERSION} \
+    --rm -t cosmicexplorer/comanage-registry:${COMANAGE_REGISTRY_VERSION}-shibboleth-sp-${COMANAGE_REGISTRY_SHIBBOLETH_SP_IMAGE_VERSION} .
 
 sudo cp ${APACHE_SHIBD_DIR}/shibboleth/shibboleth2.xml ${STORAGE_PATH}/etc/shibboleth/
 sudo cp attribute-map.xml ${STORAGE_PATH}/etc/shibboleth/
