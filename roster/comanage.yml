@@ -34,6 +34,7 @@ services:
             roster-bridge:
                 ipv4_address: 192.168.100.3
             roster-net: {}
+            dcc-net: {}
         ports:
             - "128.230.146.12:443:443"
         restart: always
@@ -45,6 +46,9 @@ networks:
     roster-bridge:
         external: true
         name: roster_roster-bridge
+    dcc-net:
+        external: true
+        name: dcc_dcc-net
 
 secrets:
     comanage_registry_database_user_password:
