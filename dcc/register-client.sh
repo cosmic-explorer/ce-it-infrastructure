@@ -59,7 +59,7 @@ fi
 client_secret=$(export LC_CTYPE=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 
 docker run --rm -it \
-  --network dcc_default \
+  --network dcc_dcc-net \
   oryd/hydra:v1.0.8 \
   clients create \
     --endpoint http://oauth-server:4445 \
