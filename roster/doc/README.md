@@ -26,8 +26,10 @@ git checkout master
 cd /srv/comanage-registry/local/Plugin
 ln -s ../../app/AvailablePlugin/RestDccProvisioner
 cd /srv/comanage-registry/app
-su -c "./Console/clearcache" www-data
-su -c "./Console/cake database" www-data
+rm -rf tmp
+cp -a tmp.dist tmp
+./Console/cake database
+chown -R www-data:www-data tmp
 ```
 
 Then log out of the container. The plugins needed should now be available.
