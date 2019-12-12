@@ -105,6 +105,8 @@ sudo mkdir -p ${STORAGE_PATH}/etc/slapd.d
 
 popd
 
+docker build --rm -t cosmicexplorer/comanage-registry:${COMANAGE_REGISTRY_VERSION}-shibboleth-sp-${COMANAGE_REGISTRY_SHIBBOLETH_SP_IMAGE_VERSION} .
+
 sudo cp ${APACHE_SHIBD_DIR}/shibboleth/shibboleth2.xml ${STORAGE_PATH}/etc/shibboleth/
 sudo cp attribute-map.xml ${STORAGE_PATH}/etc/shibboleth/
 /usr/bin/curl -O -s https://ds.incommon.org/certs/inc-md-cert.pem
