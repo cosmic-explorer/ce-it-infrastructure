@@ -9,8 +9,9 @@ if [ -d ${STORAGE_PATH} ] ; then
     echo "Type remove to delete ${STORAGE_PATH} or anything else to exit"
     read REMOVE
     if test x$REMOVE == xremove ; then
-      sudo rm -rf ${STORAGE_PATH}
-      sudo mkdir -p ${STORAGE_PATH}
+      echo "Removing COmange storage"
+      sudo rm -rf rm -rf ${STORAGE_PATH}/etc/ ${STORAGE_PATH}/srv/ ${STORAGE_PATH}/var/
+      echo "${STORAGE_PATH}/letsencrypt has not been removed. This must be removed manually, if desired."
     else
       echo "You did not type remove. Exiting"
       kill -INT $$
