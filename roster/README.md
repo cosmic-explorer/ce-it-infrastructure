@@ -34,6 +34,11 @@ Run the build script by running the command
 
 ### Starting the Containers
 
+Set up the envrionment by running
+```sh
+. comanage-env.sh
+```
+
 <!--
 To start the containers, run
 ```sh
