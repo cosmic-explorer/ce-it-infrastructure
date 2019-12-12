@@ -233,8 +233,8 @@ docker stack rm dcc
 ```
 -->
 ```sh
+docker-compose --file=dcc-apache.yml down
 docker-compose --file=dcc-backend.yml down
-docker-compose --file dcc-apache.yml down
 docker-compose --file=letsencrypt.yml down
 ```
 
@@ -250,5 +250,5 @@ docker service scale dcc_dcc=1
 . dcc-envrionment.sh
 docker-compose --file=letsencrypt.yml up --detach
 docker-compose --file=dcc-backend.yml up --detach
-docker-compose --file dcc-apache.yml up --detach
+docker-compose --file=dcc-apache.yml up --detach
 ```
