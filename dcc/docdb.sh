@@ -40,6 +40,10 @@ UPDATE \`DocumentType\` SET LongType = 'Serial Numbers for Cosmic Explorer Equip
 DELETE from \`TopicHint\`;
 UPDATE \`Topic\` SET \`ShortDescription\` = 'Astrophysics' WHERE \`TopicID\` = 4;
 UPDATE \`Topic\` SET \`LongDescription\` = 'Astrophysics' WHERE \`TopicID\` = 4;
+UPDATE \`Topic\` SET \`ShortDescription\` = 'Advisory Boards' WHERE \`TopicID\` = 32;
+UPDATE \`Topic\` SET \`LongDescription\` = 'Advisory Boards' WHERE \`TopicID\` = 32;
+UPDATE \`Topic\` SET \`ShortDescription\` = 'Nuclear Physics' WHERE \`TopicID\` = 46;
+UPDATE \`Topic\` SET \`LongDescription\` = 'Nuclear Physics' WHERE \`TopicID\` = 46;
 UPDATE \`Topic\` SET \`ShortDescription\` = 'Neutron Stars' WHERE \`TopicID\` = 48;
 UPDATE \`Topic\` SET \`LongDescription\` = 'Neutron Stars' WHERE \`TopicID\` = 48;
 UPDATE \`Topic\` SET \`ShortDescription\` = 'Black Holes' WHERE \`TopicID\` = 49;
@@ -54,14 +58,29 @@ UPDATE \`Topic\` SET \`ShortDescription\` = 'Diversity and Inclusion' WHERE \`To
 UPDATE \`Topic\` SET \`LongDescription\` = 'Diversity and Inclusion' WHERE \`TopicID\` = 59;
 UPDATE \`Topic\` SET \`ShortDescription\` = 'Multimessenger' WHERE \`TopicID\` = 63;
 UPDATE \`Topic\` SET \`LongDescription\` = 'Multimessenger' WHERE \`TopicID\` = 63;
+UPDATE \`Topic\` SET \`ShortDescription\` = 'Site Selection' WHERE \`TopicID\` = 66;
+UPDATE \`Topic\` SET \`LongDescription\` = 'Site Selection' WHERE \`TopicID\` = 66;
+UPDATE \`Topic\` SET \`ShortDescription\` = 'Rate Predictions' WHERE \`TopicID\` = 72;
+UPDATE \`Topic\` SET \`LongDescription\` = 'Rate Predictions' WHERE \`TopicID\` = 72;
+UPDATE \`Topic\` SET \`ShortDescription\` = 'Cosmology' WHERE \`TopicID\` = 76;
+UPDATE \`Topic\` SET \`LongDescription\` = 'Cosmology' WHERE \`TopicID\` = 76;
+UPDATE \`Topic\` SET \`ShortDescription\` = 'Waveform Modeling' WHERE \`TopicID\` = 81;
+UPDATE \`Topic\` SET \`LongDescription\` = 'Waveform Modeling' WHERE \`TopicID\` = 81;
+UPDATE \`Topic\` SET \`ShortDescription\` = 'Data-Analysis Methods' WHERE \`TopicID\` = 84;
+UPDATE \`Topic\` SET \`LongDescription\` = 'Data-Analysis Methods' WHERE \`TopicID\` = 84;
 UPDATE \`Topic\` SET \`ShortDescription\` = 'Supernovae' WHERE \`TopicID\` = 88;
 UPDATE \`Topic\` SET \`LongDescription\` = 'Supernovae' WHERE \`TopicID\` = 88;
-UPDATE \`Topic\` SET \`ShortDescription\` = 'Data Analysis' WHERE \`TopicID\` = 89;
-UPDATE \`Topic\` SET \`LongDescription\` = 'Data Analysis' WHERE \`TopicID\` = 89;
+UPDATE \`Topic\` SET \`ShortDescription\` = 'Analysis' WHERE \`TopicID\` = 89;
+UPDATE \`Topic\` SET \`LongDescription\` = 'Analysis' WHERE \`TopicID\` = 89;
 UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE \`TopicID\` = 47;
 UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE \`TopicID\` = 54;
+UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE \`TopicID\` = 66;
 UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE \`TopicID\` = 70;
 UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 3 WHERE \`TopicID\` = 74;
+UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 4 WHERE \`TopicID\` = 72;
+UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 4 WHERE \`TopicID\` = 76;
+UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 4 WHERE \`TopicID\` = 81;
+UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 4 WHERE \`TopicID\` = 84;
 EOF
 mysql -u root << EOF
 GRANT USAGE ON *.* TO 'docdbrw'@'%';
