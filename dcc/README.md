@@ -233,6 +233,7 @@ docker stack rm dcc
 ```
 -->
 ```sh
+. dcc-envrionment.sh
 docker-compose --file=dcc-apache.yml down
 docker-compose --file=dcc-backend.yml down
 docker-compose --file=letsencrypt.yml down
