@@ -58,10 +58,10 @@ UPDATE \`Topic\` SET \`ShortDescription\` = 'Supernovae' WHERE \`TopicID\` = 88;
 UPDATE \`Topic\` SET \`LongDescription\` = 'Supernovae' WHERE \`TopicID\` = 88;
 UPDATE \`Topic\` SET \`ShortDescription\` = 'Data Analysis' WHERE \`TopicID\` = 89;
 UPDATE \`Topic\` SET \`LongDescription\` = 'Data Analysis' WHERE \`TopicID\` = 89;
-UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE `TopicID` = 47;
-UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE `TopicID` = 54;
-UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE `TopicID` = 70;
-UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 3 WHERE `TopicID` = 74;
+UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE \`TopicID\` = 47;
+UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE \`TopicID\` = 54;
+UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE \`TopicID\` = 70;
+UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 3 WHERE \`TopicID\` = 74;
 EOF
 mysql -u root << EOF
 GRANT USAGE ON *.* TO 'docdbrw'@'%';
