@@ -30,6 +30,8 @@ su -c "./Console/clearcache" www-data
 su -c "./Console/cake database" www-data
 ```
 
+Then log out of the container. The plugins needed should now be available.
+
 ## Collaboration Organization Setup
 
 We configure the registry with a single CO (Cosmic Explorer) and three COUs
