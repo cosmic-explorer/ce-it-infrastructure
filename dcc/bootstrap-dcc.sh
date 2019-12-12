@@ -12,8 +12,8 @@ if [ -d ${STORAGE_PATH} ] ; then
     read REMOVE
     if test x$REMOVE == xremove ; then
       echo "Removing DCC storage"
-      sudo rm -rf rm -rf ${STORAGE_PATH}/etc/ ${STORAGE_PATH}/usr1/ ${STORAGE_PATH}/usr2/${STORAGE_PATH}/var/
-      echo "${STORAGE_PATH}/letsencrypt" has not been removed. This must be removed manually.
+      sudo rm -rf rm -rf ${STORAGE_PATH}/etc/ ${STORAGE_PATH}/usr1/ ${STORAGE_PATH}/usr2 /${STORAGE_PATH}/var/
+      echo "${STORAGE_PATH}/letsencrypt has not been removed. This must be removed manually."
     else
       echo "You did not type remove. Exiting"
       kill -INT $$
