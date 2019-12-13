@@ -125,6 +125,7 @@ docker stack rm comanage-registry
 
 To stop the containers, run
 ```sh
+. comanage-env.sh
 docker-compose --file=comanage.yml down
 docker-compose --file=comanage-database.yml down
 docker-compose --file=letsencrypt.yml down
