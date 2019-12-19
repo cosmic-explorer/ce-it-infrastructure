@@ -134,7 +134,7 @@ docker stack ps --no-trunc dcc
 
 The log of the DCC database container can be checked with
 ```sh
-docker logs -f dcc_docdb-database_1
+docker service logs -f dcc_docdb-database
 ```
 If the database started successfully, the log will contain the messages
 ```
@@ -148,7 +148,7 @@ ignored as we are not using database replication.
 ### OAuth2 database container
 The log of the OAuth2 database container can be checked with
 ```sh
-docker logs -f dcc_oauth-database_1
+docker service logs -f dcc_oauth-database
 ```
 If the database started successfully, the log will contain the messages
 ```
