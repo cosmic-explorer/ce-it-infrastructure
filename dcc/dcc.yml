@@ -19,7 +19,7 @@ services:
         ports:
             - "80:80"
         deploy:
-          replicas: 0
+          replicas: 1
 
     docdb-database:
         image: mariadb:10.4.8
