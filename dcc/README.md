@@ -93,23 +93,6 @@ To run the DCC as a Docker stack in production, run the script
 . run-dcc.sh
 ```
 
-Start the [Let's Encrypt](https://letsencrypt.org) container with the command
-```sh
-docker-compose --file=letsencrypt.yml up --detach
-```
-and check the status of its output with
-```sh
-docker logs -f dcc_letsencrypt_1
-```
-This container will obtain a host certificate signed by [Let's
-Encrypt](https://letsencrypt.org) which will be used by the COmanage web
-server and LDAP server. Once the certificate has been obtained, the logs will
-contain the message
-```
-Server ready
-```
-
-<!--
 When the script is complete, it shows the following message as the containers
 boot:
 ```
@@ -132,15 +115,7 @@ until the logs file show the message
 ```
 Server ready
 ```
--->
 
-Once the certificates have been obtained, start the DCC services with the commands
-```sh
-docker-compose --file=dcc-backend.yml up --detach
-docker-compose --file dcc-apache.yml up --detach
-```
-
-<!--
 Once the certificates have been obtained, start the main DCC container with the command
 ```sh
 docker service scale dcc_dcc=1
@@ -151,7 +126,7 @@ of the machines with
 ```sh
 docker stack ps --no-trunc dcc
 ```
--->
+
 
 ## Monitoring status
 
@@ -184,7 +159,7 @@ LOG:  database system is ready to accept connections
 
 The log of the OAuth2 database container can be checked with
 ```sh
-docker logs -f dcc_oauth-server_1
+docker service logs -f dcc_oauth-server
 ```
 If the OAuth2 server started successfully, the log will contain the messages
 ```
@@ -196,7 +171,7 @@ Setting up http server on :4444
 
 The log of the REST API container can be checked with
 ```sh
-docker logs -f dcc_rest-api_1
+docker service logs -f dcc_rest-api
 ```
 If the REST API started successfully, the log will contain the messages
 ```
@@ -212,7 +187,7 @@ shown.
 
 The log of the main DCC web server container can be checked with
 ```sh
-docker logs -f dcc_dcc_1
+docker service logs -f dcc_dcc
 ```
 If the DCC started successfully, the log will contain the messages
 ```
@@ -227,29 +202,13 @@ connections.
 ## Shutting Down and Restarting the DCC
 
 The system can be stopped with
-<!--
 ```sh
 docker stack rm dcc
 ```
--->
-```sh
-. dcc-environment.sh
-docker-compose --file=dcc-apache.yml down
-docker-compose --file=dcc-backend.yml down
-docker-compose --file=letsencrypt.yml down
-```
 
 and started with
-<!--
 ```sh
 . dcc-environment.sh
 docker stack deploy --compose-file dcc.yml dcc
 docker service scale dcc_dcc=1
-```
--->
-```sh
-. dcc-environment.sh
-docker-compose --file=letsencrypt.yml up --detach
-docker-compose --file=dcc-backend.yml up --detach
-docker-compose --file=dcc-apache.yml up --detach
 ```
