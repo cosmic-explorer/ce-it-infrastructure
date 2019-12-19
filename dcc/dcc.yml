@@ -5,12 +5,10 @@ services:
     letsencrypt:
         image: linuxserver/letsencrypt
         environment:
-            - PUID=${UID}
-            - PGID=${GROUPS}
             - TZ=America/New_York
             - URL=${DCC_INSTANCE}
             - VALIDATION=http
-            - EMAIL=
+            - EMAIL=dabrown@syr.edu
             - DHLEVEL=2048
             - ONLY_SUBDOMAINS=false
             - STAGING=false
