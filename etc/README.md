@@ -32,7 +32,7 @@ The following addresses are assigned to the following containers:
 
 Note that since these machines all map to the same host IP, they cannot use the same port. This is fine, however, as Let's Encrypt runs on port 80 and we only open port 443 for Apache.
 
-# Installation
+## Installation
 
 We configure the above on the host by checking out the files in [etc/](https://github.com/cosmic-explorer/ce-it-infrastructure/edit/master/etc) of this repository on top of the host machine's filesystem.
 
