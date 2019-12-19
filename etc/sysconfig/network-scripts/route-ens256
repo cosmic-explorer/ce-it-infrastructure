@@ -1,2 +1,0 @@
-128.230.146.0/24 dev ens256 src 128.230.146.13 table dcc
-default via 128.230.146.1 dev ens256 table dcc
