@@ -28,7 +28,7 @@ else
   echo "${STORAGE_PATH} not found, creating"
 fi
 
-# docker swarm leave --force &>/dev/null || true
+docker swarm leave --force &>/dev/null || true
 
 docker image inspect cosmicexplorer/dcc-base:3.3.0 &>/dev/null
 RET=${?}
