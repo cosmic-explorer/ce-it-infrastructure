@@ -1,5 +1,21 @@
 # Cosmic Explorer COmanage Deployment
 
+## Refesh the COmanage Database
+
+Log into the container with the command
+```sh
+docker exec -it roster_comanage-registry_1 /bin/bash -l
+```
+and run the following commands to rebuild the registry database:
+```sh
+cd /srv/comanage-registry/app
+rm -rf tmp
+cp -a tmp.dist tmp
+./Console/cake database
+chown -R www-data:www-data tmp
+```
+Then log out of the container. COmanage can now be configured.
+
 ## Collaboration Organization Setup
 
 We configure the registry with a single CO (Cosmic Explorer) and three COUs
