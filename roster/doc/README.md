@@ -1,39 +1,5 @@
 # Cosmic Explorer COmanage Deployment
 
-## Software Setup
-
-First, install the additional plugins needed by the Cosmic Explorer deployment of COmanage. To do this, log into the container with
-```sh
-docker exec -it roster_comanage-registry_1 /bin/bash -l
-```
-
-From inside the container, install git
-```sh
-apt-get install git
-```
-The set up a repository in the COmanage directory
-```sh
-usermod -s /bin/bash www-data
-cd /srv/comanage-registry/
-git init
-git remote add origin https://github.com/cosmic-explorer/comanage-registry.git
-git fetch --all
-git config core.sparseCheckout true
-echo "app/AvailablePlugin/GithubProvisioner/*" > .git/info/sparse-checkout
-echo "app/AvailablePlugin/RestDccProvisioner/*" >> .git/info/sparse-checkout
-rm -rf app/AvailablePlugin/GithubProvisioner
-git checkout master
-cd /srv/comanage-registry/local/Plugin
-ln -s ../../app/AvailablePlugin/RestDccProvisioner
-cd /srv/comanage-registry/app
-rm -rf tmp
-cp -a tmp.dist tmp
-./Console/cake database
-chown -R www-data:www-data tmp
-```
-
-Then log out of the container. The plugins needed should now be available.
-
 ## Collaboration Organization Setup
 
 We configure the registry with a single CO (Cosmic Explorer) and three COUs
