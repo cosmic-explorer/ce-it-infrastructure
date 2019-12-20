@@ -60,8 +60,8 @@ UPDATE \`Topic\` SET \`ShortDescription\` = 'Multimessenger' WHERE \`TopicID\` =
 UPDATE \`Topic\` SET \`LongDescription\` = 'Multimessenger' WHERE \`TopicID\` = 63;
 UPDATE \`Topic\` SET \`ShortDescription\` = 'Site Selection' WHERE \`TopicID\` = 66;
 UPDATE \`Topic\` SET \`LongDescription\` = 'Site Selection' WHERE \`TopicID\` = 66;
-UPDATE \`Topic\` SET \`ShortDescription\` = 'Rate Predictions' WHERE \`TopicID\` = 72;
-UPDATE \`Topic\` SET \`LongDescription\` = 'Rate Predictions' WHERE \`TopicID\` = 72;
+UPDATE \`Topic\` SET \`ShortDescription\` = 'Rates and Populations' WHERE \`TopicID\` = 72;
+UPDATE \`Topic\` SET \`LongDescription\` = 'Rates and Populations' WHERE \`TopicID\` = 72;
 UPDATE \`Topic\` SET \`ShortDescription\` = 'Cosmology' WHERE \`TopicID\` = 76;
 UPDATE \`Topic\` SET \`LongDescription\` = 'Cosmology' WHERE \`TopicID\` = 76;
 UPDATE \`Topic\` SET \`ShortDescription\` = 'Waveform Modeling' WHERE \`TopicID\` = 81;
@@ -72,6 +72,7 @@ UPDATE \`Topic\` SET \`ShortDescription\` = 'Supernovae' WHERE \`TopicID\` = 88;
 UPDATE \`Topic\` SET \`LongDescription\` = 'Supernovae' WHERE \`TopicID\` = 88;
 UPDATE \`Topic\` SET \`ShortDescription\` = 'Analysis' WHERE \`TopicID\` = 89;
 UPDATE \`Topic\` SET \`LongDescription\` = 'Analysis' WHERE \`TopicID\` = 89;
+INSERT INTO \`Topic\` VALUES(90, 'Cryogenics', 'Cryogenics', CURRENT_TIMESTAMP);
 UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE \`TopicID\` = 47;
 UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE \`TopicID\` = 54;
 UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE \`TopicID\` = 66;
@@ -81,6 +82,7 @@ UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 4 WHERE \`TopicID\` = 72;
 UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 4 WHERE \`TopicID\` = 76;
 UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 4 WHERE \`TopicID\` = 81;
 UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 4 WHERE \`TopicID\` = 84;
+INSERT INTO \`TopicHierarchy\` VALUES (84, 90, 1, CURRENT_TIMESTAMP);
 EOF
 mysql -u root << EOF
 GRANT USAGE ON *.* TO 'docdbrw'@'%';
