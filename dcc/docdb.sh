@@ -73,6 +73,8 @@ UPDATE \`Topic\` SET \`LongDescription\` = 'Supernovae' WHERE \`TopicID\` = 88;
 UPDATE \`Topic\` SET \`ShortDescription\` = 'Analysis' WHERE \`TopicID\` = 89;
 UPDATE \`Topic\` SET \`LongDescription\` = 'Analysis' WHERE \`TopicID\` = 89;
 INSERT INTO \`Topic\` VALUES(90, 'Cryogenics', 'Cryogenics', CURRENT_TIMESTAMP);
+INSERT INTO \`Topic\` VALUES(91, 'Coatings', 'Coatings', CURRENT_TIMESTAMP);
+INSERT INTO \`Topic\` VALUES(92, 'Substrates', 'Substrates', CURRENT_TIMESTAMP);
 UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE \`TopicID\` = 47;
 UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE \`TopicID\` = 54;
 UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 1 WHERE \`TopicID\` = 66;
@@ -83,6 +85,8 @@ UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 4 WHERE \`TopicID\` = 76;
 UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 4 WHERE \`TopicID\` = 81;
 UPDATE \`TopicHierarchy\` SET \`ParentTopicID\` = 4 WHERE \`TopicID\` = 84;
 INSERT INTO \`TopicHierarchy\` VALUES (84, 90, 1, CURRENT_TIMESTAMP);
+INSERT INTO \`TopicHierarchy\` VALUES (85, 91, 1, CURRENT_TIMESTAMP);
+INSERT INTO \`TopicHierarchy\` VALUES (86, 92, 1, CURRENT_TIMESTAMP);
 EOF
 mysql -u root << EOF
 GRANT USAGE ON *.* TO 'docdbrw'@'%';
