@@ -136,5 +136,7 @@ RUN patch -p0 /usr1/www/cgi-bin/private/DocDB/AuthorSQL.pm < /tmp/AuthorSQL.pm.p
 COPY supervisord.conf /usr/local/etc/supervisord.conf
 COPY start-shibd.sh /usr/local/sbin/start-shibd.sh
 COPY start-apache.sh /usr/local/sbin/start-apache.sh
+COPY renew-certs.sh  /etc/cron.daily/renew-certs.sh
+RUN chmod +x /etc/cron.daily/renew-certs.sh
 
 ENTRYPOINT ["/usr/bin/supervisord", "-c", "/usr/local/etc/supervisord.conf"]
