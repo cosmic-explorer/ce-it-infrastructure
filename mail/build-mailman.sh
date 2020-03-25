@@ -10,8 +10,9 @@ if [ -d ${STORAGE_PATH} ] ; then
     echo "Type remove to delete ${STORAGE_PATH} or anything else to exit"
     read REMOVE
     if test x$REMOVE == xremove ; then
-      sudo rm -rf ${STORAGE_PATH}
-      sudo mkdir -p ${STORAGE_PATH}
+      echo "Removing COmange storage"
+      sudo rm -rf rm -rf ${STORAGE_PATH}/etc/ ${STORAGE_PATH}/srv/ ${STORAGE_PATH}/var/
+      echo "${STORAGE_PATH}/letsencrypt has not been removed. This must be removed manually, if desired."
     else
       echo "You did not type remove. Exiting"
       kill -INT $$
@@ -26,7 +27,8 @@ fi
 
 trap 'trap - ERR; kill -INT $$' ERR
 
-docker secret rm hyperkitty_api_key mailman_rest_password mailman_web_secret_key postgres_password mailman_database_url || true
+# FIXME
+# docker swarm leave --force || true
 
 pushd comanage-registry-docker
 
@@ -40,35 +42,54 @@ popd
 
 pushd comanage-registry-mailman/apache-shib
 docker build \
---build-arg COMANAGE_REGISTRY_VERSION=3.2.2 \
---build-arg COMANAGE_REGISTRY_BASE_IMAGE_VERSION=1 \
--t cosmicexplorer/mailman-core-apache-shib .
+  --build-arg COMANAGE_REGISTRY_VERSION=${COMANAGE_REGISTRY_VERSION} \
+    --build-arg COMANAGE_REGISTRY_BASE_IMAGE_VERSION=${COMANAGE_REGISTRY_BASE_IMAGE_VERSION} \
+    -t cosmicexplorer/mailman-core-apache-shib .
 popd
 
 pushd comanage-registry-mailman/postfix
 docker build -t cosmicexplorer/mailman-postfix .
 popd
 
+# FIXME
+# docker swarm init --advertise-addr 127.0.0.1
+
+#echo "${HYPERKITTY_API_KEY}" | docker secret create hyperkitty_api_key -
+#echo "${POSTGRESS_PASSWORD}" | docker secret create postgres_password -
+#echo "postgres://mailman:${POSTGRESS_PASSWORD}@database/mailmandb" | docker secret create mailman_database_url -
+#echo "${MAILMAN_REST_PASSWORD}" | docker secret create mailman_rest_password -
+#echo "${MAILMAN_WEB_SECRET_KEY}" | docker secret create mailman_web_secret_key -
+
+CERT_DIR=$(mktemp -d)
+sudo cp -a ${APACHE_SHIBD_DIR}/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
+sudo cp -a ${APACHE_SHIBD_DIR}/shibboleth/sp-encrypt-key.pem ${CERT_DIR}
+sudo chown ${USER} ${CERT_DIR}/*.pem
+mv ${CERT_DIR}/*.pem .
+sudo rmdir ${CERT_DIR}
+
+# FIXME
+# docker secret create shibboleth_sp_encrypt_cert sp-encrypt-cert.pem
+# docker secret create shibboleth_sp_encrypt_privkey sp-encrypt-key.pem
+
+# FIXME
+# temporary secret files until we have macvlan
+cat sp-encrypt-cert.pem > ../shibboleth_sp_encrypt_cert.txt
+cat sp-encrypt-key.pem > ../shibboleth_sp_encrypt_privkey.txt
+rm -f sp-encrypt-cert.pem sp-encrypt-key.pem
+
 sudo mkdir -p ${STORAGE_PATH}/core
 sudo mkdir -p ${STORAGE_PATH}/web
 sudo mkdir -p ${STORAGE_PATH}/database
+sudo mkdir -p ${STORAGE_PATH}/etc/shibboleth
 sudo mkdir -p ${STORAGE_PATH}/letsencrypt/config
 
-echo "postgres://mailman:badgers@database/mailmandb" | docker secret create mailman_database_url -
-echo "badgers" | docker secret create hyperkitty_api_key -
-echo "badgers" | docker secret create mailman_rest_password -
-echo "badgers" | docker secret create mailman_web_secret_key -
-echo "badgers" | docker secret create postgres_password -
-
-sudo mkdir -p ${STORAGE_PATH}/etc/shibboleth
-
-sudo cp /etc/shibboleth/shibboleth2.xml ${STORAGE_PATH}/etc/shibboleth/
+sudo cp ${APACHE_SHIBD_DIR}/shibboleth/shibboleth2.xml ${STORAGE_PATH}/etc/shibboleth/
 sudo cp attribute-map.xml ${STORAGE_PATH}/etc/shibboleth/
 /usr/bin/curl -O -s https://ds.incommon.org/certs/inc-md-cert.pem
-chmod 644 inc-md-cert.pem
+/bin/chmod 644 inc-md-cert.pem
 sudo cp inc-md-cert.pem ${STORAGE_PATH}/etc/shibboleth/inc-md-cert.pem
 rm -f inc-md-cert.pem
-sudo chmod -R 644 ${STORAGE_PATH}/etc/shibboleth
+sudo /bin/chmod 644 ${STORAGE_PATH}/etc/shibboleth/*
 
 if [ $(uname) == "Darwin" ] ; then
   sudo chown -R ${USER} ${STORAGE_PATH}
