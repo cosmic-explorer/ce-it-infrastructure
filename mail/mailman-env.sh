@@ -7,6 +7,7 @@ export MAILMAN_ADMIN_EMAIL=dabrown@syr.edu
 export POSTFIX_MAILNAME=mail.cosmicexplorer.org
 export POSTFIX_MYHOSTNAME=mail.cosmicexplorer.org
 export POSTFIX_MYNETWORKS="192.168.102.0/24"
+export POSTFIX_RELAYHOST="smtp-host.syr.edu"
 
 # temporary use of compose until we have macvlan
 export COMPOSE_IGNORE_ORPHANS=1
