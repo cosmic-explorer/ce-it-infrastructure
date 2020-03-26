@@ -1,1 +1,38 @@
+# Cosmic Explorer Mailman Instance
+
+These instructions are a guide for setting up [GNU Mailman](https://www.list.org/) for the Cosmic
+Explorer Consortium.
+
+## Install Instructions
+
+To build and deploy Mailman, first download a copy of the
+[comanage-registry-docker](https://github.com/Internet2/comanage-registry-docker/)
+repository into this directory.  There are serveral outsiding pull requests
+that are needed which have not yet been merged to master so the Cosmic Explorer
+[fork](https://github.com/cosmic-explorer/comanage-registry-docker) of this
+repository should be used until the patches are merged.  This can be obtained
+by by running the commands
+```sh
+git clone https://github.com/cosmic-explorer/comanage-registry-docker.git
+```
+
+Edit the file `mailman-env.sh` to set the environment variables to the appropriate values for the installation. The various 
+`PASSWD` and `SECRET` variables should be set to real passwords generated, for example, by
+```sh
+export LC_CTYPE=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1
+```
+
+Run the build script by running the command
+```sh
+. build-mailman.sh
+```
+
+## Container Management
+
+### Starting the Containers
+
+Set up the envrionment by running
+```sh
+. mailman-env.sh
+```
 
