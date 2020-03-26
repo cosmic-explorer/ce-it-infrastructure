@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+
+    letsencrypt:
+        image: linuxserver/letsencrypt
+        environment:
+            - TZ=America/New_York
+            - URL=${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}
+            - VALIDATION=http
+            - EMAIL=dabrown@syr.edu
+            - DHLEVEL=2048
+            - ONLY_SUBDOMAINS=false
+            - STAGING=false
+        volumes:
+            - ${STORAGE_PATH}/letsencrypt/config:/config
+        networks:
+            mailman-bridge:
+                ipv4_address: 192.168.102.2
+        ports:
+            - "128.230.146.15:80:80"
+        restart: always
+
+networks:
+    mailman-bridge:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 192.168.102.0/24
+        driver_opts:
+            com.docker.network.bridge.name: "mailman-bridge"
+            com.docker.network.bridge.host_binding_ipv4: "128.230.146.15"
+            
