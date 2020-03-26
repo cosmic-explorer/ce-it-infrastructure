@@ -20,3 +20,11 @@ services:
                 ipv4_address: 192.168.102.3
             mailman-net: {}
         restart: always
+
+networks:
+    mailman-net:
+        external: true
+        name: mail_mailman-net
+    mail-bridge:
+        external: true
+        name: mail_mailman-bridge
