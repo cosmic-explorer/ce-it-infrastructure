@@ -42,7 +42,7 @@ docker-compose --file=letsencrypt.yml up --detach
 ```
 and check the status of its output with
 ```sh
-docker logs -f mailman_letsencrypt_1
+docker logs -f mail_letsencrypt_1
 ```
 This container will obtain a host certificate signed by [Let's
 Encrypt](https://letsencrypt.org) which will be used by the Mailman web
