@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+
+    database:
+        image: postgres:9.6
+        volumes:
+            - ${STORAGE_PATH}/database:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB=mailmandb
+            - POSTGRES_USER=mailman
+            - POSTGRES_PASSWORD_FILE=/run/secrets/postgres_password
+        networks:
+            - mailman-net
+        secrets:
+            - postgres_password
+        restart: always
+
+networks:
+    mailman-net:
+        attachable: true
+        ipam:
+            config:
+                - subnet: 172.30.102.0/24
+
+secrets:
+    postgres_password:
+        file: ./postgres_password.txt
