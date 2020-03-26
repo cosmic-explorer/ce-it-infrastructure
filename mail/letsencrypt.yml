@@ -6,7 +6,7 @@ services:
         image: linuxserver/letsencrypt
         environment:
             - TZ=America/New_York
-            - URL=${COMANAGE_REGISTRY_VIRTUAL_HOST_FQDN}
+            - URL=${MAILMAN_VIRTUAL_HOST_FQDN}
             - VALIDATION=http
             - EMAIL=dabrown@syr.edu
             - DHLEVEL=2048
