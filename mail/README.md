@@ -56,7 +56,7 @@ Next start the back-end database with
 ```sh
 docker-compose --file=mailman-database.yml up --detach
 ```
-and check the status of its output witj
+and check the status of its output with
 ```sh
 docker logs -f mail_database_1
 ```
