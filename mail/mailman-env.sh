@@ -6,6 +6,7 @@ export POSTGRESS_PASSWORD="badgers"
 export MAILMAN_REST_PASSWORD="badgers"
 export MAILMAN_WEB_SECRET_KEY="badgers"
 
+export MAILMAN_VIRTUAL_HOST_FQDN=mail.cosmicexplorer.org
 export SERVE_FROM_DOMAIN=mail.cosmicexplorer.org
 export MAILMAN_ADMIN_USER=dbrown
 export MAILMAN_ADMIN_EMAIL=dabrown@syr.edu
