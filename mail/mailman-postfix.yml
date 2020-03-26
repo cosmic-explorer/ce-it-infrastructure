@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+    postfix:
+        image: cosmicexplorer/mailman-postfix:2
+        volumes:
+            - ${STORAGE_PATH}:/opt/mailman
+        environment:
+            - POSTFIX_MYHOSTNAME=${POSTFIX_MAILNAME}
+            - POSTFIX_MYNETWORKS=${POSTFIX_MYNETWORKS}
+        ports:
+            - "128.230.146.15:25:25"
+        networks:
+            - default
+        deploy:
+            endpoint_mode: dnsrr
+
+        networks:
+            mailman-bridge:
+                ipv4_address: 192.168.102.3
+            mailman-net: {}
+        restart: always
