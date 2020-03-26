@@ -36,3 +36,18 @@ Set up the envrionment by running
 . mailman-env.sh
 ```
 
+Start the [Let's Encrypt](https://letsencrypt.org) container with the command
+```sh
+docker-compose --file=letsencrypt.yml up --detach
+```
+and check the status of its output with
+```sh
+docker logs -f mailman_letsencrypt_1
+```
+This container will obtain a host certificate signed by [Let's
+Encrypt](https://letsencrypt.org) which will be used by the Mailman web
+server. Once the certificate has been obtained, the logs will
+contain the message
+```
+Server ready
+```
