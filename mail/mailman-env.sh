@@ -7,13 +7,13 @@ export MAILMAN_REST_PASSWORD="badgers"
 export MAILMAN_WEB_SECRET_KEY="badgers"
 
 export MAILMAN_VIRTUAL_HOST_FQDN=mail.cosmicexplorer.org
-export SERVE_FROM_DOMAIN=mail.cosmicexplorer.org
+export SERVE_FROM_DOMAIN=${MAILMAN_VIRTUAL_HOST_FQDN}
 export MAILMAN_ADMIN_USER=dbrown
 export MAILMAN_ADMIN_EMAIL=dabrown@syr.edu
 
-export POSTFIX_MAILNAME=mail.cosmicexplorer.org
-export POSTFIX_MYHOSTNAME=mail.cosmicexplorer.org
-export POSTFIX_MYNETWORKS="192.168.102.0/24"
+export POSTFIX_MAILNAME=${MAILMAN_VIRTUAL_HOST_FQDN}
+export POSTFIX_MYHOSTNAME=${MAILMAN_VIRTUAL_HOST_FQDN}
+export POSTFIX_MYNETWORKS="192.168.102.0/24 172.30.102.0/24"
 export POSTFIX_RELAYHOST="smtp-host.syr.edu"
 
 export SECRET_KEY="badgers"
