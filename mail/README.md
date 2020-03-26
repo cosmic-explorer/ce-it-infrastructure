@@ -52,7 +52,7 @@ contain the message
 Server ready
 ```
 
-Next start the back-end database with
+Start the back-end database with
 ```sh
 docker-compose --file=mailman-database.yml up --detach
 ```
@@ -63,4 +63,13 @@ docker logs -f mail_database_1
 Once the database is running, the logs will contain the message
 ```
 LOG:  database system is ready to accept connections
+```
+
+Start postfix with
+```sh
+docker-compose --file=mailman-postfix.yml up --detach
+```
+and check the status of its output with
+```sh
+docker logs -f mail_postfix_1
 ```
