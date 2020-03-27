@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
     mailman-web:
-        image: sphericalcowgroup/mailman-web:0.2.1
+        image: cosmicexplorer/mailman-web:0.2.1
         volumes:
             - /srv/docker/mailman/web:/opt/mailman-web-data
             - /srv/docker/mailman/settings.py:/opt/mailman-web/settings.py
