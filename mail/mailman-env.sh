@@ -8,7 +8,7 @@ export MAILMAN_WEB_SECRET_KEY="badgers"
 
 export MAILMAN_VIRTUAL_HOST_FQDN=mail.cosmicexplorer.org
 export SERVE_FROM_DOMAIN=${MAILMAN_VIRTUAL_HOST_FQDN}
-export MAILMAN_ADMIN_USER=dbrown
+export MAILMAN_ADMIN_USER=mailman_admin
 export MAILMAN_ADMIN_EMAIL=dabrown@syr.edu
 
 export POSTFIX_MAILNAME=${MAILMAN_VIRTUAL_HOST_FQDN}
