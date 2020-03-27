@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+    mailman-web:
+        image: sphericalcowgroup/mailman-web:0.2.1
+        volumes:
+            - /srv/docker/mailman/web:/opt/mailman-web-data
+            - /srv/docker/mailman/settings.py:/opt/mailman-web/settings.py
+        environment:
+            - MAILMAN_DATABASE_URL_FILE=/run/secrets/mailman_database_url
+            - MAILMAN_DATABASE_TYPE=postgres
+            - HYPERKITTY_API_KEY_FILE=/run/secrets/hyperkitty_api_key
+            - SERVE_FROM_DOMAIN=${SERVE_FROM_DOMAIN}
+            - MAILMAN_ADMIN_USER=${MAILMAN_ADMIN_USER}
+            - MAILMAN_ADMIN_EMAIL=${MAILMAN_ADMIN_EMAIL}
+            - MAILMAN_WEB_SECRET_KEY_FILE=/run/secrets/mailman_web_secret_key
+            - MAILMAN_REST_USER=restadmin
+            - MAILMAN_REST_PASSWORD_FILE=/run/secrets/mailman_rest_password
+            - SMTP_HOST=postfix
+            - SMTP_PORT=25
+        networks:
+            mailman-bridge:
+                ipv4_address: 192.168.102.5
+            mailman-net: {}
+        secrets:
+            - hyperkitty_api_key
+            - mailman_database_url
+            - mailman_rest_password
+            - mailman_web_secret_key
+        restart: always
+
+networks:
+    mailman-net:
+        external: true
+        name: mail_mailman-net
+    mailman-bridge:
+        external: true
+        name: mail_mailman-bridge
+        
+secrets:
+    hyperkitty_api_key:
+        file: ./hyperkitty_api_key.txt
+    mailman_database_url:
+        file: ./mailman_database_url.txt
+    mailman_rest_password:
+        file: ./mailman_rest_password.txt
+    mailman_web_secret_key:
+        file: ./mailman_web_secret_key.txt
