@@ -6,6 +6,7 @@ services:
         volumes:
             - ${STORAGE_PATH}:/opt/mailman
         environment:
+            - POSTFIX_RELAYHOST=${POSTFIX_RELAYHOST}
             - POSTFIX_MYHOSTNAME=${POSTFIX_MAILNAME}
             - POSTFIX_MYNETWORKS=${POSTFIX_MYNETWORKS}
         ports:
