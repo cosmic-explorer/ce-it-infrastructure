@@ -78,6 +78,7 @@ cat sp-encrypt-key.pem > ../shibboleth_sp_encrypt_privkey.txt
 rm -f sp-encrypt-cert.pem sp-encrypt-key.pem
 
 sudo mkdir -p ${STORAGE_PATH}/core
+sudo mkdir -p ${STORAGE_PATH}/core/var/data
 sudo mkdir -p ${STORAGE_PATH}/web
 sudo mkdir -p ${STORAGE_PATH}/database
 sudo mkdir -p ${STORAGE_PATH}/etc/shibboleth
