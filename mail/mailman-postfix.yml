@@ -4,7 +4,7 @@ services:
     postfix:
         image: cosmicexplorer/mailman-postfix:2
         volumes:
-            - ${STORAGE_PATH}/core:/opt/mailman
+            - ${STORAGE_PATH}:/opt/mailman
         environment:
             - POSTFIX_MYHOSTNAME=${POSTFIX_MAILNAME}
             - POSTFIX_MYNETWORKS=${POSTFIX_MYNETWORKS}
