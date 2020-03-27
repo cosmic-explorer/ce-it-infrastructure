@@ -79,6 +79,7 @@ rm -f sp-encrypt-cert.pem sp-encrypt-key.pem
 
 sudo mkdir -p ${STORAGE_PATH}/core
 sudo mkdir -p ${STORAGE_PATH}/core/var/data
+sudo touch ${STORAGE_PATH}/settings.py
 sudo mkdir -p ${STORAGE_PATH}/web
 sudo mkdir -p ${STORAGE_PATH}/database
 sudo mkdir -p ${STORAGE_PATH}/etc/shibboleth
