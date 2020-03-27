@@ -14,6 +14,7 @@ services:
             - MAILMAN_ADMIN_USER=${MAILMAN_ADMIN_USER}
             - MAILMAN_ADMIN_EMAIL=${MAILMAN_ADMIN_EMAIL}
             - MAILMAN_WEB_SECRET_KEY_FILE=/run/secrets/mailman_web_secret_key
+            - SECRET_KEY=/run/secrets/mailman_web_secret_key
             - MAILMAN_REST_USER=restadmin
             - MAILMAN_REST_PASSWORD_FILE=/run/secrets/mailman_rest_password
             - SMTP_HOST=postfix
