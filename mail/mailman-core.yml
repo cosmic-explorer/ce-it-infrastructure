@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+    mailman-core:
+        image: cosmicexplorer/mailman-core:0.2.1
+        volumes:
+            - ${STORAGE_PATH}/core:/opt/mailman/
+        environment:
+            - MAILMAN_DATABASE_URL_FILE=/run/secrets/mailman_database_url
+            - MAILMAN_DATABASE_TYPE=postgres
+            - MAILMAN_DATABASE_CLASS=mailman.database.postgresql.PostgreSQLDatabase
+            - HYPERKITTY_API_KEY_FILE=/run/secrets/hyperkitty_api_key
+            - MAILMAN_REST_USER=restadmin
+            - MAILMAN_REST_PASSWORD_FILE=/run/secrets/mailman_rest_password
+            - SMTP_HOST=postfix
+            - SMTP_PORT=25
+        stop_grace_period: 30s
+        networks:
+            mailman-bridge:
+                ipv4_address: 192.168.102.4
+            mailman-net: {}
+        secrets:
+            - hyperkitty_api_key
+            - mailman_database_url
+            - mailman_rest_password
+        restart: always
+
+networks:
+    mailman-net:
+        external: true
+        name: mail_mailman-net
+    mailman-bridge:
+        external: true
+        name: mail_mailman-bridge
+        
+secrets:
+    hyperkitty_api_key:
+        file: ./hyperkitty_api_key.txt
+    mailman_database_url:
+        file: ./mailman_database_url.txt
+    mailman_rest_password:
+        file: ./mailman_rest_password.txt
