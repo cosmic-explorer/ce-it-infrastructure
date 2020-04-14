@@ -4,9 +4,11 @@ services:
     apache:
         image: cosmicexplorer/mailman-core-apache-shib:1
         volumes:
-            - /srv/docker/mailman/web:/opt/mailman-web-data
-            - /srv/docker/mailman/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
-            - /srv/docker/mailman/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+            - ${STORAGE_PATH}/web:/opt/mailman-web-data
+            - ${STORAGE_PATH}/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+            - ${STORAGE_PATH}/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+            - ${STORAGE_PATH}/etc/shibboleth/inc-md-cert.pem:/etc/shibboleth/inc-md-cert.pem
+            - ${STORAGE_PATH}/letsencrypt/config/etc/letsencrypt:/etc/letsencrypt
         environment:
             - HTTPS_CERT_FILE=/run/secrets/https_cert_file
             - HTTPS_KEY_FILE=/run/secrets/https_key_file
