@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+    apache:
+        image: cosmicexplorer/mailman-core-apache-shib:1
+        volumes:
+            - /srv/docker/mailman/web:/opt/mailman-web-data
+            - /srv/docker/mailman/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+            - /srv/docker/mailman/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
+        environment:
+            - HTTPS_CERT_FILE=/run/secrets/https_cert_file
+            - HTTPS_KEY_FILE=/run/secrets/https_key_file
+            - MAILMAN_ADMIN_EMAIL=dabrown@syr.edu
+            - SHIBBOLETH_SP_ENCRYPT_CERT=/run/secrets/shibboleth_sp_encrypt_cert
+            - SHIBBOLETH_SP_ENCRYPT_PRIVKEY=/run/secrets/shibboleth_sp_encrypt_privkey
+            - VIRTUAL_HOST_FQDN=mail.cosmicexplorer.org
+        secrets:
+            - https_cert_file
+            - https_key_file
+            - shibboleth_sp_encrypt_cert
+            - shibboleth_sp_encrypt_privkey
+        networks:
+            mailman-bridge:
+                ipv4_address: 192.168.102.6
+            mailman-net: {}
+        ports:
+            - "128.230.146.15:443:443"
+        restart: always
+
+networks:
+    mailman-net:
+        external: true
+        name: mail_mailman-net
+    mailman-bridge:
+        external: true
+        name: mail_mailman-bridge
+        
+secrets:
+    https_cert_file:
+        file: /srv/docker/mailman/letsencrypt/config/etc/letsencrypt/live/mail.cosmicexplorer.org/cert.pem
+    https_key_file:
+        file: /srv/docker/mailman/letsencrypt/config/etc/letsencrypt/live/mail.cosmicexplorer.org/privkey.pem
+    shibboleth_sp_encrypt_cert:
+        file: ./shibboleth_sp_encrypt_cert.txt
+    shibboleth_sp_encrypt_privkey:
+        file: ./shibboleth_sp_encrypt_privkey.txt
