@@ -14,14 +14,13 @@ export MAILMAN_ADMIN_EMAIL=dabrown@syr.edu
 export POSTFIX_MAILNAME=${MAILMAN_VIRTUAL_HOST_FQDN}
 export POSTFIX_MYHOSTNAME=${MAILMAN_VIRTUAL_HOST_FQDN}
 export POSTFIX_MYNETWORKS="192.168.102.0/24 172.30.102.0/24"
-export POSTFIX_RELAYHOST="smtp-host.syr.edu"
+export POSTFIX_RELAYHOST="smtp-relay.syr.edu"
 
 export SECRET_KEY="badgers"
 
 # FIXME: need to check these
 #export DJANGO_ALLOWED_HOSTS=""
 #export MAILMAN_HOST_IP=""
-#export SMTP_HOST="smtp-host.syr.edu"
 
 # temporary storage of secrets until we have macvlan
 echo "${HYPERKITTY_API_KEY}" > ./hyperkitty_api_key.txt
