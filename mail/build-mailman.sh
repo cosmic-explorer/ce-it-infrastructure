@@ -42,9 +42,10 @@ popd
 
 pushd comanage-registry-mailman/apache-shib
 docker build \
+  --build-arg COMANAGE_REGISTRY_SHIBBOLETH_SP_VERSION=${COMANAGE_REGISTRY_SHIBBOLETH_SP_VERSION} \
   --build-arg COMANAGE_REGISTRY_VERSION=${COMANAGE_REGISTRY_VERSION} \
-    --build-arg COMANAGE_REGISTRY_BASE_IMAGE_VERSION=${COMANAGE_REGISTRY_BASE_IMAGE_VERSION} \
-    -t cosmicexplorer/mailman-core-apache-shib:1 .
+  --build-arg COMANAGE_REGISTRY_BASE_IMAGE_VERSION=${COMANAGE_REGISTRY_BASE_IMAGE_VERSION} \
+  -t cosmicexplorer/mailman-core-apache-shib:1 .
 popd
 
 pushd comanage-registry-mailman/postfix
