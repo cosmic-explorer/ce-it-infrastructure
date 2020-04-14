@@ -14,6 +14,7 @@ services:
             - SHIBBOLETH_SP_ENCRYPT_CERT=/run/secrets/shibboleth_sp_encrypt_cert
             - SHIBBOLETH_SP_ENCRYPT_PRIVKEY=/run/secrets/shibboleth_sp_encrypt_privkey
             - VIRTUAL_HOST_FQDN=${SERVE_FROM_DOMAIN}
+            - MM_HOSTNAME="192.168.102.6"
         secrets:
             - https_cert_file
             - https_key_file
