@@ -13,10 +13,11 @@ services:
             - MAILMAN_ADMIN_EMAIL=dabrown@syr.edu
             - SHIBBOLETH_SP_ENCRYPT_CERT=/run/secrets/shibboleth_sp_encrypt_cert
             - SHIBBOLETH_SP_ENCRYPT_PRIVKEY=/run/secrets/shibboleth_sp_encrypt_privkey
-            - VIRTUAL_HOST_FQDN=mail.cosmicexplorer.org
+            - VIRTUAL_HOST_FQDN=${SERVE_FROM_DOMAIN}
         secrets:
             - https_cert_file
             - https_key_file
+            - https_chain_file
             - shibboleth_sp_encrypt_cert
             - shibboleth_sp_encrypt_privkey
         networks:
@@ -37,9 +38,11 @@ networks:
         
 secrets:
     https_cert_file:
-        file: /srv/docker/mailman/letsencrypt/config/etc/letsencrypt/live/mail.cosmicexplorer.org/cert.pem
+        file: /srv/docker/mailman/letsencrypt/config/etc/letsencrypt/live/${SERVE_FROM_DOMAIN}/cert.pem
     https_key_file:
-        file: /srv/docker/mailman/letsencrypt/config/etc/letsencrypt/live/mail.cosmicexplorer.org/privkey.pem
+        file: /srv/docker/mailman/letsencrypt/config/etc/letsencrypt/live/${SERVE_FROM_DOMAIN}/privkey.pem
+    https_chain_file:
+        file: /srv/docker/mailman/letsencrypt/config/etc/letsencrypt/live/${SERVE_FROM_DOMAIN}/fullchain.pem
     shibboleth_sp_encrypt_cert:
         file: ./shibboleth_sp_encrypt_cert.txt
     shibboleth_sp_encrypt_privkey:
