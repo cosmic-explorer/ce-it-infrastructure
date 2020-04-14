@@ -73,3 +73,40 @@ and check the status of its output with
 ```sh
 docker logs -f mail_postfix_1
 ```
+When the server is running, the logs will contain the message
+```
+2020-04-14 18:43:53,830 INFO success: postfix entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2020-04-14 18:43:53,830 INFO success: rsyslog entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+Apr 14 18:43:54 b6324f4c1532 postfix/master[9]: daemon started -- version 3.1.14, configuration /etc/postfix
+```
+
+Start the mailman internal web services with the command
+```sh
+docker-compose --file=mailman-web.yml up --detach
+```
+and check the status of its output with
+```sh
+docker logs -f mail_mailman-web_1
+```
+When the server is running, the logs will contain the message
+```
+Setting mail.cosmicexplorer.org as the default domain ...
+[uWSGI] getting INI configuration from /opt/mailman-web/uwsgi.ini
+```
+
+Start the mailmail external apache server with the command
+```sh
+docker-compose --file=mailman-apache.yml up --detach
+```
+and check the status of its output with
+```sh
+docker logs -f mail_apache_1
+```
+When the server is running, the logs will contain the message
+```
+shibd_log 2020-04-14 20:36:07 IN2020-04-14 20:36:08,677 INFO success: shibd entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2020-04-14 20:36:08,677 INFO success: apache2 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+```
+Note that it can take several minutes for Shibboleth to download and check all the IdP metadata before the server will accept connections.
+
+Once all the services are up and running, browse to https://mail.cosmicexplorer.org/ and log in with Shibboleth.
