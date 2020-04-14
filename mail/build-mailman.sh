@@ -52,6 +52,8 @@ pushd comanage-registry-mailman/postfix
 docker build -t cosmicexplorer/mailman-postfix:2 .
 popd
 
+popd
+
 # FIXME
 # docker swarm init --advertise-addr 127.0.0.1
 
