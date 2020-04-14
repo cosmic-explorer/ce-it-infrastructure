@@ -11,7 +11,7 @@ if [ -d ${STORAGE_PATH} ] ; then
     read REMOVE
     if test x$REMOVE == xremove ; then
       echo "Removing Mailman storage"
-      sudo rm -rf rm -rf ${STORAGE_PATH}/etc/ ${STORAGE_PATH}/srv/ ${STORAGE_PATH}/var/
+      sudo rm -rf rm -rf ${STORAGE_PATH}/core/ ${STORAGE_PATH}/database/ ${STORAGE_PATH}/etc/ ${STORAGE_PATH}/web/
       echo "${STORAGE_PATH}/letsencrypt has not been removed. This must be removed manually, if desired."
     else
       echo "You did not type remove. Exiting"
