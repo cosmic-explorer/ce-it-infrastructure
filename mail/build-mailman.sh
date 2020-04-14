@@ -100,6 +100,4 @@ if [ $(uname) == "Darwin" ] ; then
   sudo chown -R ${USER} ${STORAGE_PATH}
 fi
 
-popd
-
 trap - ERR
