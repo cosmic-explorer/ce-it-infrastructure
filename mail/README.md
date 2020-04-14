@@ -35,7 +35,20 @@ Set up the envrionment by running
 ```sh
 ./run-mailman.sh
 ```
-Note that it can take several minutes for Shibboleth to download and check all the IdP metadata before the server will accept connections.
+Once the script has run, watch the logs of the apache container with the command
+```sh
+docker logs -f mail_apache_1
+```
+This will print `Waiting for Mailman web container...` until the mailman services are up and then will print
+```
+AH00489: Apache/2.4.38 (Unix) OpenSSL/1.1.0j configured -- resuming normal operations
+AH00094: Command line: 'httpd -D FOREGROUND'
+```
+once the web server is running. Note that it can take several minutes for Shibboleth to download and check all the IdP metadata before apache will accept connections. You can watch the `shibd` process with
+```sh
+docker exec -it mail_apache_1 top
+```
+Once `shibd` goes from running to sleeping, the server should be ready.
 
 Once all the services are up and running, browse to https://mail.cosmicexplorer.org/ and log in with Shibboleth.
 
