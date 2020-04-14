@@ -12,6 +12,7 @@ services:
             - HYPERKITTY_API_KEY_FILE=/run/secrets/hyperkitty_api_key
             - MAILMAN_REST_USER=restadmin
             - MAILMAN_REST_PASSWORD_FILE=/run/secrets/mailman_rest_password
+            - MM_HOSTNAME=192.168.102.4
             - SMTP_HOST=postfix
             - SMTP_PORT=25
         stop_grace_period: 30s
