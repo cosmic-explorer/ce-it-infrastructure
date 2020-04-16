@@ -52,6 +52,25 @@ Once `shibd` goes from running to sleeping, the server should be ready.
 
 Once all the services are up and running, browse to https://mail.cosmicexplorer.org/ and log in with Shibboleth.
 
+### Additional apache configuration
+
+The certificate, key, and chain used by apache are copied in place by the setup files. This means that the certificate will eventaully expire as apache does not see the refreshed Let's Encrypt certificate. To work around this, make the certificate files symbolic links to the Let's Encrypt versions by running the commands
+```sh
+ln -sf /etc/letsencrypt/live/mail.cosmicexplorer.org/cert.pem /usr/local/apache2/conf/server.crt
+ln -sf /etc/letsencrypt/live/mail.cosmicexplorer.org/privkey.pem /usr/local/apache2/conf/server.key
+ln -sf /etc/letsencrypt/live/mail.cosmicexplorer.org/fullchain.pem /usr/local/apache2/conf/ca-chain.crt
+```
+Apache needs to be restarted to pick up changes in the certificates, so create an executable file `/etc/cron.daily/restart-apache` to restart apache by running the commands
+```sh
+cat > /etc/cron.daily/restart-apache <<EOF
+#!/bin/sh
+/usr/local/apache2/bin/httpd -k graceful
+EOF
+chmod +x /etc/cron.daily/restart-apache
+/etc/cron.daily/restart-apache
+```
+which will trigger a daily graceful reload of apache.
+
 ### Stopping the containers 
 
 Stop the containers with
