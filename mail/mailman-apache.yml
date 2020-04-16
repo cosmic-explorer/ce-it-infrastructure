@@ -25,7 +25,7 @@ services:
             - shibboleth_sp_encrypt_privkey
         networks:
             mailman-bridge:
-                ipv4_address: 192.168.102.3
+                ipv4_address: 192.168.102.4
             roster-net: {}
         ports:
             - "128.230.146.15:443:443"
