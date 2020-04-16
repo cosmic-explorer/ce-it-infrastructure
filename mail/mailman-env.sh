@@ -16,8 +16,6 @@ export POSTFIX_MYHOSTNAME=${MAILMAN_VIRTUAL_HOST_FQDN}
 export POSTFIX_MYNETWORKS="192.168.102.0/24 172.30.102.0/24"
 export POSTFIX_RELAYHOST="smtp-relay.syr.edu"
 
-export SECRET_KEY="badgers"
-
 # temporary storage of secrets until we have macvlan
 echo "${HYPERKITTY_API_KEY}" > ./hyperkitty_api_key.txt
 echo "${POSTGRESS_PASSWORD}" > ./postgres_password.txt
