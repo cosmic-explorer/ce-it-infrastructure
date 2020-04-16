@@ -12,14 +12,11 @@ services:
             - HYPERKITTY_API_KEY_FILE=/run/secrets/hyperkitty_api_key
             - MAILMAN_REST_USER=restadmin
             - MAILMAN_REST_PASSWORD_FILE=/run/secrets/mailman_rest_password
-            - MM_HOSTNAME=192.168.102.4
             - SMTP_HOST=postfix
             - SMTP_PORT=25
         stop_grace_period: 30s
         networks:
-            mailman-bridge:
-                ipv4_address: 192.168.102.4
-            mailman-net: {}
+            roster-net: {}
         secrets:
             - hyperkitty_api_key
             - mailman_database_url
@@ -27,12 +24,9 @@ services:
         restart: always
 
 networks:
-    mailman-net:
+    roster-net:
         external: true
-        name: mail_mailman-net
-    mailman-bridge:
-        external: true
-        name: mail_mailman-bridge
+        name: roster_roster-net
         
 secrets:
     hyperkitty_api_key:
