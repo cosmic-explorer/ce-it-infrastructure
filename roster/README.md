@@ -82,10 +82,20 @@ then the registry container can be started with
 ```sh
 docker-compose --file=comanage.yml up --detach
 ```
-and the container status checked with
+
+Once the container is started, the logs can be inspected with
 ```sh
 docker logs -f roster_comanage-registry_1
 ```
+When apache is started, the logs will show
+```
+INFO success: apache2 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+```
+however, Shibboleth may take several minuntes to process the certificates from the InCommon IdPs. The `shibd` daemon can be watched with
+```sh
+docker exec -it roster_comanage-registry_1 top
+```
+When the daemon goes from running to sleep, the server will be ready.
 
 <!--
 The registry and LDAP containers can then be started with the command
