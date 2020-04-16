@@ -12,6 +12,7 @@ services:
         environment:
             - HTTPS_CERT_FILE=/run/secrets/https_cert_file
             - HTTPS_KEY_FILE=/run/secrets/https_key_file
+            - HTTPS_CHAIN_FILE=/run/secrets/https_chain_file
             - MAILMAN_ADMIN_EMAIL=dabrown@syr.edu
             - SHIBBOLETH_SP_ENCRYPT_CERT=/run/secrets/shibboleth_sp_encrypt_cert
             - SHIBBOLETH_SP_ENCRYPT_PRIVKEY=/run/secrets/shibboleth_sp_encrypt_privkey
