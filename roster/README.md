@@ -39,18 +39,6 @@ Set up the envrionment by running
 . comanage-env.sh
 ```
 
-<!--
-To start the containers, run
-```sh
-. comanage-env.sh
-docker stack deploy --compose-file comanage-registry-stack.yml comanage-registry
-```
-Once the stack has been deployed, check the status of the [linuxserver/letsencrypt](https://hub.docker.com/r/linuxserver/letsencrypt/) container by running the command
-```sh
-docker service logs -f comanage-registry_letsencrypt
-```
--->
-
 Start the [Let's Encrypt](https://letsencrypt.org) container with the command
 ```sh
 docker-compose --file=letsencrypt.yml up --detach
@@ -97,14 +85,6 @@ docker exec -it roster_comanage-registry_1 top
 ```
 When the daemon goes from running to sleep, the server will be ready.
 
-<!--
-The registry and LDAP containers can then be started with the command
-```sh
-docker service scale comanage-registry_comanage-registry-ldap=1
-docker service scale comanage-registry_comanage-registry=1
-```
--->
-
 ### Additional mail configuration
 
 The first time that the stack is run, you wull need to edit the file `/srv/docker/comanage/srv/comanage-registry/local/Config/email.php` and remove the lines
@@ -132,22 +112,6 @@ chmod +x /etc/cron.daily/restart-apache
 /etc/cron.daily/restart-apache
 ```
 which will trigger a daily graceful reload of apache.
-
-<!--
-### Checking Container Status
-
-You can check the status with
-```sh
-docker stack ps --no-trunc comanage-registry
-```
-
-### Stopping the Containers
-
-To stop the containers, run
-```sh
-docker stack rm comanage-registry
-```
--->
 
 ### Stopping the Containers
 
