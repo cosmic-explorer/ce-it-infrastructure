@@ -105,6 +105,24 @@ The first time that the stack is run, you wull need to edit the file `/srv/docke
 as well as the `,` on the preceeding line, since the Syracuse SMTP host uses
 IP-based authorization, rather than username/password authentication.
 
+### Additional apache configuration
+The certificate, key, and chain used by apache are copied in place by the setup files. This means that the certificate will eventaully expire as apache does not see the refreshed Let's Encrypt certificate. To work around this, make the certificate files symbolic links to the Let's Encrypt versions by running the commands
+```sh
+ln -sf /etc/letsencrypt/live/roster.cosmicexplorer.org/cert.pem /etc/apache2/cert.pem
+ln -sf /etc/letsencrypt/live/roster.cosmicexplorer.org/privkey.pem /etc/apache2/privkey.pem
+ln -sf /etc/letsencrypt/live/roster.cosmicexplorer.org/fullchain.pem /etc/apache2/ca-chain.pem
+```
+Apache needs to be restarted to pick up changes in the certificates, so create an executable file `/etc/cron.daily/restart-apache` to do this by running the commands
+```sh
+cat > /etc/cron.daily/restart-apache <<EOF
+#!/bin/sh
+apache2ctl graceful
+EOF
+chmod +x /etc/cron.daily/restart-apache
+/etc/cron.daily/restart-apache
+```
+which will trigger a daily graceful reload of apache.
+
 <!--
 ### Checking Container Status
 
