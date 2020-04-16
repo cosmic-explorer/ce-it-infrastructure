@@ -31,7 +31,7 @@ The following addresses are assigned to the following containers with outward fa
 | 192.168.100.3 | 443 | COmanage Apache Server |
 | 192.168.100.2 | 80 | Let's Encrypt Server for Mailman |
 | 192.168.102.3 | 25 | Postfix server for Mailman |
-| 192.168.102.6 | 443 | Mailman Apache Server |
+| 192.168.102.4 | 443 | Mailman Apache Server |
 
 Note that since the Let's Encrypt and Apache containers map to the same host IP, they cannot use the same port. This is fine, however, as Let's Encrypt runs on port 80 and we only open port 443 for Apache.
 
