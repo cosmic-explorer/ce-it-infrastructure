@@ -18,10 +18,6 @@ export POSTFIX_RELAYHOST="smtp-relay.syr.edu"
 
 export SECRET_KEY="badgers"
 
-# FIXME: need to check these
-#export DJANGO_ALLOWED_HOSTS=""
-#export MAILMAN_HOST_IP=""
-
 # temporary storage of secrets until we have macvlan
 echo "${HYPERKITTY_API_KEY}" > ./hyperkitty_api_key.txt
 echo "${POSTGRESS_PASSWORD}" > ./postgres_password.txt
