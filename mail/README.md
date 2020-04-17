@@ -79,3 +79,15 @@ Stop the containers with
 ```sh
 ./stop-mailman.sh
 ```
+
+## Connecting COmanage to Mailman
+
+To allow COmanage to create mailing lists, first create a new provisioning target for mailman
+
+<img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/mail/create-provisioning-target.png" width="275">
+
+Configure this provisioning to talk to the REST API on `http://mailman-core:8001` using the `MAILMAN_REST_PASSWORD` set in `mailman-env.sh`. 
+
+<img src="https://raw.githubusercontent.com/cosmic-explorer/ce-it-infrastructure/master/mail/configure-provisioning-target.png" width="275">
+
+Once this is set up, lists can be created and deleted with the email lists feature in COmanage.
