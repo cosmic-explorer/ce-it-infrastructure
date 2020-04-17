@@ -66,11 +66,12 @@ rm -f sp-encrypt-cert.pem sp-encrypt-key.pem
 
 sudo mkdir -p ${STORAGE_PATH}/core
 sudo mkdir -p ${STORAGE_PATH}/core/var/data
-sudo touch ${STORAGE_PATH}/settings.py
 sudo mkdir -p ${STORAGE_PATH}/web
 sudo mkdir -p ${STORAGE_PATH}/database
 sudo mkdir -p ${STORAGE_PATH}/etc/shibboleth
 sudo mkdir -p ${STORAGE_PATH}/letsencrypt/config
+
+sudo cp mailman-extra.cfg ${STORAGE_PATH}/core/mailman-extra.cfg
 
 sudo cp ${APACHE_SHIBD_DIR}/shibboleth/shibboleth2.xml ${STORAGE_PATH}/etc/shibboleth/
 sudo cp attribute-map.xml ${STORAGE_PATH}/etc/shibboleth/
