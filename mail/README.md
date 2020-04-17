@@ -54,6 +54,8 @@ Once all the services are up and running, browse to https://mail.cosmicexplorer.
 
 ### Additional apache configuration
 
+The mailing list archives are configured so that anyone with a valid Shibboleth session can access them. This will allow anyone in InCommon R&S to access the archives. To prevent this, edit the file `/usr/local/apache2/conf/httpd.conf` and in the `<Location "/hyperkitty/">` directive, change `Require shib-session` to `Require shib-attr mail ${MAILMAN_ADMIN_EMAIL}`.
+
 The certificate, key, and chain used by apache are copied in place by the setup files. This means that the certificate will eventaully expire as apache does not see the refreshed Let's Encrypt certificate. To work around this, make the certificate files symbolic links to the Let's Encrypt versions by running the commands
 ```sh
 ln -sf /etc/letsencrypt/live/mail.cosmicexplorer.org/cert.pem /usr/local/apache2/conf/server.crt
