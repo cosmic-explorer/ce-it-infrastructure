@@ -76,8 +76,8 @@ sudo rmdir ${CERT_DIR}
 
 # FIXME
 # temporary secret files until we have macvlan
-cat sp-encrypt-cert.pem > ../shibboleth_sp_encrypt_cert.txt
-cat sp-encrypt-key.pem > ../shibboleth_sp_encrypt_privkey.txt
+cat sp-encrypt-cert.pem > ./shibboleth_sp_encrypt_cert.txt
+cat sp-encrypt-key.pem > ./shibboleth_sp_encrypt_privkey.txt
 rm -f sp-encrypt-cert.pem sp-encrypt-key.pem
 
 sudo mkdir -p ${STORAGE_PATH}/core
