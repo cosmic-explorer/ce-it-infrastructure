@@ -16,7 +16,7 @@ services:
             - MAILMAN_ADMIN_EMAIL=dabrown@syr.edu
             - SHIBBOLETH_SP_ENCRYPT_CERT=/run/secrets/shibboleth_sp_encrypt_cert
             - SHIBBOLETH_SP_ENCRYPT_PRIVKEY=/run/secrets/shibboleth_sp_encrypt_privkey
-            - VIRTUAL_HOST_FQDN=${SERVE_FROM_DOMAIN}
+            - VIRTUAL_HOST_FQDN=${MAILMAN_VIRTUAL_HOST_FQDN}
         secrets:
             - https_cert_file
             - https_key_file
@@ -41,11 +41,11 @@ networks:
         
 secrets:
     https_cert_file:
-        file: /srv/docker/mailman/letsencrypt/config/etc/letsencrypt/live/${SERVE_FROM_DOMAIN}/cert.pem
+        file: /srv/docker/mailman/letsencrypt/config/etc/letsencrypt/live/${MAILMAN_VIRTUAL_HOST_FQDN}/cert.pem
     https_key_file:
-        file: /srv/docker/mailman/letsencrypt/config/etc/letsencrypt/live/${SERVE_FROM_DOMAIN}/privkey.pem
+        file: /srv/docker/mailman/letsencrypt/config/etc/letsencrypt/live/${MAILMAN_VIRTUAL_HOST_FQDN}/privkey.pem
     https_chain_file:
-        file: /srv/docker/mailman/letsencrypt/config/etc/letsencrypt/live/${SERVE_FROM_DOMAIN}/fullchain.pem
+        file: /srv/docker/mailman/letsencrypt/config/etc/letsencrypt/live/${MAILMAN_VIRTUAL_HOST_FQDN}/fullchain.pem
     shibboleth_sp_encrypt_cert:
         file: ./shibboleth_sp_encrypt_cert.txt
     shibboleth_sp_encrypt_privkey:
