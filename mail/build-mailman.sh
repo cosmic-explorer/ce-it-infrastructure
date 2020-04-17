@@ -27,9 +27,6 @@ fi
 
 trap 'trap - ERR; kill -INT $$' ERR
 
-# FIXME
-# docker swarm leave --force || true
-
 pushd comanage-registry-docker
 
 pushd comanage-registry-mailman/core
@@ -54,25 +51,12 @@ popd
 
 popd
 
-# FIXME
-# docker swarm init --advertise-addr 127.0.0.1
-
-#echo "${HYPERKITTY_API_KEY}" | docker secret create hyperkitty_api_key -
-#echo "${POSTGRESS_PASSWORD}" | docker secret create postgres_password -
-#echo "postgres://mailman:${POSTGRESS_PASSWORD}@database/mailmandb" | docker secret create mailman_database_url -
-#echo "${MAILMAN_REST_PASSWORD}" | docker secret create mailman_rest_password -
-#echo "${MAILMAN_WEB_SECRET_KEY}" | docker secret create mailman_web_secret_key -
-
 CERT_DIR=$(mktemp -d)
 sudo cp -a ${APACHE_SHIBD_DIR}/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
 sudo cp -a ${APACHE_SHIBD_DIR}/shibboleth/sp-encrypt-key.pem ${CERT_DIR}
 sudo chown ${USER} ${CERT_DIR}/*.pem
 mv ${CERT_DIR}/*.pem .
 sudo rmdir ${CERT_DIR}
-
-# FIXME
-# docker secret create shibboleth_sp_encrypt_cert sp-encrypt-cert.pem
-# docker secret create shibboleth_sp_encrypt_privkey sp-encrypt-key.pem
 
 # FIXME
 # temporary secret files until we have macvlan
