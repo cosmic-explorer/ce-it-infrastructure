@@ -9,9 +9,7 @@ RUN cd /srv/comanage-registry && \
     git remote add origin https://github.com/cosmic-explorer/comanage-registry.git && \
     git fetch --all && \
     git config core.sparseCheckout true && \
-    echo "app/AvailablePlugin/GithubProvisioner/*" > .git/info/sparse-checkout && \
     echo "app/AvailablePlugin/RestDccProvisioner/*" >> .git/info/sparse-checkout && \
-    rm -rf app/AvailablePlugin/GithubProvisioner && \
     git checkout master
     
 COPY restart-apache /etc/cron.daily/restart-apache
