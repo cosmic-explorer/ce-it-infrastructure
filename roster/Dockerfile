@@ -18,4 +18,7 @@ RUN ln -sf /etc/letsencrypt/live/roster.cosmicexplorer.org/cert.pem /etc/apache2
     ln -sf /etc/letsencrypt/live/roster.cosmicexplorer.org/privkey.pem /etc/apache2/privkey.pem && \
     ln -sf /etc/letsencrypt/live/roster.cosmicexplorer.org/fullchain.pem /etc/apache2/ca-chain.pem
 
+COPY restart-apache /etc/cron.daily/restart-apache
+RUN chmod +x /etc/cron.daily/restart-apache
+
 ENTRYPOINT ["/usr/bin/supervisord", "-c", "/usr/local/etc/supervisord.conf"]
