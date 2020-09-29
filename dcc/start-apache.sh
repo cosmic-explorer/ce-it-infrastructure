@@ -11,11 +11,9 @@ sed -i -e "/db_ropass/ s/Change.Me.too\!/${MYSQL_DOCDBRO_PASSWD}/;" /usr1/www/cg
 sed -i -e "/db_ropass/ s/Change.Me.too\!/${MYSQL_DOCDBRO_PASSWD}/;" /usr1/www/cgi-bin/DocDB/SiteConfig.pm
 
 DCC_INSTANCE=$(awk '/DCC_INSTANCE/ {print $3}' /etc/httpd/conf/httpd.conf)
-cp -v /etc/letsencrypt/live/${DCC_INSTANCE}/cert.pem /etc/httpd/x509-certs/${DCC_INSTANCE}.pem
-cp -v /etc/letsencrypt/live/${DCC_INSTANCE}/privkey.pem /etc/httpd/x509-certs/${DCC_INSTANCE}.key
-cp -v /etc/letsencrypt/live/${DCC_INSTANCE}/fullchain.pem /etc/httpd/x509-certs/${DCC_INSTANCE}.cert
-chmod 0444 /etc/httpd/x509-certs/${DCC_INSTANCE}.pem /etc/httpd/x509-certs/${DCC_INSTANCE}.cert
-chmod 0400 /etc/httpd/x509-certs/${DCC_INSTANCE}.key
+ln -sf /etc/letsencrypt/live/${DCC_INSTANCE}/cert.pem /etc/httpd/x509-certs/${DCC_INSTANCE}.pem
+ln -sf /etc/letsencrypt/live/${DCC_INSTANCE}/privkey.pem /etc/httpd/x509-certs/${DCC_INSTANCE}.key
+ln -sf /etc/letsencrypt/live/${DCC_INSTANCE}/fullchain.pem /etc/httpd/x509-certs/${DCC_INSTANCE}.cert
 
 rm -rf /var/lib/mysql.orig
 rm -rf /usr2/GLIMPSE.orig
