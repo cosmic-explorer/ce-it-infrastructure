@@ -14,10 +14,6 @@ RUN cd /srv/comanage-registry && \
     rm -rf app/AvailablePlugin/GithubProvisioner && \
     git checkout master
     
-RUN ln -sf /etc/letsencrypt/live/roster.cosmicexplorer.org/cert.pem /etc/apache2/cert.pem && \
-    ln -sf /etc/letsencrypt/live/roster.cosmicexplorer.org/privkey.pem /etc/apache2/privkey.pem && \
-    ln -sf /etc/letsencrypt/live/roster.cosmicexplorer.org/fullchain.pem /etc/apache2/ca-chain.pem
-
 COPY restart-apache /etc/cron.daily/restart-apache
 RUN chmod +x /etc/cron.daily/restart-apache
 
