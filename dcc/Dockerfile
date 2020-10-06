@@ -121,8 +121,14 @@ RUN curl http://download.opensuse.org/repositories/security://shibboleth/CentOS_
 <h3>Which provider should I choose?</h3>\\\n\
 \\\n\
 <ul>\\\n\
-<li> If your home institution is available in the list below, select that provider. Note that some indentity providers listed do not release all of their metadata to InCommon Research and Scholarship. If you encounter an error, please use one of the backup identity provides below.\\\n\
-<li> If your home institution is not listed and you are an LIGO Scientific Collaboration member, then you can select the LIGO.org identity provider and log in with your LIGO.org credentials. Information on managing these credentials is available at <a href="https://my.ligo.org">my.ligo.org</a>. Note that Virgo and KAGRA do not federate their identity providers with InCommon research and scholarship so you should use your institutional credentials or your ORCiD.\\\n\
+<li> If your home institution is available in the list below, select that provider. \\\n\
+<ul>\\\n\
+<li> Note that some indentity providers listed do not release all of their metadata to InCommon Research and Scholarship. If you encounter an error, please use one of the backup identity provides below.\\\n\
+</ul>\\\n\
+<li> If your home institution is not listed and you are an LIGO Scientific Collaboration member, then you can select the LIGO.org identity provider and log in with your LIGO.org credentials. Information on managing these credentials is available at <a href="https://my.ligo.org">my.ligo.org</a>.\\\n\
+<ul>\\\n\
+<li>Note that Virgo and KAGRA do not federate their identity providers with InCommon Research and Scholarship so you should use your institutional credentials or your ORCiD.\\\n\
+</ul>\\\n\
 <li> If your institution is not listed and you are not an LIGO Scientific Collaboration collaboration member, you can select the ORCiD identity provider and log in with your <a href="https://orcid.org/">ORCiD credentials.</a> If you do not have an ORCiD, you can obtain one by visiting the <a href="https://orcid.org/register">ORCiD registration page.</a>\\\n\
 </ul>\\\n\
 \\\n\
