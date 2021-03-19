@@ -116,7 +116,7 @@ RUN curl http://download.opensuse.org/repositories/security://shibboleth/CentOS_
 \\\n\
 <h3>Choose an identity provider from the options in the box below</h3>\\\n\
 \\\n\
-<p>The first time that you log in, you should pick from the list or enter an or organization name. Your previous choice(s) will be suggested on future visits, or you can select a different provider from the list below. The U.S. indentity providers listed below are those that federate with <a href="https://incommon.org/federation/research-scholarship-adopters/">InCommon Research and Scholarship</a> service. International identity providers are federated through the <a href="https://refeds.org/federations/federations-map">Research and Education FEDerations (REFEDS)</a> group.</p>\\\n\
+<p>The first time that you log in, you should pick from the list or enter an or organization name. Your previous choice(s) will be suggested on future visits, or you can select a different provider from the list below. The U.S. indentity providers listed below are those that federate with <a href="https://incommon.org/federation/research-scholarship-adopters/">InCommon Research and Scholarship</a> service. International identity providers are federated through <a href="https://edugain.org/">eduGAIN.</a></p>\\\n\
 \\\n\
 <h3>Which provider should I choose?</h3>\\\n\
 \\\n\
@@ -125,11 +125,11 @@ RUN curl http://download.opensuse.org/repositories/security://shibboleth/CentOS_
 <ul>\\\n\
 <li> Note that some indentity providers listed do not release all of their metadata to InCommon Research and Scholarship. If you encounter an error, please use one of the backup identity provides below.\\\n\
 </ul>\\\n\
-<li> If your home institution is not listed and you are an LIGO Scientific Collaboration member, then you can select the LIGO.org identity provider and log in with your LIGO.org credentials. Information on managing these credentials is available at <a href="https://my.ligo.org">my.ligo.org</a>.\\\n\
+<li> If your home institution is not listed and you have a LIGO.org credential, then you can select the LIGO.org identity provider and log in with your LIGO.org credentials. Information on managing these credentials is available at <a href="https://my.ligo.org">my.ligo.org</a>.\\\n\
 <ul>\\\n\
-<li>Note that Virgo and KAGRA do not federate their identity providers with InCommon Research and Scholarship so you should use your institutional credentials or your ORCiD.\\\n\
+<li>Note the KAGRA identity provider does not currently release their metadata to InCommon Research and Scholarship so you should use your institutional credentials, a LIGO.org credential, or your ORCiD.\\\n\
 </ul>\\\n\
-<li> If your institution is not listed and you are not an LIGO Scientific Collaboration collaboration member, you can select the ORCiD identity provider and log in with your <a href="https://orcid.org/">ORCiD credentials.</a> If you do not have an ORCiD, you can obtain one by visiting the <a href="https://orcid.org/register">ORCiD registration page.</a>\\\n\
+<li> If your institution is not listed and you do not have LIGO.org credentials then you can select the ORCiD identity provider and log in with your <a href="https://orcid.org/">ORCiD credentials.</a> If you do not have an ORCiD, you can obtain one by visiting the <a href="https://orcid.org/register">ORCiD registration page.</a>\\\n\
 </ul>\\\n\
 \\\n\
 <p>The identity selector will appear below. It may take a few seconds to gather the information from all available identity providers.</p>\\\n\
