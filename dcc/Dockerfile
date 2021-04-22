@@ -19,7 +19,12 @@ RUN rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
     sed -i -e s+dcc-backup.ligo.org+"${DCC_INSTANCE}"+ /usr1/www/html/index.html && \
     sed -i -e 's+${DCC_INSTANCE}:443+_default_:443+' /etc/httpd/conf.d/dcc-dev.conf && \
     sed -i -e '/<Location \/login>/,+3d;' /etc/httpd/conf.d/dcc-dev.conf && \
-    echo -e 's+</VirtualHost>+    ProxyPreserveHost On\\\n\
+    echo -e 's+</VirtualHost>+    <LocationMatch "^/(.+)/public">\\\n\
+        AuthType None\\\n\
+        Require all granted\\\n\
+    </LocationMatch>\\\n\
+\\\n\
+    ProxyPreserveHost On\\\n\
 \\\n\
     ProxyPass /rest-dcc/ http://rest-api:8443/\\\n\
     ProxyPassReverse /rest-dcc/ http://rest-api:8443/\\\n\
