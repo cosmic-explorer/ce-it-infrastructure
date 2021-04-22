@@ -116,8 +116,12 @@ RUN curl http://download.opensuse.org/repositories/security://shibboleth/CentOS_
     sed -i -e '/<noscript>/,/<\/noscript>/{/<noscript>/!{/<\/noscript>/!d;};}' /etc/shibboleth-ds/index.html && \
     echo -e 's+<body>+<body>\\\n\
 \\\n\
-<h1>Cosmic Explorer Identity Provider Selection Service</h1>\\\n\
-<h2>Please select an identity provider to login</h2>\\\n\
+<h1>Welcome to Cosmic Explorer!</h1>\\\n\
+<h2>Browse Public Documents</h2>\\\n\
+\\\n\
+<p>Users who are not members of the Cosmic Explorer Consortium can browse the <a href="https://dcc.cosmicexplorer.org/cgi-bin/DocDB/DocumentDatabase">public documents in the Cosmic Explorer Document Control Center</a>.</p>\\\n\
+<p>Information about <a href="https://cosmicexplorer.org/consortium.html">joining the Cosmic Explorer Consortium</a> is available on the <a href="https://cosmicexplorer.org">Cosmic Explorer web site</a>\\\n\
+<h2>Authorized users should select an identity provider to login</h2>\\\n\
 \\\n\
 <h3>Choose an identity provider from the options in the box below</h3>\\\n\
 \\\n\
