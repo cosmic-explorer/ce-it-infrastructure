@@ -117,14 +117,12 @@ RUN curl http://download.opensuse.org/repositories/security://shibboleth/CentOS_
     echo -e 's+<body>+<body>\\\n\
 \\\n\
 <h1>Welcome to Cosmic Explorer!</h1>\\\n\
-<h2>Browse Public Documents</h2>\\\n\
+<h2>For the Public</h2>\\\n\
 \\\n\
-<p>Users who are not members of the Cosmic Explorer Consortium can <a href="https://dcc.cosmicexplorer.org/cgi-bin/DocDB/ListBy?.submit=Changes&maxdocs=50&days=180">view the most recent</a> or <a href="https://dcc.cosmicexplorer.org/cgi-bin/DocDB/DocumentDatabase">search for</a> public documents in the Cosmic Explorer Document Control Center.</p>\\\n\
+<p>People who are not members of the Cosmic Explorer Consortium can <a href="https://dcc.cosmicexplorer.org/cgi-bin/DocDB/ListBy?.submit=Changes&maxdocs=50&days=180">view the most recent</a> or <a href="https://dcc.cosmicexplorer.org/cgi-bin/DocDB/DocumentDatabase">search for</a> public documents in the Cosmic Explorer Document Control Center.</p>\\\n\
 <p>Information about <a href="https://cosmicexplorer.org/consortium.html">joining the Cosmic Explorer Consortium</a> is available on the <a href="https://cosmicexplorer.org">Cosmic Explorer web site.</a>\\\n\
 
-<h2>To join the consortium, or for existing members, select an identity provider to login</h2>\\\n\
-\\\n\
-<h3>Choose an identity provider from the options in the box below</h3>\\\n\
+<h2>People joining the consortium (and existing members) should select an identity provider to login</h2>\\\n\
 \\\n\
 <p>The first time that you log in, you should pick from the list or enter an or organization name. Your previous choice(s) will be suggested on future visits, or you can select a different provider from the list below. The U.S. indentity providers listed below are those that federate with <a href="https://incommon.org/federation/research-scholarship-adopters/">InCommon Research and Scholarship</a> service. International identity providers are federated through <a href="https://edugain.org/">eduGAIN.</a></p>\\\n\
 \\\n\
