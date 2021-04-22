@@ -121,7 +121,8 @@ RUN curl http://download.opensuse.org/repositories/security://shibboleth/CentOS_
 \\\n\
 <p>Users who are not members of the Cosmic Explorer Consortium can <a href="https://dcc.cosmicexplorer.org/cgi-bin/DocDB/ListBy?.submit=Changes&maxdocs=50&days=180">view the most recent</a> or <a href="https://dcc.cosmicexplorer.org/cgi-bin/DocDB/DocumentDatabase">search for</a> public documents in the Cosmic Explorer Document Control Center.</p>\\\n\
 <p>Information about <a href="https://cosmicexplorer.org/consortium.html">joining the Cosmic Explorer Consortium</a> is available on the <a href="https://cosmicexplorer.org">Cosmic Explorer web site.</a>\\\n\
-<h2>Authorized users should select an identity provider to login</h2>\\\n\
+
+<h2>To join the consortium, or for existing members, select an identity provider to login</h2>\\\n\
 \\\n\
 <h3>Choose an identity provider from the options in the box below</h3>\\\n\
 \\\n\
