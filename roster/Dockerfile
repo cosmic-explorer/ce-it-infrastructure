@@ -3,7 +3,7 @@ ARG COMANAGE_REGISTRY_SHIBBOLETH_SP_IMAGE_VERSION=1
 
 FROM comanage-registry:${COMANAGE_REGISTRY_VERSION}-shibboleth-sp-${COMANAGE_REGISTRY_SHIBBOLETH_SP_IMAGE_VERSION}
 
-RUN apt-get update
+RUN apt-get --allow-releaseinfo-change update
 RUN apt-get -y install vim git iproute2 cron
 RUN cd /srv/comanage-registry && \
     git init && \
