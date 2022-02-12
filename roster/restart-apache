@@ -1,7 +1,16 @@
-#!/bin/sh
+#!/bin/bash
 
-ln -sf /etc/letsencrypt/live/roster.cosmicexplorer.org/cert.pem /etc/apache2/cert.pem
-ln -sf /etc/letsencrypt/live/roster.cosmicexplorer.org/privkey.pem /etc/apache2/privkey.pem
-ln -sf /etc/letsencrypt/live/roster.cosmicexplorer.org/fullchain.pem /etc/apache2/ca-chain.pem
+set -e
 
-apache2ctl graceful
+if openssl verify -untrusted /etc/apache2/ca-chain.pem /etc/apache2/cert.pem &>/dev/null; then
+  echo "$0 [`date`]: Apache certificate is valid." 
+  exit 0
+else
+  echo "$0 [`date`]: Apache certificate expired. Installing new certificate and restarting apache" 
+  cp -f /etc/letsencrypt/live/roster.cosmicexplorer.org/cert.pem /etc/apache2/cert.pem
+  cp -f /etc/letsencrypt/live/roster.cosmicexplorer.org/privkey.pem /etc/apache2/privkey.pem
+  cp -f /etc/letsencrypt/live/roster.cosmicexplorer.org/fullchain.pem /etc/apache2/ca-chain.pem
+  apache2ctl graceful
+fi
+
+exit 0
