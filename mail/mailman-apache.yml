@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
     apache:
-        image: cosmicexplorer/mailman-core-apache-shib:1
+        image: cosmicexplorer/mailman-core-apache-shib-cert:1
         volumes:
             - ${STORAGE_PATH}/web:/opt/mailman-web-data
             - ${STORAGE_PATH}/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
