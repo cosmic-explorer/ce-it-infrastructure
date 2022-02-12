@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+if openssl verify -untrusted /usr/local/apache2/conf/ca-chain.crt /usr/local/apache2/conf/server.crt &>/dev/null; then
+  echo "$0 [`date`]: Apache certificate is valid." 
+  exit 0
+else
+  echo "$0 [`date`]: Apache certificate expired. Installing new certificate and restarting apache" 
+  cp -f /etc/letsencrypt/live/mail.cosmicexplorer.org/cert.pem /usr/local/apache2/conf/server.crt
+  cp -f /etc/letsencrypt/live/mail.cosmicexplorer.org/privkey.pem/usr/local/apache2/conf/server.key
+  cp -f /etc/letsencrypt/live/mail.cosmicexplorer.org/fullchain.pem /usr/local/apache2/conf/ca-chain.crt
+  apache2ctl graceful
+fi
+
+exit 0
