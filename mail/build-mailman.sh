@@ -66,12 +66,24 @@ rm -f sp-encrypt-cert.pem sp-encrypt-key.pem
 
 sudo mkdir -p ${STORAGE_PATH}/core
 sudo mkdir -p ${STORAGE_PATH}/core/var/data
+sudo mkdir -p ${STORAGE_PATH}/core/var/dkim
 sudo mkdir -p ${STORAGE_PATH}/web
 sudo mkdir -p ${STORAGE_PATH}/database
 sudo mkdir -p ${STORAGE_PATH}/etc/shibboleth
 sudo mkdir -p ${STORAGE_PATH}/letsencrypt/config
+sudo mkdir -p ${STORAGE_PATH}/dkim
 
 sudo cp mailman-extra.cfg ${STORAGE_PATH}/core/mailman-extra.cfg
+
+sudo openssl genrsa -out ${STORAGE_PATH}/dkim/dkim_private.pem 2048
+sudo cp ${STORAGE_PATH}/dkim/dkim_private.pem ${STORAGE_PATH}/core/var/dkim
+sudo chown -R 102 ${STORAGE_PATH}/dkim
+sudo chmod 700 ${STORAGE_PATH}/dkim
+sudo chown -R 101 ${STORAGE_PATH}/core/var/dkim
+DKIM_PUBKEY=$(sudo openssl rsa -in ${STORAGE_PATH}/dkim/dkim_private.pem -pubout -outform der 2>/dev/null | openssl base64 -A)
+echo "--- BEGIN DKIM PUBLIC KEY ---"
+echo "v=DKIM1; k=rsa; p=${DKIM_PUBKEY}"
+echo "--- END DKIM PUBLIC KEY ---"
 
 sudo cp ${APACHE_SHIBD_DIR}/shibboleth/shibboleth2.xml ${STORAGE_PATH}/etc/shibboleth/
 sudo cp attribute-map.xml ${STORAGE_PATH}/etc/shibboleth/
