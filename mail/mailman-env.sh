@@ -16,6 +16,11 @@ export POSTFIX_MYHOSTNAME=${MAILMAN_VIRTUAL_HOST_FQDN}
 export POSTFIX_MYNETWORKS="172.30.100.0/24"
 export POSTFIX_RELAYHOST="smtp-relay.syr.edu"
 
+export DKIM_SIGNING_DOMAIN=cosmicexplorer.org
+export DKIM_SELECTOR=mailman022022
+export MAILMAN_PRIVATE_IP=172.30.100.6
+export MAILMAN_PRIVATE_FQDN=mail_mailman-core_1.roster_roster-net
+
 # temporary storage of secrets until we have macvlan
 echo "${HYPERKITTY_API_KEY}" > ./hyperkitty_api_key.txt
 echo "${POSTGRESS_PASSWORD}" > ./postgres_password.txt
