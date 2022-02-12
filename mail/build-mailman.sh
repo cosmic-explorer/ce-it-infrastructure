@@ -51,6 +51,8 @@ popd
 
 popd
 
+docker build -t np3m/mailman-core-apache-shib-cert:1 .
+
 CERT_DIR=$(mktemp -d)
 sudo cp -a ${APACHE_SHIBD_DIR}/shibboleth/sp-encrypt-cert.pem ${CERT_DIR}
 sudo cp -a ${APACHE_SHIBD_DIR}/shibboleth/sp-encrypt-key.pem ${CERT_DIR}
