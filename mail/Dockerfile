@@ -1,6 +1,6 @@
 FROM cosmicexplorer/mailman-core-apache-shib:1
 
-RUN apt-get -y upgrade
+RUN apt-get -y update
 RUN apt-get -y install cron openssl ca-certificates
     
 COPY restart-apache /etc/cron.daily/restart-apache
