@@ -1,0 +1,8 @@
+# Daily check that roster.cosmicexplorer.org and mail.cosmicexplorer.org serve
+# unexpired TLS certificates; emails dabrown@syr.edu only if one is expired or
+# missing (renewal is automatic). Installed from
+# ce-it-infrastructure/monitoring/ to /etc/cron.d/check-service-certs.
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+MAILTO=""
+15 7 * * * root /usr/local/sbin/check-service-certs.sh >> /var/log/check-service-certs.log 2>&1
