@@ -11,6 +11,7 @@ RUN cd /srv/comanage-registry && \
     git fetch --all && \
     git config core.sparseCheckout true && \
     echo "app/AvailablePlugin/RestDccProvisioner/*" >> .git/info/sparse-checkout && \
+    echo "app/AvailablePlugin/MailmanProvisioner/*" >> .git/info/sparse-checkout && \
     git checkout master
     
 COPY restart-apache /etc/cron.daily/restart-apache
