@@ -18,13 +18,16 @@ export POSTFIX_RELAYHOST="smtp-relay.syr.edu"
 
 export DKIM_SIGNING_DOMAIN=cosmicexplorer.org
 export DKIM_SELECTOR=mailman022022
-export MAILMAN_PRIVATE_IP=172.30.100.6
+# IP of mail_mailman-core_1 on roster_roster-net (dynamic: verify with
+#   docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" mail_mailman-core_1
+# before recreating postfix). Was wrongly set to the postfix container's own address.
+export MAILMAN_PRIVATE_IP=172.30.100.5
 export MAILMAN_PRIVATE_FQDN=mail_mailman-core_1.roster_roster-net
 
 # temporary storage of secrets until we have macvlan
 echo "${HYPERKITTY_API_KEY}" > ./hyperkitty_api_key.txt
 echo "${POSTGRESS_PASSWORD}" > ./postgres_password.txt
-echo "postgres://mailman:${POSTGRESS_PASSWORD}@database/mailmandb" > ./mailman_database_url.txt
+echo "postgresql://mailman:${POSTGRESS_PASSWORD}@database/mailmandb" > ./mailman_database_url.txt
 echo "${MAILMAN_REST_PASSWORD}" > ./mailman_rest_password.txt
 echo "${MAILMAN_WEB_SECRET_KEY}" > ./mailman_web_secret_key.txt
 
