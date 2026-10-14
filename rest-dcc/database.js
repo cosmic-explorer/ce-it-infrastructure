@@ -22,37 +22,47 @@ const UsersGroup = database.import(path.join(__dirname, 'dcc_docdb/UsersGroup'))
 const RemoteUser = database.import(path.join(__dirname, 'dcc_docdb/RemoteUser'))
 const SecurityGroup = database.import(path.join(__dirname, 'dcc_docdb/SecurityGroup'))
 
+// Lists are returned in full. finale-rest paginates at 100 rows by default and
+// the COmanage provisioner reads only one page, which re-inserted every
+// UsersGroup membership beyond the first 100 on each sync. All six tables are
+// small enough to return whole.
 const initializeDatabase = async (app) => {
   finale.initialize({ app, sequelize: database })
 
   finale.resource({
     model: Author,
-    endpoints: ['/Author', '/Author/:AuthorID' ]
+    endpoints: ['/Author', '/Author/:AuthorID' ],
+    pagination: false
   })
 
   finale.resource({
     model: EmailUser,
-    endpoints: ['/EmailUser', '/EmailUser/:EmailUserID' ]
+    endpoints: ['/EmailUser', '/EmailUser/:EmailUserID' ],
+    pagination: false
   })
 
   finale.resource({
     model: Institution,
-    endpoints: ['/Institution', '/Institution/:InstitutionID' ]
+    endpoints: ['/Institution', '/Institution/:InstitutionID' ],
+    pagination: false
   })
 
   finale.resource({
     model: UsersGroup,
-    endpoints: ['/UsersGroup', '/UsersGroup/:UsersGroupID' ]
+    endpoints: ['/UsersGroup', '/UsersGroup/:UsersGroupID' ],
+    pagination: false
   })
 
   finale.resource({
     model: RemoteUser,
-    endpoints: ['/RemoteUser', '/RemoteUser/:RemoteUserID' ]
+    endpoints: ['/RemoteUser', '/RemoteUser/:RemoteUserID' ],
+    pagination: false
   })
 
   finale.resource({
     model: SecurityGroup,
-    endpoints: ['/SecurityGroup', '/SecurityGroup/:GroupID' ]
+    endpoints: ['/SecurityGroup', '/SecurityGroup/:GroupID' ],
+    pagination: false
   })
 
   await database.authenticate()
