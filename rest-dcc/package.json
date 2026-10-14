@@ -1,6 +1,6 @@
 {
   "name": "rest-dcc",
-  "version": "1.0.0",
+  "version": "1.2.2",
   "description": "RESTful interface to the DCC database",
   "main": "server.js",
   "scripts": {
