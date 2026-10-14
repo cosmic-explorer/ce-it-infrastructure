@@ -54,7 +54,12 @@ RUN rm -f /etc/shibboleth/*pem /etc/shibboleth/*key && \
        RequestHeader set X-Shib-Secret ${SHIB_HEADER_SECRET}\\\n\
        <RequireAll>\\\n\
            require shib-session\\\n\
-           require shib-attr eduPersonPrincipalName ${REST_AUTHORIZED_EPPN}\\\n\
+           <RequireAny>\\\n\
+               require shib-attr eduPersonPrincipalName ${REST_AUTHORIZED_EPPN}\\\n\
+               require shib-attr eduPersonPrincipalName lppekows@syr.edu\\\n\
+               require shib-attr eduPersonPrincipalName ahnitz@syr.edu\\\n\
+               require shib-attr eduPersonPrincipalName kjgarvey@syr.edu\\\n\
+           </RequireAny>\\\n\
        </RequireAll>\\\n\
    </LocationMatch>\\\n\
 \\\n\
