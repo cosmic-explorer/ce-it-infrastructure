@@ -1954,7 +1954,7 @@ original notification at
   'rs.pt.create' =>   'Petition Created',
   'rs.pt.create.from' => 'Petition created from enrollment flow "%1$s"',
   'rs.pt.create.not' => 'Petition created for %1$s from enrollment flow "%2$s"',
-  'rs.pt.create.self' => 'Application to join Cosmic Explorer created. Please look for an email from comanage-do-not-reply@np3m.org and follow the instructions to complete sign up.', 
+  'rs.pt.create.self' => 'Application to join Cosmic Explorer created. Please look for an email from comanage-do-not-reply@cosmicexplorer.org and follow the instructions to complete sign up.', 
   'rs.pt.deny' =>     'Petition Denied',
   'rs.pt.dupe' =>     'Petition Flagged as Duplicate',
   'rs.pt.final' =>    'Petition Finalized',
