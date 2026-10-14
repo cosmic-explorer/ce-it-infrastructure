@@ -10,7 +10,7 @@ else
   cp -f /etc/letsencrypt/live/mail.cosmicexplorer.org/cert.pem /usr/local/apache2/conf/server.crt
   cp -f /etc/letsencrypt/live/mail.cosmicexplorer.org/privkey.pem /usr/local/apache2/conf/server.key
   cp -f /etc/letsencrypt/live/mail.cosmicexplorer.org/fullchain.pem /usr/local/apache2/conf/ca-chain.crt
-  apache2ctl graceful
+  apachectl graceful
 fi
 
 exit 0
