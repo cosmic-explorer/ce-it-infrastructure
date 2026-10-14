@@ -1,16 +1,28 @@
 #!/bin/bash
+#
+# Daily cron job inside the Mailman Apache container: install the current
+# Let's Encrypt certificate when it differs from the one Apache is serving
+# (or when the installed one no longer verifies) and reload Apache gracefully.
 
 set -e
 
-if openssl verify -untrusted /usr/local/apache2/conf/ca-chain.crt /usr/local/apache2/conf/server.crt &>/dev/null; then
-  echo "$0 [`date`]: Apache certificate is valid." 
+LIVE=/etc/letsencrypt/live/mail.cosmicexplorer.org
+CONF=/usr/local/apache2/conf
+
+if cmp -s ${LIVE}/cert.pem ${CONF}/server.crt \
+   && cmp -s ${LIVE}/privkey.pem ${CONF}/server.key \
+   && openssl verify -untrusted ${CONF}/ca-chain.crt ${CONF}/server.crt &>/dev/null; then
+  echo "$0 [`date`]: Apache certificate is current."
   exit 0
-else
-  echo "$0 [`date`]: Apache certificate expired. Installing new certificate and restarting apache" 
-  cp -f /etc/letsencrypt/live/mail.cosmicexplorer.org/cert.pem /usr/local/apache2/conf/server.crt
-  cp -f /etc/letsencrypt/live/mail.cosmicexplorer.org/privkey.pem /usr/local/apache2/conf/server.key
-  cp -f /etc/letsencrypt/live/mail.cosmicexplorer.org/fullchain.pem /usr/local/apache2/conf/ca-chain.crt
-  apachectl graceful
 fi
+
+echo "$0 [`date`]: Installing renewed certificate and reloading apache"
+cp -f ${LIVE}/cert.pem      ${CONF}/server.crt
+cp -f ${LIVE}/privkey.pem   ${CONF}/server.key
+cp -f ${LIVE}/fullchain.pem ${CONF}/ca-chain.crt
+chmod 644 ${CONF}/server.crt ${CONF}/ca-chain.crt
+chmod 600 ${CONF}/server.key
+httpd -t
+apachectl graceful
 
 exit 0
