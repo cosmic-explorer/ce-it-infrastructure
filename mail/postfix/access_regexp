@@ -1,0 +1,5 @@
+# Mailman protocol addresses for every list (regexp map; no postmap needed).
+# -owner is deliberately not included: humans reach lists only via posting
+# addresses, as in the original allowlist. Unknown lists are still rejected by
+# local_recipient_maps.
+/^[a-z0-9._-]+-(bounces|confirm|join|leave|request|subscribe|unsubscribe)(\+.*)?@cosmicexplorer\.org$/ OK

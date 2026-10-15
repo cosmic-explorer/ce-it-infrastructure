@@ -24,6 +24,7 @@ echo "    Apache reloaded."
 echo "==> Postfix: main.cf and recipient access map"
 docker cp postfix/main.cf  ${POSTFIX}:/etc/postfix/main.cf
 docker cp postfix/access   ${POSTFIX}:/etc/postfix/access
+docker cp postfix/access_regexp ${POSTFIX}:/etc/postfix/access_regexp
 docker exec ${POSTFIX} postmap /etc/postfix/access
 docker exec ${POSTFIX} postfix check
 docker exec ${POSTFIX} postfix reload
