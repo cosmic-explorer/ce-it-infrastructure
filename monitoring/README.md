@@ -26,3 +26,19 @@ install -m 644 check-service-certs.cron /etc/cron.d/check-service-certs
 Run by hand with `check-service-certs.sh --verbose`. It exits 0 when all is
 well and 1 (after sending mail) otherwise. Output is appended to
 `/var/log/check-service-certs.log`.
+
+## check-pending-petitions
+
+`check-pending-petitions.sh` lists COmanage enrollment petitions in status
+"Pending Approval" (name, email, date applied, days waiting, flow, link) and
+emails them to the administrators once a week. On 2026-10-14 seven
+applications were found waiting, one of them for over a year, because nobody
+watches the approval queue. `--print` writes the report to stdout instead of
+sending it.
+
+Install with:
+
+```sh
+install -m 755 check-pending-petitions.sh /usr/local/sbin/check-pending-petitions.sh
+install -m 644 check-pending-petitions.cron /etc/cron.d/check-pending-petitions
+```

@@ -1,0 +1,7 @@
+# Weekly list of COmanage enrollment petitions awaiting approval, emailed to
+# the administrators. Installed from ce-it-infrastructure/monitoring/ to
+# /etc/cron.d/check-pending-petitions.
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+MAILTO=""
+30 7 * * 1 root /usr/local/sbin/check-pending-petitions.sh >> /var/log/check-pending-petitions.log 2>&1
