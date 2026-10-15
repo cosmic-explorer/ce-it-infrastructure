@@ -82,7 +82,7 @@ services:
             replicas: 1
 
     dcc:
-        image: cosmicexplorer/dcc:ce-cef36b92168d
+        image: cosmicexplorer/dcc:ce-3f009b06f264
         volumes:
             - ${STORAGE_PATH}/etc/shibboleth/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
             - ${STORAGE_PATH}/etc/shibboleth/attribute-map.xml:/etc/shibboleth/attribute-map.xml
