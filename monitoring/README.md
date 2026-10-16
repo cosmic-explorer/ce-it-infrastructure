@@ -42,3 +42,26 @@ Install with:
 install -m 755 check-pending-petitions.sh /usr/local/sbin/check-pending-petitions.sh
 install -m 644 check-pending-petitions.cron /etc/cron.d/check-pending-petitions
 ```
+
+## report-bouncing-addresses
+
+`report-bouncing-addresses.sh` lists mailing-list addresses with repeated
+bounces (default: two or more in 30 days, from Mailman's `bounceevent` table)
+next to their COmanage record, status and a link, so an administrator can
+decide who has left. Mailman 3.2.2 records bounces but never disables delivery
+itself, and list memberships come from COmanage, so the fix for a departed
+member is `roster/tools/expire-co-person.sh`, not a Mailman removal. Hand-added
+subscribers (no COmanage record) are listed separately. Runs Monday mornings
+and mails the administrators; `--print` writes to stdout, `--days N` and
+`--min N` adjust the window and threshold.
+
+Unrecognised bounces (ones Mailman cannot parse) are forwarded by Mailman to
+its site owner (`site_owner` in `mail/mailman-extra.cfg`, since 2026-10-16
+Kevin Garvey) rather than to each list's owners.
+
+Install with:
+
+```sh
+install -m 755 report-bouncing-addresses.sh /usr/local/sbin/report-bouncing-addresses.sh
+install -m 644 report-bouncing-addresses.cron /etc/cron.d/report-bouncing-addresses
+```

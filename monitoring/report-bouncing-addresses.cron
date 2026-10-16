@@ -1,0 +1,7 @@
+# Weekly report of bouncing mailing-list addresses with their COmanage records,
+# emailed to the administrators. Installed from ce-it-infrastructure/monitoring/
+# to /etc/cron.d/report-bouncing-addresses.
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+MAILTO=""
+45 7 * * 1 root /usr/local/sbin/report-bouncing-addresses.sh >> /var/log/report-bouncing-addresses.log 2>&1
