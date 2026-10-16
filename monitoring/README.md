@@ -31,7 +31,7 @@ well and 1 (after sending mail) otherwise. Output is appended to
 
 `check-pending-petitions.sh` lists COmanage enrollment petitions in status
 "Pending Approval" (name, email, date applied, days waiting, flow, link) and
-emails them to the administrators once a week. On 2026-10-14 seven
+emails them to the administrators (Duncan Brown and Kevin Garvey) once a week. On 2026-10-14 seven
 applications were found waiting, one of them for over a year, because nobody
 watches the approval queue. `--print` writes the report to stdout instead of
 sending it.

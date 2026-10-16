@@ -7,7 +7,7 @@
 #
 # Runs on ce-services.phy.syr.edu from /etc/cron.d/check-pending-petitions.
 
-REPORT_TO=${REPORT_TO:-dabrown@syr.edu}
+REPORT_TO=${REPORT_TO:-"dabrown@syr.edu kjgarvey@syr.edu"}
 REPORT_FROM=${REPORT_FROM:-"ce-services monitor <root@mail.cosmicexplorer.org>"}
 POSTFIX_CONTAINER=${POSTFIX_CONTAINER:-mail_postfix_1}
 DB_CONTAINER=${DB_CONTAINER:-roster_comanage-registry-database_1}
@@ -49,11 +49,13 @@ if [ $print_only -eq 1 ]; then
   exit 0
 fi
 
-{
-  echo "From: $REPORT_FROM"
-  echo "To: $REPORT_TO"
-  echo "Subject: [ce-services] $count COmanage application(s) awaiting approval"
-  echo "Content-Type: text/plain; charset=utf-8"
-  echo
-  echo "$body"
-} | docker exec -i "$POSTFIX_CONTAINER" sendmail -t -f root@mail.cosmicexplorer.org
+for to in $REPORT_TO; do
+  {
+    echo "From: $REPORT_FROM"
+    echo "To: $to"
+    echo "Subject: [ce-services] $count COmanage application(s) awaiting approval"
+    echo "Content-Type: text/plain; charset=utf-8"
+    echo
+    echo "$body"
+  } | docker exec -i "$POSTFIX_CONTAINER" sendmail -t -f root@mail.cosmicexplorer.org
+done
