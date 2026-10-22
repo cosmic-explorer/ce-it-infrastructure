@@ -41,7 +41,7 @@ body=$(
   echo "Approve or deny each one at:"
   printf '%s\n' "$rows" | awk -F'\t' -v u="$REGISTRY_URL" '{ printf "  %s/co_petitions/view/%s\n", u, $1 }'
   echo
-  echo "Approvers: PIs group for the Consortium and Observer flows; CO admins for the PI flow."
+  echo "Approvers: the CEConsortiumApprovers group for the Consortium and Observer flows, the CO:COU:Project:admins group for the Project flow, CO admins for the PI flow."
 )
 
 if [ $print_only -eq 1 ]; then
