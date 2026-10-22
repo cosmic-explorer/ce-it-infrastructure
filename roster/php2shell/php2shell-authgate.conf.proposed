@@ -1,0 +1,21 @@
+# Stronger PHP2Shell mitigation (NOT applied by default): require a Shibboleth
+# session before any request reaches mod_php. Append to php2shell.conf and
+# re-run apply-php2shell-mitigations.sh to enable.
+
+# Static assets need no session.
+<LocationMatch "^/registry/(css|js|img|fonts|font|favicon\.ico)">
+    Require all granted
+</LocationMatch>
+
+# REST API (HTTP Basic, API users): only from this host and the container
+# networks; these requests cannot carry a Shibboleth session.
+<LocationMatch "^/registry/.*\.json($|\?)">
+    Require ip 192.168.100.1 172.30.100.0/24 128.230.146.17
+</LocationMatch>
+
+# Everything else under /registry: a federated login before PHP runs.
+<Location /registry>
+    AuthType shibboleth
+    ShibRequestSetting requireSession 1
+    Require shib-session
+</Location>
