@@ -39,12 +39,9 @@ api GET "identifiers.json?orgidentityid=$oi" | python3 -c 'import json,sys
 raw=sys.stdin.read().strip()   # COmanage answers 204 with no body when there are none
 d=json.loads(raw) if raw else {}; ids=d.get("Identifiers",[])
 print("  (none)" if not ids else "\n".join("  %s=%s login=%s status=%s" % (i["Type"], i["Identifier"], i.get("Login"), i.get("Status")) for i in ids))'
-echo "people using this identifier as a login elsewhere:"
-api GET "identifiers.json?search.identifier=$ident" 2>/dev/null | python3 -c 'import json,sys
-raw=sys.stdin.read().strip()
-try: d=json.loads(raw) if raw else {}; ids=[i for i in d.get("Identifiers",[]) if i.get("Login")]
-except Exception: ids=[]
-print("  (none)" if not ids else "\n".join("  id %s on %s %s" % (i["Id"], i["Person"]["Type"], i["Person"]["Id"]) for i in ids))'
+# (The 3.2 REST API has no identifier search; check for an existing login
+# identifier with the same value in the database before running with --yes:
+#   SELECT * FROM cm_identifiers WHERE identifier='<value>' AND login=1 AND deleted=0;)
 
 body=$(python3 -c 'import json,sys; print(json.dumps({"RequestType":"Identifiers","Version":"1.0","Identifiers":[{"Version":"1.0","Type":sys.argv[1],"Identifier":sys.argv[2],"Login":True,"Status":"Active","Person":{"Type":"Org","Id":sys.argv[3]}}]}))' "$type" "$ident" "$oi")
 echo "request: POST identifiers.json $body"
