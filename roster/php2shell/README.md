@@ -25,15 +25,30 @@ php-fpm is stopped at container start by
 `/srv/docker/{comanage,mailman}/letsencrypt/config/custom-cont-init.d/10-disable-php-fpm`.
 The Mailman web stack contains no PHP.
 
-## Optional stronger step: require a Shibboleth session before PHP
+## Login gate (enabled 2026-10-24)
 
-`php2shell-authgate.conf.proposed` would make Apache require a Shibboleth
-session for all of `/registry` before the PHP handler runs, so an
-unauthenticated attacker cannot reach PHP at all; REST API calls (`*.json`) are
-instead limited to this host's addresses, and static assets stay open. The
-cost is that anonymous visitors go straight to the identity-provider chooser
-instead of the registry landing page. Not applied; apply by appending its
-contents to `php2shell.conf` and re-running the apply script.
+On ITS advice, `php2shell.conf` now also requires a Shibboleth session for
+everything under `/registry` before the PHP handler runs, so unauthenticated
+traffic never reaches mod_php. Anonymous visitors go straight to the
+identity-provider chooser instead of the registry Home page. Exceptions:
+static assets (`css`, `js`, `img`, `files`, `local-resources`, `favicon.ico`)
+are open, and REST API calls (`*.json`, HTTP Basic) are allowed only from this
+host and the container networks (192.168.100.1, 172.30.100.0/24,
+128.230.146.17).
+
+Two Apache details matter here. CakePHP's `.htaccess` rewrites every URL to
+`/registry/index.php` and Apache re-evaluates Location blocks on the rewritten
+URI, so the exceptions are written as `<If>`/`<ElseIf>` tests on
+`%{THE_REQUEST}` (the original request line) inside `<Location /registry>`,
+not as separate LocationMatch blocks. And mod_shib enforces
+`ShibRequestSetting requireSession` before `Require` is evaluated, so each
+exception also sets `requireSession 0`.
+
+Verified after enabling: `/registry/` and the sign-up start URL redirect to
+the discovery service; CSS and favicon return 200; anonymous `*.json` returns
+401 and API-user calls 200 from this host; the logout rewrite still works;
+`/wp-login.php` still 403. Rollback: remove the Location block from
+`php2shell.conf` and re-run the apply script.
 
 ## Indicators to watch
 
