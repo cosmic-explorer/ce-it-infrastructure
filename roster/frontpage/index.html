@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cosmic Explorer Registry</title>
+<meta name="description" content="Membership registry for the Cosmic Explorer Consortium and Project: sign up, log in, manage your membership.">
+<link rel="icon" href="/favicon.ico">
+<style>
+  :root { color-scheme: light dark; --bg:#f6f7f9; --fg:#1b2430; --muted:#5b6774; --card:#ffffff; --line:#d9dee5; --accent:#1f4e79; --accent-fg:#ffffff; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#0f141a; --fg:#e6ebf0; --muted:#9aa7b4; --card:#182028; --line:#2a3543; --accent:#5da2e0; --accent-fg:#0f141a; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  header { border-bottom:1px solid var(--line); background:var(--card); }
+  .wrap { max-width:880px; margin:0 auto; padding:0 16px; }
+  header .wrap { display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:18px 16px; flex-wrap:wrap; }
+  header h1 { font-size:1.25rem; margin:0; letter-spacing:.2px; }
+  header h1 span { color:var(--muted); font-weight:400; }
+  header a.login { color:var(--accent); text-decoration:none; font-weight:600; }
+  main .wrap { padding:36px 16px 48px; }
+  h2 { font-size:1.6rem; margin:0 0 8px; }
+  p.lead { color:var(--muted); margin:0 0 28px; max-width:60ch; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; margin:0 0 32px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px 18px 16px; display:flex; flex-direction:column; }
+  .card h3 { margin:0 0 6px; font-size:1.05rem; }
+  .card p { margin:0 0 14px; color:var(--muted); font-size:.95rem; flex:1; }
+  .btn { display:inline-block; text-align:center; padding:9px 14px; border-radius:8px; background:var(--accent); color:var(--accent-fg); text-decoration:none; font-weight:600; }
+  .btn.secondary { background:transparent; color:var(--accent); border:1px solid var(--accent); }
+  section.notes { border-top:1px solid var(--line); padding-top:22px; color:var(--muted); font-size:.95rem; }
+  section.notes h4 { color:var(--fg); margin:0 0 6px; font-size:1rem; }
+  section.notes p { margin:0 0 12px; max-width:70ch; }
+  footer { color:var(--muted); font-size:.85rem; padding:0 16px 32px; text-align:center; }
+  a { color:var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Cosmic Explorer <span>Registry</span></h1>
+    <a class="login" href="/registry/">Log in &rarr;</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <h2>Membership registry</h2>
+    <p class="lead">This is where Cosmic Explorer members sign up, keep their details current, and get access to the
+      mailing lists, the document control center (DCC) and the collaboration's GitHub teams. You log in with your
+      home institution's credentials, or with an ORCID iD if your institution is not federated.</p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Join the Consortium</h3>
+        <p>For scientists and engineers who want to take part in Cosmic Explorer. Membership is approved by the
+          consortium's reviewers.</p>
+        <a class="btn" href="/registry/co_petitions/start/coef:16">Apply to the Consortium</a>
+      </div>
+      <div class="card">
+        <h3>Join the Project team</h3>
+        <p>For people working on the Cosmic Explorer Project itself. Requires approval by the project
+          administrators; you should already be a consortium member.</p>
+        <a class="btn" href="/registry/co_petitions/start/coef:10">Apply to the Project</a>
+      </div>
+      <div class="card">
+        <h3>Observer</h3>
+        <p>Observer access for collaborators who are not members. No membership in Cosmic Explorer is implied or
+          conferred.</p>
+        <a class="btn secondary" href="/registry/co_petitions/start/coef:19">Request observer access</a>
+      </div>
+      <div class="card">
+        <h3>Already a member?</h3>
+        <p>Review or update your record, change your mailing-list address, or see which groups and lists you belong
+          to.</p>
+        <a class="btn secondary" href="/registry/">Log in to the registry</a>
+      </div>
+    </div>
+
+    <section class="notes">
+      <h4>Before you apply</h4>
+      <p>You will be asked to log in first. Choose your home institution on the identity-provider page; if it is not
+        listed, choose the ORCID option and sign in with your ORCID iD. Use your institutional e-mail address in the
+        form, since that is where approval notices and mailing-list traffic go.</p>
+      <h4>About Cosmic Explorer</h4>
+      <p>Cosmic Explorer is a proposed next-generation gravitational-wave observatory in the United States.
+        See <a href="https://cosmicexplorer.org/">cosmicexplorer.org</a> for the science, the project and how to get involved.</p>
+    </section>
+  </div>
+</main>
+
+<footer>Operated by the Cosmic Explorer Consortium. Membership data is managed with COmanage Registry.</footer>
+</body>
+</html>
