@@ -1,0 +1,15 @@
+[Unit]
+Description=Restrict SSH (tcp/22) to campus and VPN networks
+Documentation=file:/root/ce-it-infrastructure/host/README.md
+After=network-pre.target
+Wants=network-pre.target
+Before=sshd.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/ssh-firewall.sh apply
+ExecStop=/usr/local/sbin/ssh-firewall.sh remove
+
+[Install]
+WantedBy=multi-user.target

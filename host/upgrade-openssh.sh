@@ -13,6 +13,12 @@
 # running sshd is only restarted after `sshd -t` passes with the new binary.
 # Existing SSH sessions survive a restart; keep one open while running this.
 #
+# Patches: files named host/patches/openssh-<version>-*.patch are applied to the
+# extracted tree (upstream fixes not yet in a release; each file's header says
+# where it came from). 10.4p1 needs one: its sshd_config parser only accepted
+# "GssAuthentication" etc. instead of the documented GSSAPI* keywords
+# (upstream bz3974, commit c147093 of 2026-07-07).
+#
 # Usage: upgrade-openssh.sh <version>            e.g. 10.4p1
 #        VERIFY_ONLY=1 upgrade-openssh.sh <ver>   download and verify only
 #        BUILD_ONLY=1  upgrade-openssh.sh <ver>   stop after the port-2222 test
@@ -38,16 +44,24 @@ echo "signature OK: openssh-$ver.tar.gz signed by $RELEASE_FPR"
 [ "${VERIFY_ONLY:-0}" = 1 ] && exit 0
 
 cd /root/ssh; rm -rf "$src"; tar xzf "$dl/openssh-$ver.tar.gz"; cd "$src"
+# Apply any upstream fixes we carry for this release (host/patches/openssh-<ver>-*.patch).
+for p in "$(dirname "$(readlink -f "$0")")"/patches/openssh-$ver-*.patch; do
+  [ -e "$p" ] || continue
+  patch -p1 --forward --silent < "$p" && echo "applied $(basename "$p")"
+done
 ./configure "${CONFIGURE_OPTS[@]}" > "$src.configure.log" 2>&1
 make -j"$(nproc)" > "$src.make.log" 2>&1
 echo "built: $(./sshd -V 2>&1 | head -1)"
 
 # Prove the new daemon with the live configuration on a spare port.
 ./sshd -t -f /etc/ssh/sshd_config
-"$src/sshd" -D -p "$TESTPORT" -f /etc/ssh/sshd_config -o PidFile=/run/sshd-test.pid &
+# sshd execs the sshd-session/sshd-auth helpers from the compiled-in libexec
+# path, i.e. the currently installed version's; point the test at the new ones.
+"$src/sshd" -D -p "$TESTPORT" -f /etc/ssh/sshd_config -o PidFile=/run/sshd-test.pid \
+  -o "SshdSessionPath=$src/sshd-session" -o "SshdAuthPath=$src/sshd-auth" &
 testpid=$!
 sleep 2
-banner=$(timeout 10 bash -c "exec 3<>/dev/tcp/127.0.0.1/$TESTPORT; head -c 40 <&3" 2>/dev/null || true)
+banner=$(timeout 10 bash -c "exec 3<>/dev/tcp/127.0.0.1/$TESTPORT; read -r -t 5 b <&3; echo \"\$b\"" 2>/dev/null || true)
 kill "$testpid" 2>/dev/null || true
 echo "test daemon on port $TESTPORT said: $banner"
 case "$banner" in *"OpenSSH_${ver%p*}"*) ;; *) echo "unexpected banner; not installing" >&2; exit 1 ;; esac
@@ -59,6 +73,6 @@ make install > "$src.install.log" 2>&1
 systemctl restart sshd
 sleep 2
 systemctl is-active sshd
-banner=$(timeout 10 bash -c 'exec 3<>/dev/tcp/127.0.0.1/22; head -c 40 <&3' 2>/dev/null || true)
+banner=$(timeout 10 bash -c 'exec 3<>/dev/tcp/127.0.0.1/22; read -r -t 5 b <&3; echo "$b"' 2>/dev/null || true)
 echo "port 22 now says: $banner"
 case "$banner" in *"OpenSSH_${ver%p*}"*) echo "upgrade complete";; *) echo "WARNING: port 22 banner unexpected; check systemctl status sshd" >&2; exit 1;; esac

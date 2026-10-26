@@ -21,3 +21,31 @@ restart.
 
 `VERIFY_ONLY=1` stops after the signature check, `BUILD_ONLY=1` after the
 port-2222 test. Logs land in `/root/ssh/openssh-<version>.{configure,make,install}.log`.
+
+Releases sometimes need a fix that is already upstream but not yet in a
+tarball; put it in `host/patches/openssh-<version>-*.patch` and the script
+applies it after extraction. 10.4p1 ships with its GSSAPI keywords misnamed
+(`sshd -t` rejects `GSSAPIAuthentication`; upstream bz3974), so
+`openssh-10.4p1-gssapi-option-names.patch` is upstream commit c147093.
+
+## ssh-firewall.sh / ssh-firewall.service
+
+Restricts SSH (tcp/22) to the campus network 128.230.0.0/16, the VPN
+10.57.0.0/16 and loopback; everything else, and all IPv6 except `::1`, is
+dropped after a rate-limited `ssh-blocked:` line in `/var/log/messages`.
+Implemented as an iptables chain `SSH-ACCESS` jumped to from the top of
+INPUT, which Docker's own iptables management never touches. Established
+sessions are always accepted, so applying it never cuts the session running
+it. The service re-applies the rules at boot (before sshd).
+
+```sh
+install -m 755 host/ssh-firewall.sh /usr/local/sbin/
+install -m 644 host/ssh-firewall.service /etc/systemd/system/
+systemctl daemon-reload && systemctl enable --now ssh-firewall.service
+ssh-firewall.sh status      # counters per rule
+ssh-firewall.sh remove      # open port 22 again (or systemctl stop ssh-firewall)
+```
+
+Containers cannot reach the host's sshd either (their bridge addresses are
+not in the allowed set); nothing has needed that. To add a network, edit
+`ALLOW4` in the script, reinstall it and run `ssh-firewall.sh apply`.
