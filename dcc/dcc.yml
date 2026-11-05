@@ -2,16 +2,26 @@ version: '3.7'
 
 services:
 
+    # Certificate renewal (certbot, http-01 standalone) and the HTTP->HTTPS
+    # redirect on port 80. linuxserver/swag is the successor of the retired
+    # linuxserver/letsencrypt image (replaced 2026-11-05: the old image carried
+    # PHP 7.3, unfixable for PHP2Shell). Pin the version tag. Docker 19.03 on
+    # the host cannot pull swag's OCI manifests, so the image is imported with
+    #   skopeo copy docker://docker.io/linuxserver/swag:<tag> docker-daemon:linuxserver/swag:<tag>
+    # and the service must be updated with --no-resolve-image (or
+    # docker stack deploy --resolve-image never). See ce-docdb docs/operations.md.
     letsencrypt:
-        image: linuxserver/letsencrypt
+        image: linuxserver/swag:5.9.0-ls497
         environment:
+            - PUID=911
+            - PGID=911
             - TZ=America/New_York
             - URL=${DCC_INSTANCE}
             - VALIDATION=http
             - EMAIL=dabrown@syr.edu
-            - DHLEVEL=2048
             - ONLY_SUBDOMAINS=false
             - STAGING=false
+            - DISABLE_F2B=true
         volumes:
             - ${STORAGE_PATH}/letsencrypt/config:/config
         networks:
