@@ -1,28 +1,57 @@
 #!/bin/bash
 #
-# Daily cron job inside the Mailman Apache container: install the current
-# Let's Encrypt certificate when it differs from the one Apache is serving
-# (or when the installed one no longer verifies) and reload Apache gracefully.
+# Daily cron job inside the Mailman Apache container: make sure Apache serves
+# the current Let's Encrypt certificate. Installs the live certificate when
+# it differs from the installed files, reloads Apache gracefully, and then
+# checks what Apache actually serves on :443, so a failed reload is reported
+# (non-zero exit -> cron mail) and retried the next day instead of being
+# masked by matching files.
+#
+# History: 2026-11-07 the previous version copied the renewed files and then
+# died on `httpd: command not found` (cron's PATH lacks /usr/local/apache2/bin),
+# after which every run reported "current" while the old certificate was
+# still being served. Hence the absolute paths and the served-cert check.
 
-set -e
-
-LIVE=/etc/letsencrypt/live/mail.cosmicexplorer.org
+set -eu
+PATH=/usr/local/apache2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HTTPD=/usr/local/apache2/bin/httpd
+APACHECTL=/usr/local/apache2/bin/apachectl
+NAME=mail.cosmicexplorer.org
+LIVE=/etc/letsencrypt/live/${NAME}
 CONF=/usr/local/apache2/conf
 
-if cmp -s ${LIVE}/cert.pem ${CONF}/server.crt \
-   && cmp -s ${LIVE}/privkey.pem ${CONF}/server.key \
-   && openssl verify -untrusted ${CONF}/ca-chain.crt ${CONF}/server.crt &>/dev/null; then
-  echo "$0 [`date`]: Apache certificate is current."
+log() { echo "$0 [$(date)]: $*"; }
+fpr_file()   { openssl x509 -noout -fingerprint -sha256 -in "$1" 2>/dev/null | cut -d= -f2; }
+fpr_served() { echo | timeout 15 openssl s_client -servername "$NAME" -connect 127.0.0.1:443 2>/dev/null \
+               | openssl x509 -noout -fingerprint -sha256 2>/dev/null | cut -d= -f2; }
+
+live=$(fpr_file "${LIVE}/cert.pem")
+[ -n "$live" ] || { log "ERROR: cannot read ${LIVE}/cert.pem"; exit 1; }
+served=$(fpr_served || true)
+
+if [ "$served" = "$live" ]; then
+  log "Apache certificate is current ($(openssl x509 -noout -enddate -in "${LIVE}/cert.pem" | cut -d= -f2))."
   exit 0
 fi
 
-echo "$0 [`date`]: Installing renewed certificate and reloading apache"
-cp -f ${LIVE}/cert.pem      ${CONF}/server.crt
-cp -f ${LIVE}/privkey.pem   ${CONF}/server.key
-cp -f ${LIVE}/fullchain.pem ${CONF}/ca-chain.crt
-chmod 644 ${CONF}/server.crt ${CONF}/ca-chain.crt
-chmod 600 ${CONF}/server.key
-httpd -t
-apachectl graceful
+if ! cmp -s "${LIVE}/cert.pem" "${CONF}/server.crt" || ! cmp -s "${LIVE}/privkey.pem" "${CONF}/server.key"; then
+  log "Installing renewed certificate"
+  cp -f "${LIVE}/cert.pem"      "${CONF}/server.crt"
+  cp -f "${LIVE}/privkey.pem"   "${CONF}/server.key"
+  cp -f "${LIVE}/fullchain.pem" "${CONF}/ca-chain.crt"
+  chmod 644 "${CONF}/server.crt" "${CONF}/ca-chain.crt"
+  chmod 600 "${CONF}/server.key"
+else
+  log "Installed files are current but Apache serves a different certificate (served ${served:-none}); reloading"
+fi
 
-exit 0
+"$HTTPD" -t
+"$APACHECTL" graceful
+sleep 3
+served=$(fpr_served || true)
+if [ "$served" = "$live" ]; then
+  log "Apache reloaded and now serves the current certificate."
+  exit 0
+fi
+log "ERROR: after reload Apache still serves ${served:-no certificate} instead of $live"
+exit 1

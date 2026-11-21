@@ -1,26 +1,49 @@
 #!/bin/bash
 #
-# Daily cron job inside the COmanage container: install the current Let's
-# Encrypt certificate when it differs from the one Apache is serving (or when
-# the installed one no longer verifies) and reload Apache gracefully.
+# Daily cron job inside the COmanage container: make sure Apache serves the
+# current Let's Encrypt certificate. Installs the live certificate when it
+# differs from the installed files, reloads Apache gracefully, then checks
+# what Apache actually serves on :443 so a failed reload is reported
+# (non-zero exit -> cron mail) and retried the next day. Same logic as
+# mail/restart-apache; see there for why the served-cert check exists.
 
-set -e
-
-LIVE=/etc/letsencrypt/live/roster.cosmicexplorer.org
+set -eu
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+APACHECTL=/usr/sbin/apache2ctl
+NAME=roster.cosmicexplorer.org
+LIVE=/etc/letsencrypt/live/${NAME}
 CONF=/etc/apache2
 
-if cmp -s ${LIVE}/cert.pem ${CONF}/cert.pem \
-   && cmp -s ${LIVE}/privkey.pem ${CONF}/privkey.pem \
-   && openssl verify -untrusted ${CONF}/ca-chain.pem ${CONF}/cert.pem &>/dev/null; then
-  echo "$0 [`date`]: Apache certificate is current."
+log() { echo "$0 [$(date)]: $*"; }
+fpr_file()   { openssl x509 -noout -fingerprint -sha256 -in "$1" 2>/dev/null | cut -d= -f2; }
+fpr_served() { echo | timeout 15 openssl s_client -servername "$NAME" -connect 127.0.0.1:443 2>/dev/null \
+               | openssl x509 -noout -fingerprint -sha256 2>/dev/null | cut -d= -f2; }
+
+live=$(fpr_file "${LIVE}/cert.pem")
+[ -n "$live" ] || { log "ERROR: cannot read ${LIVE}/cert.pem"; exit 1; }
+served=$(fpr_served || true)
+
+if [ "$served" = "$live" ]; then
+  log "Apache certificate is current ($(openssl x509 -noout -enddate -in "${LIVE}/cert.pem" | cut -d= -f2))."
   exit 0
 fi
 
-echo "$0 [`date`]: Installing renewed certificate and reloading apache"
-cp -f ${LIVE}/cert.pem      ${CONF}/cert.pem
-cp -f ${LIVE}/privkey.pem   ${CONF}/privkey.pem
-cp -f ${LIVE}/fullchain.pem ${CONF}/ca-chain.pem
-apache2ctl configtest
-apache2ctl graceful
+if ! cmp -s "${LIVE}/cert.pem" "${CONF}/cert.pem" || ! cmp -s "${LIVE}/privkey.pem" "${CONF}/privkey.pem"; then
+  log "Installing renewed certificate"
+  cp -f "${LIVE}/cert.pem"      "${CONF}/cert.pem"
+  cp -f "${LIVE}/privkey.pem"   "${CONF}/privkey.pem"
+  cp -f "${LIVE}/fullchain.pem" "${CONF}/ca-chain.pem"
+else
+  log "Installed files are current but Apache serves a different certificate (served ${served:-none}); reloading"
+fi
 
-exit 0
+"$APACHECTL" configtest
+"$APACHECTL" graceful
+sleep 3
+served=$(fpr_served || true)
+if [ "$served" = "$live" ]; then
+  log "Apache reloaded and now serves the current certificate."
+  exit 0
+fi
+log "ERROR: after reload Apache still serves ${served:-no certificate} instead of $live"
+exit 1

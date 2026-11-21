@@ -1,7 +1,9 @@
 #!/bin/bash
 #
 # Check the TLS certificates actually served by the Cosmic Explorer services
-# and email an alert only if one is missing or has expired. Renewal itself is
+# and email an alert only if one is missing, has expired, or is not the
+# certificate the letsencrypt container most recently issued (renewed on disk
+# but not picked up by Apache, as happened 2026-11-07). Renewal itself is
 # automatic (letsencrypt containers + each web container's cron.daily job), so
 # approaching expiry is not alerted on. Set WARN_DAYS>0 to also warn early.
 #
@@ -16,10 +18,10 @@ ALERT_TO=${ALERT_TO:-dabrown@syr.edu}
 ALERT_FROM=${ALERT_FROM:-"ce-services monitor <root@mail.cosmicexplorer.org>"}
 POSTFIX_CONTAINER=${POSTFIX_CONTAINER:-mail_postfix_1}
 
-# name:ip pairs to probe on port 443
+# name:ip:letsencrypt-live-cert triples; the served certificate must match the file
 SERVICES=(
-  "roster.cosmicexplorer.org:128.230.146.12"
-  "mail.cosmicexplorer.org:128.230.146.15"
+  "roster.cosmicexplorer.org:128.230.146.12:/srv/docker/comanage/letsencrypt/config/etc/letsencrypt/live/roster.cosmicexplorer.org/cert.pem"
+  "mail.cosmicexplorer.org:128.230.146.15:/srv/docker/mailman/letsencrypt/config/etc/letsencrypt/live/mail.cosmicexplorer.org/cert.pem"
 )
 
 verbose=0
@@ -30,10 +32,10 @@ problems=()
 report=()
 
 for svc in "${SERVICES[@]}"; do
-  name=${svc%%:*}
-  ip=${svc##*:}
-  enddate=$(echo | timeout 20 openssl s_client -servername "$name" -connect "$ip:443" 2>/dev/null \
-            | openssl x509 -noout -enddate 2>/dev/null | cut -d= -f2)
+  IFS=: read -r name ip livecert <<<"$svc"
+  pem=$(echo | timeout 20 openssl s_client -servername "$name" -connect "$ip:443" 2>/dev/null \
+        | openssl x509 2>/dev/null)
+  enddate=$(openssl x509 -noout -enddate <<<"$pem" 2>/dev/null | cut -d= -f2)
   if [ -z "$enddate" ]; then
     problems+=("$name ($ip): could not retrieve a certificate")
     report+=("$name: NO CERTIFICATE RETRIEVED")
@@ -42,8 +44,13 @@ for svc in "${SERVICES[@]}"; do
   end=$(date -d "$enddate" +%s)
   days=$(( (end - now) / 86400 ))
   report+=("$name: expires $enddate ($days days)")
+  served_fpr=$(openssl x509 -noout -fingerprint -sha256 <<<"$pem" 2>/dev/null | cut -d= -f2)
+  live_fpr=$(openssl x509 -noout -fingerprint -sha256 -in "$livecert" 2>/dev/null | cut -d= -f2)
   if [ "$end" -le "$now" ]; then
     problems+=("$name ($ip): certificate EXPIRED on $enddate")
+  elif [ -n "$live_fpr" ] && [ "$served_fpr" != "$live_fpr" ]; then
+    live_end=$(openssl x509 -noout -enddate -in "$livecert" 2>/dev/null | cut -d= -f2)
+    problems+=("$name ($ip): serving a certificate that expires $enddate, but the letsencrypt container has a newer one (expires $live_end) that Apache has not loaded")
   elif [ "$WARN_DAYS" -gt 0 ] && [ "$days" -lt "$WARN_DAYS" ]; then
     problems+=("$name ($ip): certificate expires in $days days ($enddate)")
   fi
